@@ -1,43 +1,33 @@
 package com.fiskmods.lightsabers;
 
-import com.fiskmods.lightsabers.client.gui.GuiHandlerAL;
-import com.fiskmods.lightsabers.common.command.CommandForce;
-import com.fiskmods.lightsabers.common.config.ModConfig;
-import com.fiskmods.lightsabers.common.generator.WorldGeneratorStructures;
-import com.fiskmods.lightsabers.common.item.ModItems;
-import com.fiskmods.lightsabers.common.network.ALNetworkManager;
-import com.fiskmods.lightsabers.common.proxy.CommonProxy;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import fiskfille.utils.FiskUtils;
-import fiskfille.utils.FiskUtils.Hook;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraftforge.common.config.Configuration;
-
-@Mod(modid = Lightsabers.MODID, name = Lightsabers.NAME, version = Lightsabers.VERSION, dependencies = "required-after:Forge@[10.13.4.1558,);after:" + ALConstants.BATTLEGEAR + ";after:" + ALConstants.DYNAMIC_LIGHTS, guiFactory = "com.fiskmods.lightsabers.client.gui.GuiFactoryAL")
+@Mod("lightsabers")
 public class Lightsabers
 {
     public static final String NAME = "Advanced Lightsabers";
     public static final String MODID = "lightsabers";
     public static final String VERSION = "${version}";
-
-    @Instance
-    public static Lightsabers instance;
-
+    
+    private static Lightsabers instance;
+	
+	public static Lightsabers getInstance() {
+		return instance;
+	}
+    
+    /**
+     * Proxy -> LifecycleEvents (FMLConstructModEvent, FMLClientSetupEvent, FMLDedicatedServerSetupEvent, FMLCommonSetupEvent)
     @SidedProxy(clientSide = "com.fiskmods.lightsabers.common.proxy.ClientProxy", serverSide = "com.fiskmods.lightsabers.common.proxy.CommonProxy")
     public static CommonProxy proxy;
-
+	**/
+    
+    /**
     public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MODID)
     {
         @Override
@@ -46,10 +36,38 @@ public class Lightsabers
             return ModItems.lightsaber;
         }
     };
-
+	**/
+    
     public static boolean isBattlegearLoaded;
     public static boolean isDynamicLightsLoaded;
+    
+    public Lightsabers() {
+    	instance = this;
+    	
+    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	bus.addListener(this::constructMod);
+    	bus.addListener(this::doClientStuff);
+    	bus.addListener(this::doServerStuff);
+    	bus.addListener(this::doCommonStuff);
+    }
+    
+    private void constructMod(final FMLConstructModEvent event) {
+    	
+    }
+    
+    private void doClientStuff(final FMLClientSetupEvent event) {
 
+    }
+	
+	private void doServerStuff(final FMLDedicatedServerSetupEvent event) {
+
+	}
+	
+	private void doCommonStuff(final FMLCommonSetupEvent event) {
+
+    }
+    
+    /**
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -87,5 +105,5 @@ public class Lightsabers
     public void serverStart(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandForce());
-    }
+    }**/
 }

@@ -20,15 +20,6 @@ build
 # other
 eclipse
 run
-saves/
-config/
-options.txt
-usercache.json
-usernamecache.json
-logs/
-crash-reports/
-*.launch
-libs/
 
-# Minecraft
-minecraft
+# Files from Forge MDK
+forge*changelog.txt
