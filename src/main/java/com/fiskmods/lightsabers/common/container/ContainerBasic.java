@@ -1,26 +1,29 @@
 package com.fiskmods.lightsabers.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ContainerBasic<T extends TileEntity> extends Container
+public abstract class ContainerBasic<T extends BlockEntity> extends AbstractContainerMenu
 {
     protected final T tileentity;
-    protected final World worldObj;
+    protected final Level worldObj;
 
-    public ContainerBasic(T tile)
+    public ContainerBasic(T tile, MenuType<?> menuType, int containerId)
     {
+    	super(menuType, containerId);
+    	
         tileentity = tile;
-        worldObj = tile != null ? tile.getWorldObj() : null;
+        worldObj = tile != null ? tile.getLevel() : null;
     }
 
-    public void addPlayerInventory(InventoryPlayer inventoryPlayer, int yOffset)
+    public void addPlayerInventory(Inventory inventoryPlayer, int yOffset)
     {
         int i;
         int j;
@@ -29,44 +32,44 @@ public class ContainerBasic<T extends TileEntity> extends Container
         {
             for (j = 0; j < 9; ++j)
             {
-                addSlotToContainer(makeInventorySlot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + yOffset + i * 18));
+                this.addSlot(makeInventorySlot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + yOffset + i * 18));
             }
         }
-
+        
         for (i = 0; i < 9; ++i)
         {
-            addSlotToContainer(makeInventorySlot(inventoryPlayer, i, 8 + i * 18, 142 + yOffset));
+        	this.addSlot(makeInventorySlot(inventoryPlayer, i, 8 + i * 18, 142 + yOffset));
         }
     }
 
-    public Slot makeInventorySlot(InventoryPlayer inventoryPlayer, int index, int x, int y)
+    public Slot makeInventorySlot(Inventory inventoryPlayer, int index, int x, int y)
     {
         return new Slot(inventoryPlayer, index, x, y);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player)
+    public boolean stillValid(Player player)
     {
         if (tileentity != null)
         {
-            if (tileentity instanceof IInventory)
+            if (tileentity instanceof Container)
             {
-                return ((IInventory) tileentity).isUseableByPlayer(player);
+                return ((Container)tileentity).stillValid(player);
             }
 
-            return player.getDistanceSq(tileentity.xCoord + 0.5D, tileentity.yCoord + 0.5D, tileentity.zCoord + 0.5D) <= 64.0D;
+            return player.distanceToSqr(tileentity.getBlockPos().getX() + 0.5D, tileentity.getBlockPos().getY() + 0.5D, tileentity.getBlockPos().getZ() + 0.5D) <= 64.0D;
         }
 
         return true;
     }
-
+    
     @Override
-    protected boolean mergeItemStack(ItemStack stackToMove, int fromId, int toId, boolean descending)
+    protected boolean moveItemStackTo(ItemStack stackToMove, int fromId, int toId, boolean descending)
     {
-        return mergeItemStack(stackToMove, fromId, toId, descending, false);
+        return moveItemStackTo(stackToMove, fromId, toId, descending, false);
     }
-
-    protected boolean mergeItemStack(ItemStack stackToMove, int fromId, int toId, boolean descending, boolean check)
+    
+    protected boolean moveItemStackTo(ItemStack stackToMove, int fromId, int toId, boolean descending, boolean check)
     {
         boolean success = false;
         int id = fromId;
@@ -81,28 +84,28 @@ public class ContainerBasic<T extends TileEntity> extends Container
 
         if (stackToMove.isStackable())
         {
-            while (stackToMove.stackSize > 0 && (!descending && id < toId || descending && id >= fromId))
+            while (stackToMove.getCount() > 0 && (!descending && id < toId || descending && id >= fromId))
             {
-                slot = (Slot) inventorySlots.get(id);
-                dstStack = slot.getStack();
+                slot = (Slot) this.slots.get(id);
+                dstStack = slot.getItem();
 
-                if ((!check || slot.isItemValid(stackToMove)) && dstStack != null && dstStack.getItem() == stackToMove.getItem() && (!stackToMove.getHasSubtypes() || stackToMove.getItemDamage() == dstStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(stackToMove, dstStack))
+                if ((!check || slot.mayPlace(stackToMove)) && dstStack != null && dstStack.getItem() == stackToMove.getItem() && (/*!stackToMove.getHasSubtypes() || */stackToMove.getDamageValue() == dstStack.getDamageValue()) && ItemStack.isSameItemSameTags(stackToMove, dstStack))
                 {
-                    int maxStackSize = Math.min(slot.inventory.getInventoryStackLimit(), Math.min(dstStack.getMaxStackSize(), slot.getSlotStackLimit()));
-                    int combinedStackSize = dstStack.stackSize + stackToMove.stackSize;
+                    int maxStackSize = Math.min(slot.container.getMaxStackSize(), Math.min(dstStack.getMaxStackSize(), slot.getMaxStackSize()));
+                    int combinedStackSize = dstStack.getCount() + stackToMove.getCount();
 
                     if (combinedStackSize <= maxStackSize)
                     {
-                        stackToMove.stackSize = 0;
-                        dstStack.stackSize = combinedStackSize;
-                        slot.onSlotChanged();
+                        stackToMove.setCount(0);
+                        dstStack.setCount(combinedStackSize);
+                        slot.setChanged();
                         success = true;
                     }
-                    else if (dstStack.stackSize < maxStackSize)
+                    else if (dstStack.getCount() < maxStackSize)
                     {
-                        stackToMove.stackSize -= maxStackSize - dstStack.stackSize;
-                        dstStack.stackSize = maxStackSize;
-                        slot.onSlotChanged();
+                        stackToMove.shrink(maxStackSize - dstStack.getCount());
+                        dstStack.setCount(maxStackSize);
+                        slot.setChanged();
                         success = true;
                     }
                 }
@@ -118,7 +121,7 @@ public class ContainerBasic<T extends TileEntity> extends Container
             }
         }
 
-        if (stackToMove.stackSize > 0)
+        if (stackToMove.getCount() > 0)
         {
             if (descending)
             {
@@ -131,19 +134,19 @@ public class ContainerBasic<T extends TileEntity> extends Container
 
             while (!descending && id < toId || descending && id >= fromId)
             {
-                slot = (Slot) inventorySlots.get(id);
-                dstStack = slot.getStack();
+                slot = (Slot) this.slots.get(id);
+                dstStack = slot.getItem();
 
-                if ((!check || slot.isItemValid(stackToMove)) && dstStack == null)
+                if ((!check || slot.mayPlace(stackToMove)) && dstStack == null)
                 {
-                    int maxStackSize = Math.min(slot.inventory.getInventoryStackLimit(), Math.min(stackToMove.getMaxStackSize(), slot.getSlotStackLimit()));
+                    int maxStackSize = Math.min(slot.container.getMaxStackSize(), Math.min(stackToMove.getMaxStackSize(), slot.getMaxStackSize()));
                     ItemStack itemstack1 = stackToMove.copy();
-                    itemstack1.stackSize = Math.min(maxStackSize, itemstack1.stackSize);
-                    slot.putStack(itemstack1);
+                    itemstack1.setCount(Math.min(maxStackSize, itemstack1.getCount()));
+                    slot.set(itemstack1);
 
-                    maxStackSize = Math.min(slot.inventory.getInventoryStackLimit(), Math.min(slot.getStack().getMaxStackSize(), slot.getSlotStackLimit()));
-                    stackToMove.stackSize = Math.max(stackToMove.stackSize - itemstack1.stackSize, 0);
-                    slot.onSlotChanged();
+                    maxStackSize = Math.min(slot.container.getMaxStackSize(), Math.min(slot.getItem().getMaxStackSize(), slot.getMaxStackSize()));
+                    stackToMove.setCount(Math.max(stackToMove.getCount() - itemstack1.getCount(), 0));
+                    slot.setChanged();
                     success = true;
                     break;
                 }

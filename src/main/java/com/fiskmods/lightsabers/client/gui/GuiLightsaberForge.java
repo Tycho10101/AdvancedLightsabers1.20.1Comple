@@ -15,29 +15,34 @@ import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
 import com.fiskmods.lightsabers.helper.ALRenderHelper;
 import com.google.common.collect.Iterables;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class GuiLightsaberForge extends GuiContainer
+@OnlyIn(Dist.CLIENT)
+public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsaberForge>
 {
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation(Lightsabers.MODID, "textures/gui/container/lightsaber_forge.png");
-
-    public GuiLightsaberForge(InventoryPlayer inventoryPlayer, TileEntityLightsaberForge tile)
+    
+    public GuiLightsaberForge(ContainerLightsaberForge menu, Inventory inventoryPlayer, Component component /*, TileEntityLightsaberForge tile */)
     {
-        super(new ContainerLightsaberForge(inventoryPlayer, tile));
-        ySize = 196;
+        super(menu, inventoryPlayer, component);
+        this.height = 196;
     }
-
+    
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics p_281635_, int mouseX, int mouseY)
     {
         String s = I18n.format("gui.lightsaber_forge");
         fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
@@ -69,10 +74,10 @@ public class GuiLightsaberForge extends GuiContainer
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics p_283065_, float partialTicks, int mouseX, int mouseY)
     {
         GL11.glColor4f(1, 1, 1, 1);
-        mc.getTextureManager().bindTexture(GUI_TEXTURES);
+        this.minecraft.getTextureManager().bindForSetup(GUI_TEXTURES);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
         ContainerLightsaberForge container = (ContainerLightsaberForge) inventorySlots;
