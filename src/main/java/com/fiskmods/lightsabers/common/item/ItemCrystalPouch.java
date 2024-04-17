@@ -1,32 +1,18 @@
 package com.fiskmods.lightsabers.common.item;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import com.fiskmods.lightsabers.ALConstants;
 import com.fiskmods.lightsabers.Lightsabers;
-import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;=
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Constants.NBT;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public class ItemCrystalPouch extends Item
 {
