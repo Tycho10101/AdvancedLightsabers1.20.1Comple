@@ -1,12 +1,48 @@
 package com.fiskmods.lightsabers.common.item;
 
-import com.fiskmods.lightsabers.common.lightsaber.PartType;
 
-import net.minecraft.item.Item;
+import com.fiskmods.lightsabers.Lightsabers;
+import com.fiskmods.lightsabers.common.item.parts.LightsaberBody;
+import com.fiskmods.lightsabers.common.item.parts.LightsaberEmiter;
+import com.fiskmods.lightsabers.common.item.parts.LightsaberPommel;
+import com.fiskmods.lightsabers.common.item.parts.LightsaberSwitch;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems
 {
-    public static Item circuitry;
+
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Lightsabers.MODID);
+
+    public final RegistryObject<Item>
+            furyPommel = registerPommel("fury_pommel",8.3F),
+            furyBody = registerBody("fury_body", 16),
+            furySwitch = registerSwitch("fury_switch",5.6F),
+            furyEmitter = registerEmitter("fury_emitter", 19);
+
+    private static RegistryObject<Item> registerPommel(String name, float height)
+    {
+        return ITEMS.register(name, () -> new LightsaberPommel(height));
+    }
+
+    private static RegistryObject<Item> registerBody(String name, float height)
+    {
+        return ITEMS.register(name, () -> new LightsaberBody(height));
+    }
+
+    private static RegistryObject<Item> registerSwitch(String name, float height)
+    {
+        return ITEMS.register(name, () -> new LightsaberSwitch(height));
+    }
+
+    private static RegistryObject<Item> registerEmitter(String name, float height)
+    {
+        return ITEMS.register(name, () -> new LightsaberEmiter(height));
+    }
+
+   /* public static Item circuitry;
     public static Item focusingCrystal;
     public static Item crystalPouch;
 
@@ -44,5 +80,5 @@ public class ModItems
 
         ItemRegistry.registerItem(lightsaber, "lightsaber");
         ItemRegistry.registerItem(doubleLightsaber, "double_lightsaber");
-    }
+    }*/
 }
