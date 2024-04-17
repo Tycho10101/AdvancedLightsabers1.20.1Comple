@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -45,11 +46,11 @@ public class ItemLightsaber extends ItemLightsaberBase implements IBattlegearWea
     @Override
     public EnumRarity getRarity(ItemStack itemstack)
     {
-        if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey(ALConstants.TAG_LIGHTSABER_SPECIAL, NBT.TAG_STRING))
+        if (itemstack.hasTag() && itemstack.getTag().hasKey(ALConstants.TAG_LIGHTSABER_SPECIAL, NBT.TAG_STRING))
         {
             return EnumRarity.rare;
         }
-        
+
         return EnumRarity.common;
     }
     

@@ -2,6 +2,7 @@ package com.fiskmods.lightsabers.common.item;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import com.fiskmods.lightsabers.ALConstants;
 import com.fiskmods.lightsabers.Lightsabers;
@@ -16,9 +17,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class ItemCrystalPouch extends Item
@@ -30,29 +37,29 @@ public class ItemCrystalPouch extends Item
     
     public ItemCrystalPouch()
     {
-        super();
-        setMaxStackSize(1);
-        setHasSubtypes(true);
+        super(new Item.Properties().stacksTo(1));
+        ..setMaxStackSize(1);
+        //setHasSubtypes(true);
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player)
+    public ItemStack onItemRightClick(ItemStack itemstack, Level world, Player player)
     {
-        if (!itemstack.hasTagCompound())
+        if (!itemstack.hasTag())
         {
-            itemstack.setTagCompound(new NBTTagCompound());
+            itemstack.setTag(new CompoundTag());
         }
 
-        player.openGui(Lightsabers.instance, 3, world, player.inventory.currentItem, 0, 0);
+        player.openGui(Lightsabers.getInstance(), 3, world, player.getInventory().currentItem, 0, 0);
         return itemstack;
     }
     
     @Override
-    public void onUpdate(ItemStack itemstack, World world, Entity entity, int slot, boolean inHand)
+    public void onUpdate(ItemStack itemstack, Level world, Entity entity, int slot, boolean inHand)
     {
         if (!world.isRemote)
         {
-            if (!itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey(ALConstants.TAG_POUCH_UUID, NBT.TAG_STRING))
+            if (!itemstack.hasTag() || !itemstack.getTag().hasUUID(ALConstants.TAG_POUCH_UUID))//.hasKey(ALConstants.TAG_POUCH_UUID, NBT.TAG_STRING))
             {
                 getUUID(itemstack); // Assign UUID
             }
@@ -60,7 +67,7 @@ public class ItemCrystalPouch extends Item
     }
     
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list)
+    public void getSubItems(Item item, CreativeModeTab tab, List list)
     {
         for (CrystalColor color : CrystalColor.values())
         {
@@ -76,7 +83,7 @@ public class ItemCrystalPouch extends Item
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean advanced)
+    public void addInformation(ItemStack itemstack, Player player, List list, boolean advanced)
     {
         list.add(ItemCrystal.get(itemstack).getLocalizedName());
     }
@@ -122,19 +129,19 @@ public class ItemCrystalPouch extends Item
             return NULL_UUID;
         }
         
-        if (!stack.hasTagCompound())
+        if (!stack.hasTag())
         {
-            stack.setTagCompound(new NBTTagCompound());
+            stack.setTag(new CompoundTag());
         }
         
-        if (!stack.getTagCompound().hasKey(ALConstants.TAG_POUCH_UUID, NBT.TAG_STRING))
+        if (!stack.getTag().hasKey(ALConstants.TAG_POUCH_UUID, CompoundTag.TAG_STRING))
         {
             UUID uuid = UUID.randomUUID();
-            stack.getTagCompound().setString(ALConstants.TAG_POUCH_UUID, uuid.toString());
+            stack.getTag().putString(ALConstants.TAG_POUCH_UUID, uuid.toString());
             
             return uuid;
         }
         
-        return UUID.fromString(stack.getTagCompound().getString(ALConstants.TAG_POUCH_UUID));
+        return UUID.fromString(stack.getTag().getString(ALConstants.TAG_POUCH_UUID));
     }
 }
