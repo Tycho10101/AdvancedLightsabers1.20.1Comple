@@ -14,7 +14,7 @@ public class ALMenuType {
 	public static final DeferredRegister<MenuType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Lightsabers.MODID);
 	
 	// Haven't figured out the meaning of parameter FeatureFlags yet
-	public static final RegistryObject<MenuType<?>> LIGHTSABER_FORGE = BLOCK_ENTITIES.register("lightsaber_forge", () -> new MenuType<>(ContainerLightsaberForge::new, FeatureFlags.VANILLA_SET));
+	public static final RegistryObject<MenuType<ContainerLightsaberForge>> LIGHTSABER_FORGE = BLOCK_ENTITIES.register("lightsaber_forge", () -> new MenuType<>(ContainerLightsaberForge::new, FeatureFlags.VANILLA_SET));
 	
 	static {
 		MenuScreens.register(LIGHTSABER_FORGE.get(), GuiLightsaberForge::new);

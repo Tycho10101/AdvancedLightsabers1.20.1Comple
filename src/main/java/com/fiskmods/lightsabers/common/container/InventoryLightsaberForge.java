@@ -1,22 +1,24 @@
 package com.fiskmods.lightsabers.common.container;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.fiskmods.lightsabers.common.item.ILightsaberComponent;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public class InventoryLightsaberForge implements IInventory
+public class InventoryLightsaberForge implements Container
 {
-    private ItemStack[] inventory = new ItemStack[8];
-    private Container eventHandler;
+    private List<ItemStack> inventory = Arrays.asList(new ItemStack[8]);
+    private ContainerLightsaberForge eventHandler;
 
     public LightsaberData result;
 
-    public InventoryLightsaberForge(Container container)
+    public InventoryLightsaberForge(ContainerLightsaberForge container)
     {
         eventHandler = container;
     }
@@ -25,9 +27,9 @@ public class InventoryLightsaberForge implements IInventory
     {
         long hash = 0;
         
-        for (int slot = 0; slot < getSizeInventory(); ++slot)
+        for (int slot = 0; slot < getContainerSize(); ++slot)
         {
-            ItemStack stack = getStackInSlot(slot);
+            ItemStack stack = getItem(slot);
             
             if (stack != null && stack.getItem() instanceof ILightsaberComponent)
             {
@@ -46,7 +48,7 @@ public class InventoryLightsaberForge implements IInventory
                 continue;
             }
             
-            if (slot != 5 || stack == null || stack.getItem() != Items.fish)
+            if (slot != 5 || stack == null || !stack.is(ItemTags.FISHES))
             {
                 return null;
             }
@@ -56,36 +58,23 @@ public class InventoryLightsaberForge implements IInventory
     }
 
     @Override
-    public int getSizeInventory()
+    public int getContainerSize()
     {
-        return inventory.length;
+        return this.inventory.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot)
+    public ItemStack getItem(int slot)
     {
-        return slot >= getSizeInventory() ? null : inventory[slot];
+        return slot >= getContainerSize() ? null : inventory.get(slot);
     }
-
-    @Override
-    public String getInventoryName()
-    {
-        return "container.crafting";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return false;
-    }
-
-    @Override
+    
     public ItemStack getStackInSlotOnClosing(int slot)
     {
-        if (inventory[slot] != null)
+        if (inventory.get(slot) != null)
         {
-            ItemStack itemstack = inventory[slot];
-            inventory[slot] = null;
+            ItemStack itemstack = inventory.get(slot);
+            inventory.set(slot, null);
             return itemstack;
         }
         else
@@ -93,32 +82,32 @@ public class InventoryLightsaberForge implements IInventory
             return null;
         }
     }
-
+    
     @Override
-    public ItemStack decrStackSize(int slot, int amount)
+    public ItemStack removeItem(int slot, int amount)
     {
-        if (inventory[slot] != null)
+        if (inventory.get(slot) != null)
         {
             ItemStack itemstack;
 
-            if (inventory[slot].stackSize <= amount)
+            if (inventory.get(slot).getCount() <= amount)
             {
-                itemstack = inventory[slot];
-                inventory[slot] = null;
-                eventHandler.onCraftMatrixChanged(this);
+                itemstack = inventory.get(slot);
+                inventory.set(slot, null);
+                eventHandler.slotsChanged(this);
 
                 return itemstack;
             }
             else
             {
-                itemstack = inventory[slot].splitStack(amount);
+                itemstack = inventory.get(slot).split(amount);
 
-                if (inventory[slot].stackSize == 0)
+                if (inventory.get(slot).getCount() == 0)
                 {
-                    inventory[slot] = null;
+                	inventory.set(slot, null);
                 }
 
-                eventHandler.onCraftMatrixChanged(this);
+                eventHandler.slotsChanged(this);
 
                 return itemstack;
             }
@@ -130,42 +119,34 @@ public class InventoryLightsaberForge implements IInventory
     }
 
     @Override
-    public void setInventorySlotContents(int slot, ItemStack itemstack)
+    public void setItem(int slot, ItemStack itemstack)
     {
-        inventory[slot] = itemstack;
-        eventHandler.onCraftMatrixChanged(this);
+        inventory.set(slot, itemstack);
+        eventHandler.slotsChanged(this);
     }
 
     @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public void markDirty()
+    public void setChanged()
     {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player)
+    public boolean stillValid(Player player)
     {
         return true;
     }
 
-    @Override
-    public void openInventory()
-    {
-    }
+	@Override
+	public void clearContent() {
+	}
 
-    @Override
-    public void closeInventory()
-    {
-    }
+	@Override
+	public boolean isEmpty() {
+		return false;
+	}
 
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemstack)
-    {
-        return true;
-    }
+	@Override
+	public ItemStack removeItemNoUpdate(int p_18951_) {
+		return null;
+	}
 }

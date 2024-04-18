@@ -2,10 +2,9 @@ package com.fiskmods.lightsabers.common.container;
 
 import com.fiskmods.lightsabers.ALConstants;
 import com.fiskmods.lightsabers.common.item.ILightsaberComponent;
-import com.fiskmods.lightsabers.common.item.ItemFocusingCrystal;
-import com.fiskmods.lightsabers.common.item.ItemLightsaberBase;
 import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,8 +14,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsaberForge>
 {
@@ -41,26 +39,46 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
         
         this.addSlot(new Output(0, 136, 87));
         addPlayerInventory(inventoryPlayer, 30);
-        onCraftMatrixChanged(craftMatrix);
+        slotsChanged(craftMatrix);
     }
     
-    @Override
+    static ItemStack setActive(ItemStack itemstack, boolean state)
+    {
+        itemstack.getOrCreateTag().putBoolean("active", state);
+        
+        return itemstack;
+    }
+    
+    static ItemStack create()
+    {
+        ItemStack itemstack = new ItemStack(Items.STICK);
+        
+        CompoundTag tag = itemstack.getOrCreateTag();
+        tag.putLong(ALConstants.TAG_LIGHTSABER, 0);
+        
+        return itemstack;
+    }
+    
+	@Override
     public void slotsChanged(Container inventory)
     {
         craftMatrix.result = craftMatrix.updateResult();
-        ItemStack result = craftMatrix.result == null ? null : ItemLightsaberBase.setActive(craftMatrix.result.create(), true);
+        ItemStack result = craftMatrix.result == null ? null : setActive(create(), true);
+        														//ItemLightsaberBase.setActive(craftMatrix.result.create(), true);
         
         if (result != null)
         {
-            ItemStack itemstack = craftMatrix.getStackInSlot(5);
+            ItemStack itemstack = craftMatrix.getItem(5);
             
             if (itemstack != null && itemstack.is(ItemTags.FISHES))
             {
-                result.getTagCompound().setString(ALConstants.TAG_LIGHTSABER_SPECIAL, Item.itemRegistry.getNameForObject(itemstack.getItem()));
+            	itemstack.getItem().getDescriptionId();
+            	
+                result.getTag().putString(ALConstants.TAG_LIGHTSABER_SPECIAL, ForgeRegistries.ITEMS.getKey(itemstack.getItem()).toString());
             }
         }
         
-        craftResult.setInventorySlotContents(0, result);
+        craftResult.setItem(0, result);
     }
     
     @Override
@@ -70,13 +88,13 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
 
         if (!worldObj.isClientSide)
         {
-            for (int i = 0; i < craftMatrix.getSizeInventory(); ++i)
+            for (int i = 0; i < craftMatrix.getContainerSize(); ++i)
             {
                 ItemStack itemstack = craftMatrix.getStackInSlotOnClosing(i);
 
                 if (itemstack != null)
                 {
-                    player.dropPlayerItemWithRandomChoice(itemstack, false);
+                	player.drop(itemstack, false);
                 }
             }
         }
@@ -101,7 +119,8 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
                     return null;
                 }
                 
-                slot.onSlotChange(itemstack1, itemstack);
+                //slot.onSlotChange(itemstack1, itemstack);
+                slot.onQuickCraft(itemstack1, itemstack);
             }
             else if (slotId > OUTPUT)
             {
@@ -157,16 +176,16 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
                 return null;
             }
 
-            slot.onPickupFromSlot(player, itemstack1);
+            slot.onTake(player, itemstack1);
         }
 
         return itemstack;
     }
 
     @Override
-    public boolean func_94530_a(ItemStack itemstack, Slot slot)
+    public boolean canTakeItemForPickAll(ItemStack itemstack, Slot slot)
     {
-        return slot.container != craftResult && super.func_94530_a(itemstack, slot);
+        return slot.container != craftResult && super.canTakeItemForPickAll(itemstack, slot);
     }
     
     private class Input extends Slot
@@ -174,6 +193,8 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
         public Input(int id, int x, int y)
         {
             super(craftMatrix, id, x, y);
+            
+            this.getNoItemIcon();
         }
 
         @Override
@@ -208,12 +229,14 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
             return true;
         }
         
+        /**
         @Override
         @OnlyIn(Dist.CLIENT)
         public IIcon getBackgroundIconIndex()
         {
             return getSlotIndex() == 6 || getSlotIndex() == 7 ? ItemFocusingCrystal.outlineIcon : null;
         }
+        **/
     }
     
     private class Output extends Slot
@@ -224,7 +247,7 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
         }
 
         @Override
-        public boolean canTakeStack(Player player)
+        public boolean mayPickup(Player player)
         {
             return craftMatrix.result != null && !craftMatrix.result.isTooShort();
         }
@@ -236,22 +259,24 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
         }
 
         @Override
-        public void onPickupFromSlot(Player player, ItemStack itemstack)
+        public void onTake(Player player, ItemStack itemstack)
         {
-            FMLCommonHandler.instance().firePlayerCraftingEvent(player, itemstack, craftMatrix);
-            onCrafting(itemstack);
+        	net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(player, itemstack, this.container);
+        	
+        	itemstack.onCraftedBy(worldObj, player, 1);
+            //onCrafting(itemstack);
 
-            for (int i = 0; i < craftMatrix.getSizeInventory(); ++i)
+            for (int i = 0; i < craftMatrix.getContainerSize(); ++i)
             {
-                ItemStack itemstack1 = craftMatrix.getStackInSlot(i);
+                ItemStack itemstack1 = craftMatrix.getItem(i);
 
                 if (itemstack1 != null)
                 {
-                    craftMatrix.decrStackSize(i, 1);
+                    craftMatrix.removeItem(i, 1);
                 }
             }
             
-            ItemLightsaberBase.setActive(itemstack, false);
+            //ItemLightsaberBase.setActive(itemstack, false);
         }
     }
 }

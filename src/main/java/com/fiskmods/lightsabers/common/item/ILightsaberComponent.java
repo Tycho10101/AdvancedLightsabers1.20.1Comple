@@ -2,8 +2,8 @@ package com.fiskmods.lightsabers.common.item;
 
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Implement this on your {@link Item} to be used in a Lightsaber Forge.
