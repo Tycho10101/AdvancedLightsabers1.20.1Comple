@@ -2,7 +2,7 @@ package com.fiskmods.lightsabers.common.item;
 
 import com.fiskmods.lightsabers.ALConstants;
 import com.fiskmods.lightsabers.Lightsabers;
-import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;=
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ public class ItemCrystalPouch extends Item
     public ItemCrystalPouch()
     {
         super(new Item.Properties().stacksTo(1));
-        ..setMaxStackSize(1);
+        .setMaxStackSize(1);
         //setHasSubtypes(true);
     }
 

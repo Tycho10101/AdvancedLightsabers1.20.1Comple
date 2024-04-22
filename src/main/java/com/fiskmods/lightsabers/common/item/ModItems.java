@@ -16,12 +16,19 @@ public class ModItems
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Lightsabers.MODID);
 
-    public final RegistryObject<Item>
+
+    public static final RegistryObject<Item>
             furyPommel = registerPommel("fury_pommel",8.3F),
             furyBody = registerBody("fury_body", 16),
             furySwitch = registerSwitch("fury_switch",5.6F),
-            furyEmitter = registerEmitter("fury_emitter", 19);
+            furyEmitter = registerEmitter("fury_emitter", 19F);
+    public static final RegistryObject<Item>
+        testEmitter = registerEmitter("test_emitter", .721F*16),
+        testSwitch = registerSwitch("test_switch", .729F *16),
+        testGrip = registerBody("test_grip", 1.89F * 16),
+        testPommel = registerPommel("test_pommel", .446f *16);
 
+    private static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     private static RegistryObject<Item> registerPommel(String name, float height)
     {
         return ITEMS.register(name, () -> new LightsaberPommel(height));

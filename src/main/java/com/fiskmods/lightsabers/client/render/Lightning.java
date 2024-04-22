@@ -1,11 +1,13 @@
 package com.fiskmods.lightsabers.client.render;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
 
 public class Lightning
 {
@@ -30,7 +32,7 @@ public class Lightning
         lightningColor = color;
     }
 
-    public void onUpdate(World world)
+    public void onUpdate(Level world)
     {
 //        if (parent == null)
 //        {

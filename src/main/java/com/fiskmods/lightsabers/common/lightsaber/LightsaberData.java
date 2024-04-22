@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class LightsaberData extends AbstractLightsaberData implements ISerializableObject<LightsaberData>
