@@ -36,8 +36,8 @@ public class Lightsabers
 
     public static final RegistryObject<CreativeModeTab> lightsaber_tab = TABS.register(MODID, () -> CreativeModeTab.builder()
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
-            .displayItems((params, output) -> {items.get().forEach(output::accept);
-
+            .displayItems((params, output) -> {
+                items.get().forEach(output::accept);
                 ItemStack itemStack = new ItemStack(LightsaberItem::new);
                 itemStack.setTag(new CompoundTag());
                 itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().getNamespace());

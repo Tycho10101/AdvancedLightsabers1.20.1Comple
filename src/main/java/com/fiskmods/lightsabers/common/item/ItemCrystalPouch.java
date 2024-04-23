@@ -24,7 +24,7 @@ public class ItemCrystalPouch extends Item
     public ItemCrystalPouch()
     {
         super(new Item.Properties().stacksTo(1));
-        .setMaxStackSize(1);
+
         //setHasSubtypes(true);
     }
 
