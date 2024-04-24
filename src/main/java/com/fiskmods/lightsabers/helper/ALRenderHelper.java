@@ -1,12 +1,5 @@
 package com.fiskmods.lightsabers.helper;
 
-import java.awt.Color;
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.fiskmods.lightsabers.ALConstants;
 import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.client.model.ModelLightsaberBlade;
@@ -22,7 +15,6 @@ import com.fiskmods.lightsabers.common.item.ItemLightsaberBase;
 import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.model.ModelBase;
@@ -42,6 +34,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.Constants.NBT;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.awt.*;
+import java.nio.FloatBuffer;
 
 public class ALRenderHelper
 {

@@ -38,7 +38,7 @@ public class Lightsabers
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
-                ItemStack itemStack = new ItemStack(LightsaberItem::new);
+                ItemStack itemStack = new ItemStack(ModItems.lightsaber.get());
                 itemStack.setTag(new CompoundTag());
                 itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().getNamespace());
                 itemStack.getTag().putString("grip", ModItems.testGrip.getId().getNamespace());

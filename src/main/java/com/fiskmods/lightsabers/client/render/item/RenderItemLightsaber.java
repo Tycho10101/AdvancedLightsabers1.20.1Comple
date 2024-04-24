@@ -1,21 +1,59 @@
 package com.fiskmods.lightsabers.client.render.item;
 
-import org.lwjgl.opengl.GL11;
-
-import com.fiskmods.lightsabers.common.hilt.HiltManager;
+import com.fiskmods.lightsabers.common.item.LightsaberPart;
 import com.fiskmods.lightsabers.common.lightsaber.FocusingCrystal;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
+import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
 import com.fiskmods.lightsabers.helper.ALRenderHelper;
 import com.fiskmods.lightsabers.helper.ModelHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-
-public class RenderItemLightsaber implements IItemRenderer
+public class RenderItemLightsaber extends ItemInHandRenderer// implements IItemRenderer
 {
+    private ItemRenderer renderItem;
+
+    public RenderItemLightsaber(Minecraft instance, EntityRenderDispatcher dispatcher, ItemRenderer itemRenderer) {
+        super(instance, dispatcher, itemRenderer);
+    }
+}
+@Override
+public void renderItem(LivingEntity p_270072_, ItemStack p_270793_, ItemDisplayContext p_270837_, boolean p_270203_, PoseStack p_270974_, MultiBufferSource p_270686_, int p_270103_) {
+    matrixStack.pushPose();
+        this.renderItem = Minecraft.getInstance().getItemRenderer();
+        CompoundTag tag = itemStack.getTag();
+        LightsaberType type = LightsaberType.valueOf(tag.getString("type"));
+        switch(type)
+        {
+            case SINGLE -> {
+                renderSingle(itemStack);
+            }
+            case DOUBLE -> {}
+        }
+
+        matrixStack.popPose();
+    }
+
+    public void renderSingle(ItemStack itemStack)
+    {
+        CompoundTag tag = itemStack.getTag();
+        LightsaberPart lightsaberSwitch = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("switch")));
+        LightsaberPart lightsaberPommel = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("pommel")));
+        LightsaberPart lightsaberGrip = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("grip")));
+        LightsaberPart lightsaberEmitter = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("emitter")));
+
+    }
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
@@ -34,7 +72,7 @@ public class RenderItemLightsaber implements IItemRenderer
         LightsaberData data = LightsaberData.get(stack);
         GL11.glPushMatrix();
         
-        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+        if (type ==  ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             GL11.glRotatef(-100, 0, 1, 0);
             GL11.glRotatef(-150, 1, 0, 0);
