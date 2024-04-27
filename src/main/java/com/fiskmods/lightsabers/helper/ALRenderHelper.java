@@ -1,45 +1,13 @@
 package com.fiskmods.lightsabers.helper;
 
-import com.fiskmods.lightsabers.ALConstants;
-import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.client.model.ModelLightsaberBlade;
-import com.fiskmods.lightsabers.client.render.Lightning;
 import com.fiskmods.lightsabers.client.render.hilt.HiltRenderer;
-import com.fiskmods.lightsabers.common.config.ModConfig;
-import com.fiskmods.lightsabers.common.data.effect.Effect;
-import com.fiskmods.lightsabers.common.data.effect.StatusEffect;
-import com.fiskmods.lightsabers.common.event.ClientEventHandler;
-import com.fiskmods.lightsabers.common.hilt.Hilt.Part;
-import com.fiskmods.lightsabers.common.item.ItemDoubleLightsaber;
-import com.fiskmods.lightsabers.common.item.ItemLightsaberBase;
-import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.Constants.NBT;
-import org.lwjgl.BufferUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import java.awt.*;
-import java.nio.FloatBuffer;
 
 public class ALRenderHelper
 {

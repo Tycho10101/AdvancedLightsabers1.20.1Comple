@@ -1,59 +1,73 @@
 package com.fiskmods.lightsabers.client.render.item;
 
 import com.fiskmods.lightsabers.common.item.LightsaberPart;
-import com.fiskmods.lightsabers.common.lightsaber.FocusingCrystal;
-import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
-import com.fiskmods.lightsabers.helper.ALRenderHelper;
-import com.fiskmods.lightsabers.helper.ModelHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.opengl.GL11;
 
-public class RenderItemLightsaber extends ItemInHandRenderer// implements IItemRenderer
+public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
     private ItemRenderer renderItem;
-
-    public RenderItemLightsaber(Minecraft instance, EntityRenderDispatcher dispatcher, ItemRenderer itemRenderer) {
-        super(instance, dispatcher, itemRenderer);
+    public static final RenderItemLightsaber bewlr = new RenderItemLightsaber(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
+    public RenderItemLightsaber(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
+        super(p_172550_, p_172551_);
     }
-}
-@Override
-public void renderItem(LivingEntity p_270072_, ItemStack p_270793_, ItemDisplayContext p_270837_, boolean p_270203_, PoseStack p_270974_, MultiBufferSource p_270686_, int p_270103_) {
-    matrixStack.pushPose();
+
+    @Override
+    public void renderByItem(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int p_108835_) {
+        //super.renderByItem(p_108830_, p_270899_, p_108832_, p_108833_, p_108834_, p_108835_);
+
         this.renderItem = Minecraft.getInstance().getItemRenderer();
         CompoundTag tag = itemStack.getTag();
-        LightsaberType type = LightsaberType.valueOf(tag.getString("type"));
-        switch(type)
+        String type = tag.getString("type");
+
+        if(!type.equals(""))
         {
-            case SINGLE -> {
-                renderSingle(itemStack);
+            LightsaberType typeL = LightsaberType.valueOf(type);
+
+            switch (typeL) {
+                case SINGLE -> renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn);
+
+                case DOUBLE -> {
+                }
             }
-            case DOUBLE -> {}
+
         }
 
+    }
+    private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+    {
+        renderPart(tag.getString("switch"), (byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        renderPart(tag.getString("emitter"), (byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        renderPart(tag.getString("pommel"), (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        renderPart(tag.getString("grip"), (byte) 0,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+    }
+
+    private void renderPart(String name, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+    {
+        matrixStack.pushPose();
+        LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
+
+        BakedModel bm = renderItem.getModel(part.getDefaultInstance(), null, null, 1);
+        renderItem.render(part.getDefaultInstance(), itemDisplayContext, false, matrixStack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY, bm);
+        //matrixStack.translate(0, -lightsaberEmitter.getHeight()/16, 0);
+        matrixStack.translate(0, y*part.getHeight()/16, 0);
         matrixStack.popPose();
     }
-
-    public void renderSingle(ItemStack itemStack)
-    {
-        CompoundTag tag = itemStack.getTag();
-        LightsaberPart lightsaberSwitch = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("switch")));
-        LightsaberPart lightsaberPommel = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("pommel")));
-        LightsaberPart lightsaberGrip = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("grip")));
-        LightsaberPart lightsaberEmitter = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("emitter")));
-
-    }
+}
+    /*
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
@@ -179,3 +193,4 @@ public void renderItem(LivingEntity p_270072_, ItemStack p_270793_, ItemDisplayC
         GL11.glPopMatrix();
     }
 }
+*/

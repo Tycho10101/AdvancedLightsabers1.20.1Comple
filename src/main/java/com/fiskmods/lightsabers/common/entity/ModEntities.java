@@ -1,13 +1,19 @@
 package com.fiskmods.lightsabers.common.entity;
 
 import com.fiskmods.lightsabers.Lightsabers;
+import com.fiskmods.lightsabers.common.item.LightsaberItem;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegistryObject;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import net.minecraft.entity.Entity;
-
-public class ModEntities
-{
-    private static int nextID = -1;
+@Mod.EventBusSubscriber(modid = Lightsabers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ModEntities {
+}
+/*private static int nextID = -1;
     
     public static void register()
     {
@@ -26,3 +32,4 @@ public class ModEntities
         registerEntity(entityClass, name, trackingRange, updateFrequency, sendVelocityUpdates);
     }
 }
+*/

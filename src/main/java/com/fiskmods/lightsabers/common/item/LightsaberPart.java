@@ -1,7 +1,14 @@
 package com.fiskmods.lightsabers.common.item;
 
+import com.fiskmods.lightsabers.client.render.item.RenderItemLightsaber;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 public abstract class LightsaberPart extends Item {
 

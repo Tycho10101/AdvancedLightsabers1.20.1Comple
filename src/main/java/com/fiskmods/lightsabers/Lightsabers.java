@@ -1,7 +1,9 @@
 package com.fiskmods.lightsabers;
 
+import com.fiskmods.lightsabers.client.render.item.RenderItemLightsaber;
 import com.fiskmods.lightsabers.common.item.LightsaberItem;
 import com.fiskmods.lightsabers.common.item.ModItems;
+import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -40,10 +42,11 @@ public class Lightsabers
                 items.get().forEach(output::accept);
                 ItemStack itemStack = new ItemStack(ModItems.lightsaber.get());
                 itemStack.setTag(new CompoundTag());
-                itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().getNamespace());
-                itemStack.getTag().putString("grip", ModItems.testGrip.getId().getNamespace());
-                itemStack.getTag().putString("pommel", ModItems.testPommel.getId().getNamespace());
-                itemStack.getTag().putString("switch", ModItems.testSwitch.getId().getNamespace());
+                itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
+                itemStack.getTag().putString("grip", ModItems.testGrip.getId().toString());
+                itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
+                itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
+                itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
 
                 output.accept(itemStack);
             })
@@ -77,9 +80,8 @@ public class Lightsabers
     
     public Lightsabers() {
     	instance = this;
-        System.out.println("This is a test");
-    	
-    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+       	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     	bus.addListener(this::constructMod);
     	bus.addListener(this::doClientStuff);
     	bus.addListener(this::doServerStuff);
