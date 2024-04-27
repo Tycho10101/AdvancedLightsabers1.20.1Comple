@@ -81,7 +81,6 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
     private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         matrixStack.pushPose();
-        System.out.println("matrix: " + matrixStack.last().pose());
         LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
         height = height - part.getHeight();
         BakedModel bm = renderItem.getModel(part.getDefaultInstance(), null, null, 1);
