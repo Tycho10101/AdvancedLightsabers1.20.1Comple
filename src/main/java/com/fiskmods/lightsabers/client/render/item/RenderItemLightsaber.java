@@ -2,6 +2,7 @@ package com.fiskmods.lightsabers.client.render.item;
 
 import com.fiskmods.lightsabers.common.item.LightsaberPart;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
+import com.fiskmods.lightsabers.common.lightsaber.PartType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -16,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.opengl.GL11;
 
 public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
@@ -38,7 +40,14 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
             LightsaberType typeL = LightsaberType.valueOf(type);
 
             switch (typeL) {
-                case SINGLE -> renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn);
+                case SINGLE -> {
+                    matrixStack.pushPose();
+
+                    matrixStack.translate(0, -(getHeight(tag.getString("grip")) + getHeight(tag.getString("pommel"))
+                            - getTotalHeight(tag) / 2) / 16, 0);
+                    renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn);
+                    matrixStack.popPose();
+                }
 
                 case DOUBLE -> {
                 }
@@ -47,24 +56,39 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
         }
 
     }
-    private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+
+    private float getTotalHeight(CompoundTag tag){
+        return  getHeight(tag.getString("switch")) + getHeight(tag.getString("emitter")) +
+                getHeight(tag.getString("grip"))+ getHeight(tag.getString("pommel"));
+    }
+    private float getHeight(String name)
     {
-        renderPart(tag.getString("switch"), (byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
-        renderPart(tag.getString("emitter"), (byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
-        renderPart(tag.getString("pommel"), (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
-        renderPart(tag.getString("grip"), (byte) 0,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
+        return part.getHeight();
     }
 
-    private void renderPart(String name, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+    private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         matrixStack.pushPose();
-        LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
-
-        BakedModel bm = renderItem.getModel(part.getDefaultInstance(), null, null, 1);
-        renderItem.render(part.getDefaultInstance(), itemDisplayContext, false, matrixStack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY, bm);
-        //matrixStack.translate(0, -lightsaberEmitter.getHeight()/16, 0);
-        matrixStack.translate(0, y*part.getHeight()/16, 0);
+        float height = getTotalHeight(tag);
+        height = renderPart(tag.getString("emitter"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        height = renderPart(tag.getString("switch"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        height = renderPart(tag.getString("grip"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        height = renderPart(tag.getString("pommel"), height,(byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         matrixStack.popPose();
+    }
+
+    private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+    {
+        matrixStack.pushPose();
+        System.out.println("matrix: " + matrixStack.last().pose());
+        LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
+        height = height - part.getHeight();
+        BakedModel bm = renderItem.getModel(part.getDefaultInstance(), null, null, 1);
+        matrixStack.translate(0,y*height,0);
+        renderItem.render(part.getDefaultInstance(), itemDisplayContext, false, matrixStack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY, bm);
+        matrixStack.popPose();
+        return height;
     }
 }
     /*

@@ -23,10 +23,10 @@ public class ModItems
             furySwitch = registerSwitch("fury_switch",5.6F),
             furyEmitter = registerEmitter("fury_emitter", 19F);
     public static final RegistryObject<Item>
-        testEmitter = registerEmitter("test_emitter", .721F*16),
-        testSwitch = registerSwitch("test_switch", .729F *16),
-        testGrip = registerBody("test_grip", 1.89F * 16),
-        testPommel = registerPommel("test_pommel", .446f *16);
+        testEmitter = registerEmitter("test_emitter", .721F),
+        testSwitch = registerSwitch("test_switch", .729F),
+        testGrip = registerBody("test_grip", 1.89F),
+        testPommel = registerPommel("test_pommel", .446f);
 
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     private static RegistryObject<Item> registerPommel(String name, float height)
