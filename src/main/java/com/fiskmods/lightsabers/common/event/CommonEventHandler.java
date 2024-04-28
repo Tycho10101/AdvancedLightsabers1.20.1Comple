@@ -65,7 +65,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 
 public class CommonEventHandler
 {
-    private List<EntityPlayer> playersToSync = new ArrayList<EntityPlayer>();
+    private final List<EntityPlayer> playersToSync = new ArrayList<EntityPlayer>();
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event)
@@ -73,9 +73,8 @@ public class CommonEventHandler
         Entity entity = event.entity;
         World world = entity.worldObj;
 
-        if (entity instanceof EntityPlayer)
+        if (entity instanceof EntityPlayer player)
         {
-            EntityPlayer player = (EntityPlayer) entity;
 
             if (!world.isRemote)
             {
@@ -276,9 +275,8 @@ public class CommonEventHandler
 
                 for (int i = 0; i < list1.size(); ++i)
                 {
-                    if (list1.get(i) instanceof EntityLivingBase)
+                    if (list1.get(i) instanceof EntityLivingBase entity)
                     {
-                        EntityLivingBase entity = (EntityLivingBase) list1.get(i);
                         StatusEffect effect = StatusEffect.get(entity, Effect.DRAIN);
 
                         if (effect != null && effect.casterUUID != null && effect.casterUUID.equals(player.getUniqueID()))
@@ -312,9 +310,8 @@ public class CommonEventHandler
 
                 for (int i = 0; i < list1.size(); ++i)
                 {
-                    if (list1.get(i) instanceof EntityLivingBase)
+                    if (list1.get(i) instanceof EntityLivingBase entity)
                     {
-                        EntityLivingBase entity = (EntityLivingBase) list1.get(i);
                         StatusEffect effect = StatusEffect.get(entity, Effect.CHOKE);
 
                         if (effect != null && effect.casterUUID != null && effect.casterUUID.equals(player.getUniqueID()))
@@ -361,9 +358,8 @@ public class CommonEventHandler
 
             if (power != null)
             {
-                if (power.powerEffect instanceof PowerEffectActive)
+                if (power.powerEffect instanceof PowerEffectActive effect)
                 {
-                    PowerEffectActive effect = (PowerEffectActive) power.powerEffect;
 
                     if (flag && !flag1)
                     {
@@ -499,9 +495,8 @@ public class CommonEventHandler
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onLivingFall(LivingFallEvent event)
     {
-        if (event.entity instanceof EntityPlayer && event.distance > 3)
+        if (event.entity instanceof EntityPlayer player && event.distance > 3)
         {
-            EntityPlayer player = (EntityPlayer) event.entity;
             float force = ALData.FORCE_POWER.get(player);
             
             if (force > 0 && PowerManager.hasPowerUnlocked(player, Power.REBOUND))
@@ -528,14 +523,12 @@ public class CommonEventHandler
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onLivingAttack(LivingAttackEvent event)
     {
-        if (event.source.getEntity() instanceof EntityLivingBase)
+        if (event.source.getEntity() instanceof EntityLivingBase attacker)
         {
-            EntityLivingBase attacker = (EntityLivingBase) event.source.getEntity();
 
             if (StatusEffect.has(attacker, Effect.STUN))
             {
                 event.setCanceled(true);
-                return;
             }
         }
     }
@@ -547,9 +540,8 @@ public class CommonEventHandler
         StatusEffect effectFortify = StatusEffect.get(entity, Effect.FORTIFY);
         StatusEffect effectEnergyResist = StatusEffect.get(entity, Effect.RESIST);
 
-        if (event.source.getEntity() instanceof EntityLivingBase)
+        if (event.source.getEntity() instanceof EntityLivingBase attacker)
         {
-            EntityLivingBase attacker = (EntityLivingBase) event.source.getEntity();
             StatusEffect effectMeditation = StatusEffect.get(attacker, Effect.MEDITATION);
 
             if (effectMeditation != null && FiskServerUtils.isMeleeDamage(event.source))
@@ -574,9 +566,8 @@ public class CommonEventHandler
     {
         ALEntityData.getData(event.entityLiving).activeEffects.clear();
 
-        if (event.entity instanceof EntityPlayer)
+        if (event.entity instanceof EntityPlayer player)
         {
-            EntityPlayer player = (EntityPlayer) event.entity;
 
             if (!player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
             {

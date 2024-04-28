@@ -47,9 +47,8 @@ public class BlockLightsaberStand extends BlockContainer
         {
             TileEntity tileentity = world.getTileEntity(x, y, z);
 
-            if (tileentity instanceof TileEntityLightsaberStand)
+            if (tileentity instanceof TileEntityLightsaberStand tile)
             {
-                TileEntityLightsaberStand tile = (TileEntityLightsaberStand) tileentity;
 
                 if (player.capabilities.isCreativeMode || tile.isOwner(player))
                 {

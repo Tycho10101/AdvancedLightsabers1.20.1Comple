@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderLightsaberForge extends TileEntitySpecialRenderer
 {
-    private ResourceLocation textureLight = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_forge_light.png");
-    private ResourceLocation textureDark = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_forge_dark.png");
-    private ModelLightsaberForge model = new ModelLightsaberForge();
+    private final ResourceLocation textureLight = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_forge_light.png");
+    private final ResourceLocation textureDark = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_forge_dark.png");
+    private final ModelLightsaberForge model = new ModelLightsaberForge();
 
     public void render(TileEntityLightsaberForge tile, double x, double y, double z, float partialTicks)
     {

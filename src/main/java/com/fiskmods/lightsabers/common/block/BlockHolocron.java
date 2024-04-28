@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 public class BlockHolocron extends BlockContainer
 {
-    private String[][] iconNames = {{"jedi_holocron_side", "jedi_holocron_corner", "jedi_holocron_corner_bottom", "jedi_holocron_corner_side"}, {"sith_holocron_bottom", "sith_holocron_side"}};
+    private final String[][] iconNames = {{"jedi_holocron_side", "jedi_holocron_corner", "jedi_holocron_corner_bottom", "jedi_holocron_corner_side"}, {"sith_holocron_bottom", "sith_holocron_side"}};
 
     @SideOnly(Side.CLIENT)
     private IIcon[][] icons;

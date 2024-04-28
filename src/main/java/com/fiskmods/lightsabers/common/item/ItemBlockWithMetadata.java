@@ -8,7 +8,7 @@ import net.minecraft.util.IIcon;
 
 public class ItemBlockWithMetadata extends ItemBlock
 {
-    private Block block;
+    private final Block block;
 
     public ItemBlockWithMetadata(Block block)
     {

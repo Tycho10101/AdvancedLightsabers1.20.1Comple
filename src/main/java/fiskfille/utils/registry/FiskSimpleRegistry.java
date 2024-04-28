@@ -43,7 +43,7 @@ public class FiskSimpleRegistry<T extends FiskRegistryEntry<T>> extends Registry
             throw new IllegalArgumentException(String.format("Duplicate key '%s'", key));
         }
 
-        if (defaultKey != null && key.equals(defaultKey))
+        if (key.equals(defaultKey))
         {
             defaultValue = value;
         }

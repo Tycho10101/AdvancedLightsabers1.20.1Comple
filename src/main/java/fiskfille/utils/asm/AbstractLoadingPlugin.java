@@ -33,6 +33,6 @@ public abstract class AbstractLoadingPlugin implements IFMLLoadingPlugin
     @Override
     public void injectData(Map<String, Object> data)
     {
-        obfuscatedEnv = Boolean.class.cast(data.get("runtimeDeobfuscationEnabled"));
+        obfuscatedEnv = (Boolean) data.get("runtimeDeobfuscationEnabled");
     }
 }

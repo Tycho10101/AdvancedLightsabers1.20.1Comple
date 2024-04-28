@@ -1,6 +1,7 @@
 package com.fiskmods.lightsabers.client.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,10 +38,7 @@ public class GuiALModConfig extends GuiConfig
     {
         List<IConfigElement> list = new ConfigElement(ModConfig.configFile.getCategory(category.toLowerCase(Locale.ROOT))).getChildElements();
 
-        for (IConfigElement configElement : configElements)
-        {
-            list.add(configElement);
-        }
+        Collections.addAll(list, configElements);
 
         return new DummyConfigElement.DummyCategoryElement(name, tooltip_key, list);
     }

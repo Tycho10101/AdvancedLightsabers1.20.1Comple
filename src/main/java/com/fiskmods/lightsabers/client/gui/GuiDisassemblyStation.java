@@ -18,7 +18,7 @@ public class GuiDisassemblyStation extends GuiContainer
 {
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation(Lightsabers.MODID, "textures/gui/container/disassembly_station.png");
 
-    private TileEntityDisassemblyStation tileentity;
+    private final TileEntityDisassemblyStation tileentity;
 
     public GuiDisassemblyStation(InventoryPlayer inventoryPlayer, TileEntityDisassemblyStation tile)
     {

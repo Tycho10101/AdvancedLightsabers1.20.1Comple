@@ -1,9 +1,6 @@
 package com.fiskmods.lightsabers.common.hilt;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
@@ -63,7 +60,7 @@ public abstract class Hilt extends FiskRegistryEntry<Hilt>
 
     public Collection<FocusingCrystal> getFocusingCrystals()
     {
-        return Arrays.asList();
+        return List.of();
     }
 
     public String getUnlocalizedName()
@@ -116,6 +113,6 @@ public abstract class Hilt extends FiskRegistryEntry<Hilt>
     public enum Type
     {
         SINGLE,
-        DOUBLE;
+        DOUBLE
     }
 }

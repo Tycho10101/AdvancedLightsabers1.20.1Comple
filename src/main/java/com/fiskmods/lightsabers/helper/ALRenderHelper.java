@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 public class ALRenderHelper
 {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static final ResourceLocation SHADER_GRAY = new ResourceLocation("shaders/post/desaturate.json");
     public static final ResourceLocation SHADER_BLUE = new ResourceLocation(Lightsabers.MODID, "shaders/post/blue.json");

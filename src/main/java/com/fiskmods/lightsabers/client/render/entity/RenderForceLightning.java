@@ -170,7 +170,7 @@ public class RenderForceLightning extends Render
 
         float opacity = 1;
         float lineWidth = 5 * (firstPerson ? 2 : 1);
-        float innerLineWidth = 1 * (firstPerson ? 2 : 1);
+        float innerLineWidth = (firstPerson ? 2 : 1);
         ALRenderHelper.drawLightningLine(src, dst1, lineWidth, innerLineWidth, color, opacity);
         ALRenderHelper.drawLightningLine(dst1, dst2, lineWidth, innerLineWidth, color, opacity);
         ALRenderHelper.drawLightningLine(dst2, dst, lineWidth, innerLineWidth, color, opacity);

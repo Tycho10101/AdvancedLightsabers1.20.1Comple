@@ -46,7 +46,7 @@ public class FiskUtils
         }
     }
     
-    public static enum Hook
+    public enum Hook
     {
         PREINIT,
         INIT,

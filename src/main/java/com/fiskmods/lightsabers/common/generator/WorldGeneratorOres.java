@@ -25,7 +25,7 @@ public enum WorldGeneratorOres implements IWorldGenerator
 {
     INSTANCE;
     
-    private WorldGenCrystalCaveEntrance entrance = new WorldGenCrystalCaveEntrance(32);
+    private final WorldGenCrystalCaveEntrance entrance = new WorldGenCrystalCaveEntrance(32);
     
     @Override
     public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
@@ -40,7 +40,7 @@ public enum WorldGeneratorOres implements IWorldGenerator
 
     public boolean isCrystalCaveChunk(World world, int x, int z)
     {
-        Random rand = new Random(world.getSeed() + x * x * 0x4c1906 + x * 0x5ac0db + z * z * 0x4307a7L + z * 0x5f24f ^ 0x3ad8025f);
+        Random rand = new Random(world.getSeed() + x * x * 0x4c1906 + x * 0x5ac0db + (long) z * z * 0x4307a7L + z * 0x5f24f ^ 0x3ad8025f);
         return rand.nextInt(33) == 0;
     }
 

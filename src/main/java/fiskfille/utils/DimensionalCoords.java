@@ -69,10 +69,7 @@ public class DimensionalCoords extends ChunkCoordinates
     {
         int[] aint = toArray();
 
-        for (int i = 0; i < Math.min(args.length, aint.length); ++i)
-        {
-            aint[i] = args[i];
-        }
+        System.arraycopy(args, 0, aint, 0, Math.min(args.length, aint.length));
 
         return set(aint[0], aint[1], aint[2], aint[3]);
     }
@@ -86,10 +83,7 @@ public class DimensionalCoords extends ChunkCoordinates
     {
         int[] aint1 = new int[4];
 
-        for (int i = 0; i < Math.min(aint.length, aint1.length); ++i)
-        {
-            aint1[i] = aint[i];
-        }
+        System.arraycopy(aint, 0, aint1, 0, Math.min(aint.length, aint1.length));
 
         return new DimensionalCoords(aint1[0], aint1[1], aint1[2], aint1[3]);
     }
@@ -109,13 +103,12 @@ public class DimensionalCoords extends ChunkCoordinates
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof DimensionalCoords))
+        if (!(obj instanceof DimensionalCoords coords))
         {
             return false;
         }
         else
         {
-            DimensionalCoords coords = (DimensionalCoords) obj;
             return posX == coords.posX && posY == coords.posY && posZ == coords.posZ && dimension == coords.dimension;
         }
     }

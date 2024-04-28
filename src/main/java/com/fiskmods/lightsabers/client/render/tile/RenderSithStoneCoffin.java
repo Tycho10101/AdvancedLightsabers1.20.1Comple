@@ -12,8 +12,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSithStoneCoffin extends TileEntitySpecialRenderer
 {
-    private ResourceLocation texture = new ResourceLocation(Lightsabers.MODID, "textures/models/sith_stone_coffin.png");
-    private ModelSithStoneCoffin model = new ModelSithStoneCoffin();
+    private final ResourceLocation texture = new ResourceLocation(Lightsabers.MODID, "textures/models/sith_stone_coffin.png");
+    private final ModelSithStoneCoffin model = new ModelSithStoneCoffin();
 
     public void render(TileEntitySithStoneCoffin tileentity, double x, double y, double z, float partialTicks)
     {

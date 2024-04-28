@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSithCoffin extends ContainerBasic
 {
-    private int numRows;
+    private final int numRows;
 
     public ContainerSithCoffin(InventoryPlayer inventoryPlayer, TileEntitySithCoffin tile)
     {

@@ -86,7 +86,7 @@ public abstract class ContainerBasic<T extends BlockEntity> extends AbstractCont
         {
             while (stackToMove.getCount() > 0 && (!descending && id < toId || descending && id >= fromId))
             {
-                slot = (Slot) this.slots.get(id);
+                slot = this.slots.get(id);
                 dstStack = slot.getItem();
 
                 if ((!check || slot.mayPlace(stackToMove)) && dstStack != null && dstStack.getItem() == stackToMove.getItem() && (/*!stackToMove.getHasSubtypes() || */stackToMove.getDamageValue() == dstStack.getDamageValue()) && ItemStack.isSameItemSameTags(stackToMove, dstStack))
@@ -134,7 +134,7 @@ public abstract class ContainerBasic<T extends BlockEntity> extends AbstractCont
 
             while (!descending && id < toId || descending && id >= fromId)
             {
-                slot = (Slot) this.slots.get(id);
+                slot = this.slots.get(id);
                 dstStack = slot.getItem();
 
                 if ((!check || slot.mayPlace(stackToMove)) && dstStack == null)

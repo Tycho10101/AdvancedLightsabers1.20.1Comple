@@ -34,7 +34,7 @@ import net.minecraft.util.StatCollector;
 
 public class DisassemblyRecipeHandler extends TemplateRecipeHandler
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     private class ItemEntry implements Comparable<ItemEntry>
     {
@@ -104,17 +104,9 @@ public class DisassemblyRecipeHandler extends TemplateRecipeHandler
 
             if (getKey().getTagCompound() == null)
             {
-                if (other.getKey().getTagCompound() != null)
-                {
-                    return false;
-                }
+                return other.getKey().getTagCompound() == null;
             }
-            else if (!getKey().getTagCompound().equals(other.getKey().getTagCompound()))
-            {
-                return false;
-            }
-
-            return true;
+            else return getKey().getTagCompound().equals(other.getKey().getTagCompound());
         }
 
         @Override

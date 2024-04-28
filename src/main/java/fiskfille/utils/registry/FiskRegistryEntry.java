@@ -15,7 +15,7 @@ public class FiskRegistryEntry<T>
 {
     public final FiskDelegate<T> delegate = new FiskDelegate(this, getClass());
 
-    private TypeToken<T> token = new TypeToken<T>(getClass())
+    private final TypeToken<T> token = new TypeToken<T>(getClass())
     {
     };
 

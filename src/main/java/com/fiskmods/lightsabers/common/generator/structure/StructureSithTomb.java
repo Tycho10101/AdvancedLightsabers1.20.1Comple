@@ -30,7 +30,6 @@ public class StructureSithTomb extends Structure
 
         for (k = 63; !worldObj.isAirBlock(xCoord, k + 1, zCoord + 17 + stairLength); ++k)
         {
-            ;
         }
 
         while (yCoord - stairLength + 5 > k)

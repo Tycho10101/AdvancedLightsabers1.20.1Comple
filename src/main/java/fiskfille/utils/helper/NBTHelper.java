@@ -72,18 +72,16 @@ public class NBTHelper
         {
             return new NBTTagByte((byte) ((Boolean) obj ? 1 : 0));
         }
-        else if (obj instanceof String)
+        else if (obj instanceof String s)
         {
-            String s = (String) obj;
 
             if (s != null)
             {
                 return new NBTTagString(s);
             }
         }
-        else if (obj instanceof List)
+        else if (obj instanceof List list)
         {
-            List list = (List) obj;
             NBTTagList nbttaglist = new NBTTagList();
 
             for (int i = 0; i < list.size(); ++i)
@@ -102,9 +100,8 @@ public class NBTHelper
         {
             return ((ItemStack) obj).writeToNBT(new NBTTagCompound());
         }
-        else if (obj instanceof DimensionalCoords)
+        else if (obj instanceof DimensionalCoords coords)
         {
-            DimensionalCoords coords = (DimensionalCoords) obj;
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("x", coords.posX);
             nbt.setInteger("y", coords.posY);
@@ -133,9 +130,8 @@ public class NBTHelper
 
             return null;
         }
-        else if (tag instanceof NBTPrimitive)
+        else if (tag instanceof NBTPrimitive nbt)
         {
-            NBTPrimitive nbt = (NBTPrimitive) tag;
 
             if (typeClass.getType() == Byte.class)
             {
@@ -187,9 +183,8 @@ public class NBTHelper
 
             return (T) list;
         }
-        else if (tag instanceof NBTTagCompound)
+        else if (tag instanceof NBTTagCompound nbt)
         {
-            NBTTagCompound nbt = (NBTTagCompound) tag;
 
             if (typeClass.getType() == ItemStack.class)
             {
@@ -246,9 +241,8 @@ public class NBTHelper
             {
                 ByteBufUtils.writeUTF8String(buf, (String) obj);
             }
-            else if (obj instanceof List)
+            else if (obj instanceof List list)
             {
-                List list = (List) obj;
                 buf.writeInt(list.size());
 
                 for (int i = 0; i < list.size(); ++i)
@@ -260,9 +254,8 @@ public class NBTHelper
             {
                 ByteBufUtils.writeItemStack(buf, (ItemStack) obj);
             }
-            else if (obj instanceof DimensionalCoords)
+            else if (obj instanceof DimensionalCoords coords)
             {
-                DimensionalCoords coords = (DimensionalCoords) obj;
                 buf.writeInt(coords.posX);
                 buf.writeInt(coords.posY);
                 buf.writeInt(coords.posZ);

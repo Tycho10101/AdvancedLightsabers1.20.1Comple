@@ -53,11 +53,11 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class ClientEventHandler
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
     public static float renderTick;
 
-    private Map<String, ItemStack> prevLightsaber1 = Maps.newHashMap();
-    private Map<String, Boolean> hasPlayedSound = Maps.newHashMap();
+    private final Map<String, ItemStack> prevLightsaber1 = Maps.newHashMap();
+    private final Map<String, Boolean> hasPlayedSound = Maps.newHashMap();
 
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)

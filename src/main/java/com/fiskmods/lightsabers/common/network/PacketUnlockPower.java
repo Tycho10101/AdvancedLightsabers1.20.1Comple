@@ -54,9 +54,8 @@ public class PacketUnlockPower implements IMessage
                 EntityPlayer player = Lightsabers.proxy.getPlayer();
                 Entity entity = player.worldObj.getEntityByID(message.id);
 
-                if (entity instanceof EntityPlayer)
+                if (entity instanceof EntityPlayer player1)
                 {
-                    EntityPlayer player1 = (EntityPlayer) entity;
                     onMessage(player1, message, ctx);
                 }
             }
@@ -68,9 +67,8 @@ public class PacketUnlockPower implements IMessage
                 {
                     Entity entity = player.worldObj.getEntityByID(message.id);
 
-                    if (entity instanceof EntityPlayer)
+                    if (entity instanceof EntityPlayer player1)
                     {
-                        EntityPlayer player1 = (EntityPlayer) entity;
 
                         if (player.worldObj.isRemote)
                         {

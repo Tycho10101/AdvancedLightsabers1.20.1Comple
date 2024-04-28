@@ -12,8 +12,8 @@ import fiskfille.utils.helper.FiskServerUtils;
 
 public class FiskNetworkHelper
 {
-    private static Map<String, SimpleNetworkWrapper> wrappers = Maps.newHashMap();
-    private static Map<String, Integer> ids = Maps.newHashMap();
+    private static final Map<String, SimpleNetworkWrapper> wrappers = Maps.newHashMap();
+    private static final Map<String, Integer> ids = Maps.newHashMap();
 
     public static <REQ extends IMessage & IMessageHandler<REQ, IMessage>> void registerMessage(Class<REQ> msg)
     {

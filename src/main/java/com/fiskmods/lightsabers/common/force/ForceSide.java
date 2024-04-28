@@ -17,7 +17,7 @@ public enum ForceSide
     public final EnumChatFormatting theme;
     public final Set<Power> powers = Sets.newHashSet();
 
-    private ForceSide(EnumChatFormatting formatting)
+    ForceSide(EnumChatFormatting formatting)
     {
         theme = formatting;
     }

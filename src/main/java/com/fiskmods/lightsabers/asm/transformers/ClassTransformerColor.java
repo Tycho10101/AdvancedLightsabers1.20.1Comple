@@ -65,9 +65,8 @@ public class ClassTransformerColor implements IClassTransformer, Opcodes
             {
                 AbstractInsnNode node = method.instructions.get(j);
 
-                if (node instanceof MethodInsnNode)
+                if (node instanceof MethodInsnNode methodNode)
                 {
-                    MethodInsnNode methodNode = (MethodInsnNode) node;
 
                     if (node.getOpcode() == INVOKESTATIC && methodNode.owner.equals("org/lwjgl/opengl/GL11") && (methodNode.name.startsWith("glColor3") || methodNode.name.startsWith("glColor4")))
                     {

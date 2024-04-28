@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class ALParticles
 {
     private static final ResourceLocation texture = new ResourceLocation(Lightsabers.MODID, "textures/particle/particles.png");
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static final int fxLayersSize = 16;
 

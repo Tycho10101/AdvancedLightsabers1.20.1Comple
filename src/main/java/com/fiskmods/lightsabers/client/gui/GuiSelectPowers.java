@@ -314,10 +314,7 @@ public class GuiSelectPowers extends GuiScreen
             {
                 String[] astring = hoverPower.powerEffect.getDesc();
 
-                for (String s : astring)
-                {
-                    list.add(s);
-                }
+                Collections.addAll(list, astring);
             }
 
             for (String desc : list)

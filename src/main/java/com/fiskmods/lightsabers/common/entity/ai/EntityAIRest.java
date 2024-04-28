@@ -6,8 +6,8 @@ import net.minecraft.entity.ai.EntityAIBase;
 
 public class EntityAIRest extends EntityAIBase
 {
-    private EntitySithGhost entity;
-    private double speed;
+    private final EntitySithGhost entity;
+    private final double speed;
 
     public EntityAIRest(EntitySithGhost entity, double speed)
     {

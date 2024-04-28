@@ -26,9 +26,8 @@ public class AttributePair
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof AttributePair)
+        if (obj instanceof AttributePair pair)
         {
-            AttributePair pair = (AttributePair) obj;
 
             return pair.amount.equals(amount) && pair.operation.equals(operation);
         }

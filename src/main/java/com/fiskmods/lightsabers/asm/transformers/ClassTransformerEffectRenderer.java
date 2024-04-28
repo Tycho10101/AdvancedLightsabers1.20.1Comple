@@ -62,9 +62,8 @@ public class ClassTransformerEffectRenderer extends ClassTransformerBase
                     {
                         AbstractInsnNode node = method.instructions.get(j);
 
-                        if (node instanceof InsnNode)
+                        if (node instanceof InsnNode insnNode)
                         {
-                            InsnNode insnNode = (InsnNode) node;
 
                             if (insnNode.getOpcode() == ICONST_3)
                             {
@@ -99,15 +98,13 @@ public class ClassTransformerEffectRenderer extends ClassTransformerBase
                 {
                     AbstractInsnNode node = method.instructions.get(j);
 
-                    if (node instanceof LineNumberNode)
+                    if (node instanceof LineNumberNode lineNode)
                     {
-                        LineNumberNode lineNode = (LineNumberNode) node;
                         line = lineNode.line;
                     }
 
-                    if (node instanceof MethodInsnNode)
+                    if (node instanceof MethodInsnNode methodNode)
                     {
-                        MethodInsnNode methodNode = (MethodInsnNode) node;
 
                         if (node.getOpcode() == INVOKEVIRTUAL && methodNode.owner.equals(getMappedName("bmh", "net/minecraft/client/renderer/Tessellator")) && methodNode.name.equals(getMappedName("b", "startDrawingQuads")) && methodNode.desc.equals("()V"))
                         {
@@ -122,9 +119,8 @@ public class ClassTransformerEffectRenderer extends ClassTransformerBase
                         }
                     }
 
-                    if (node instanceof IincInsnNode)
+                    if (node instanceof IincInsnNode iincNode)
                     {
-                        IincInsnNode iincNode = (IincInsnNode) node;
 
                         if (iincNode.var == 8 && iincNode.incr == 1)
                         {
@@ -162,9 +158,8 @@ public class ClassTransformerEffectRenderer extends ClassTransformerBase
                         continue;
                     }
 
-                    if (node instanceof TypeInsnNode)
+                    if (node instanceof TypeInsnNode typeNode)
                     {
-                        TypeInsnNode typeNode = (TypeInsnNode) node;
 
                         if (node.getOpcode() == NEW && typeNode.desc.equals("java/lang/StringBuilder"))
                         {

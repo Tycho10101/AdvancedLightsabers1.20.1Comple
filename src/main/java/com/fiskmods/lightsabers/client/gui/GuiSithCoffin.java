@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 public class GuiSithCoffin extends GuiContainer
 {
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation("textures/gui/container/generic_54.png");
-    private TileEntitySithCoffin tileentity;
+    private final TileEntitySithCoffin tileentity;
 
     public GuiSithCoffin(InventoryPlayer inventoryPlayer, TileEntitySithCoffin tile)
     {

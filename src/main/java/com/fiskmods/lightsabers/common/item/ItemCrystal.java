@@ -43,7 +43,7 @@ public class ItemCrystal extends ItemBlock implements ILightsaberComponent
     @Override
     public long getFingerprint(ItemStack stack, int slot)
     {
-        return (getId(stack) & 0xFF) << 24;
+        return (long) (getId(stack) & 0xFF) << 24;
     }
     
     @Override
@@ -160,7 +160,7 @@ public class ItemCrystal extends ItemBlock implements ILightsaberComponent
     public static Map<CrystalColor, EnumRarity> rarityMap = Maps.newHashMap();
     public static Map<CrystalColor, String[]> chestMap = Maps.newHashMap();
 
-    private static Map<CrystalColor, Integer> genRarityMap = Maps.newHashMap();
+    private static final Map<CrystalColor, Integer> genRarityMap = Maps.newHashMap();
     private static final int[] GEN_RARITY = {90, 30, 10, 1};
 
     public static void registerRarity(CrystalColor color, EnumRarity rarity, String... chests)

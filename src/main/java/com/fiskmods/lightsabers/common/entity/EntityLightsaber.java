@@ -160,9 +160,8 @@ public class EntityLightsaber extends EntityThrowable implements IEntityAddition
             {
                 if (getDistanceToEntity(thrower) <= 2)
                 {
-                    if (thrower instanceof EntityPlayer)
+                    if (thrower instanceof EntityPlayer player)
                     {
-                        EntityPlayer player = (EntityPlayer) thrower;
 
                         if (player.inventory.getCurrentItem() == null)
                         {
@@ -220,7 +219,7 @@ public class EntityLightsaber extends EntityThrowable implements IEntityAddition
 
                 for (int i = 0; i < list.size(); ++i)
                 {
-                    Entity entity1 = (Entity) list.get(i);
+                    Entity entity1 = list.get(i);
 
                     if (entity1.canBeCollidedWith() && (entity1 != getThrower() || ticksExisted >= 5))
                     {
@@ -263,7 +262,6 @@ public class EntityLightsaber extends EntityThrowable implements IEntityAddition
 
             for (rotationPitch = (float) (Math.atan2(motionY, motion) * 180 / Math.PI); rotationPitch - prevRotationPitch < -180; prevRotationPitch -= 360)
             {
-                ;
             }
 
             while (rotationPitch - prevRotationPitch >= 180)

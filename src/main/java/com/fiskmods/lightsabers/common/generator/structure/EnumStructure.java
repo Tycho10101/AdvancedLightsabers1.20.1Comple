@@ -33,7 +33,7 @@ public enum EnumStructure
     public int minDistance;
     public int maxDistance;
 
-    private EnumStructure(Constructor c, int min, int max, Predicate<BiomeGenBase> predicate)
+    EnumStructure(Constructor c, int min, int max, Predicate<BiomeGenBase> predicate)
     {
         biomePredicate = predicate;
         minDistance = min;
@@ -41,11 +41,11 @@ public enum EnumStructure
         constructor = c;
     }
     
-    private EnumStructure(Constructor c, int min, int max, final BiomeGenBase... biomes)
+    EnumStructure(Constructor c, int min, int max, final BiomeGenBase... biomes)
     {
         this(c, min, max, new Predicate<BiomeGenBase>()
         {
-            List<BiomeGenBase> biomeList = Lists.newArrayList(biomes);
+            final List<BiomeGenBase> biomeList = Lists.newArrayList(biomes);
 
             @Override
             public boolean apply(BiomeGenBase biome)

@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 
 public class FileHelper
 {
-    public static URLConnection createConnection(String url) throws MalformedURLException, IOException
+    public static URLConnection createConnection(String url) throws IOException
     {
         URLConnection connection = new URL(url).openConnection();
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");

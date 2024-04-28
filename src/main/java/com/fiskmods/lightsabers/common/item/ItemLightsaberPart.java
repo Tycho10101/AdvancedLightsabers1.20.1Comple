@@ -33,7 +33,7 @@ public class ItemLightsaberPart extends Item implements ILightsaberComponent
     @Override
     public long getFingerprint(ItemStack stack, int slot)
     {
-        return Hilt.REGISTRY.getIDForObject(get(stack)) << partType.ordinal() * 6;
+        return (long) Hilt.REGISTRY.getIDForObject(get(stack)) << partType.ordinal() * 6;
     }
 
     @Override

@@ -6,7 +6,7 @@ public interface IExtendedDamage
 {
     int getFlags();
     
-    public enum DamageType
+    enum DamageType
     {
         KINETIC(new DamageTypeCallback.Impl()
         {
@@ -31,12 +31,12 @@ public interface IExtendedDamage
         
         private final DamageTypeCallback hook;
         
-        private DamageType(DamageTypeCallback callback)
+        DamageType(DamageTypeCallback callback)
         {
             hook = callback;
         }
         
-        private DamageType()
+        DamageType()
         {
             this(new DamageTypeCallback.Impl());
         }
@@ -62,11 +62,11 @@ public interface IExtendedDamage
         }
     }
     
-    public static interface DamageTypeCallback
+    interface DamageTypeCallback
     {
         boolean isPresent(DamageType type, DamageSource source);
         
-        public static class Impl implements DamageTypeCallback
+        class Impl implements DamageTypeCallback
         {
             @Override
             public boolean isPresent(DamageType type, DamageSource source)

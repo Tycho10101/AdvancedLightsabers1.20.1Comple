@@ -290,7 +290,7 @@ public class ALData<T> extends FiskRegistryEntry<ALData<?>>
         }
         else if (value instanceof String)
         {
-            return setWithoutNotify(entity, (T) String.valueOf((String) get(entity) + (String) value));
+            return setWithoutNotify(entity, (T) (get(entity) + (String) value));
         }
 
         throw new RuntimeException("Cannot increment a non-numerical data type unless a String!");

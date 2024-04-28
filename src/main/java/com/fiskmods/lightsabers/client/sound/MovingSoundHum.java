@@ -32,9 +32,8 @@ public class MovingSoundHum extends MovingSound
     {
         boolean flag = false;
 
-        if (theEntity instanceof EntityLivingBase)
+        if (theEntity instanceof EntityLivingBase entity)
         {
-            EntityLivingBase entity = (EntityLivingBase) theEntity;
             ItemStack itemstack = entity.getHeldItem();
             flag = itemstack == null || !(itemstack.getItem() instanceof ItemLightsaberBase) || !ItemLightsaberBase.isActive(itemstack);
         }

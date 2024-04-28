@@ -8,7 +8,7 @@ public enum ALParticleType
 
     public Class<? extends EntityFX> particleClass;
 
-    private ALParticleType(Class<? extends EntityFX> clazz)
+    ALParticleType(Class<? extends EntityFX> clazz)
     {
         particleClass = clazz;
     }

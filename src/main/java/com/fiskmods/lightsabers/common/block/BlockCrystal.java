@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 public class BlockCrystal extends BlockBasic implements ITileEntityProvider
 {
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     public BlockCrystal()
     {
@@ -193,12 +193,7 @@ public class BlockCrystal extends BlockBasic implements ITileEntityProvider
         if (func_150109_e(world, x, y, z))
         {
             int l = world.getBlockMetadata(x, y, z);
-            boolean flag = false;
-
-            if (!world.isSideSolid(x - 1, y, z, EAST, true) && l == 1)
-            {
-                flag = true;
-            }
+            boolean flag = !world.isSideSolid(x - 1, y, z, EAST, true) && l == 1;
 
             if (!world.isSideSolid(x + 1, y, z, WEST, true) && l == 2)
             {

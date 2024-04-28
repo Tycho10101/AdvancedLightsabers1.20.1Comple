@@ -235,9 +235,8 @@ public class ItemDoubleLightsaber extends ItemLightsaberBase implements IOffhand
                                     attacker.setSprinting(false);
                                 }
 
-                                if (attacker instanceof EntityPlayer)
+                                if (attacker instanceof EntityPlayer player)
                                 {
-                                    EntityPlayer player = (EntityPlayer) attacker;
 
                                     if (crit)
                                     {

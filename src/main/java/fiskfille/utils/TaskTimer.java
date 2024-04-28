@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 
 public class TaskTimer
 {
-    private static Map<String, TaskTimer> timers = Maps.newHashMap();
+    private static final Map<String, TaskTimer> timers = Maps.newHashMap();
 
     private final String task;
     private long startTime;

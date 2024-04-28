@@ -184,7 +184,7 @@ public abstract class AbstractLightsaberData
     {
         int shift = type.ordinal() * 6;
         hash &= ~(0x3FL << shift);
-        hash |= getIDForObject(hilt) << shift;
+        hash |= (long) getIDForObject(hilt) << shift;
 
         return this;
     }
@@ -232,7 +232,7 @@ public abstract class AbstractLightsaberData
     public AbstractLightsaberData set(CrystalColor color)
     {
         hash &= ~(0xFFL << 24);
-        hash |= (color.id & 0xFF) << 24;
+        hash |= (long) (color.id & 0xFF) << 24;
 
         return this;
     }

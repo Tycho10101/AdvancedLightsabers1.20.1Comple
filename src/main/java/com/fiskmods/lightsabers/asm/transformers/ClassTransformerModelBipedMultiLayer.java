@@ -37,9 +37,8 @@ public class ClassTransformerModelBipedMultiLayer extends ClassTransformerBase
                 {
                     AbstractInsnNode node = method.instructions.get(i);
 
-                    if (node instanceof MethodInsnNode)
+                    if (node instanceof MethodInsnNode methodNode)
                     {
-                        MethodInsnNode methodNode = (MethodInsnNode) node;
 
                         if (methodNode.name.equals("renderBipedPre") && methodNode.desc.equals("(Lnet/minecraft/client/model/ModelBiped;Lnet/minecraft/entity/Entity;FFFFFF)V"))
                         {

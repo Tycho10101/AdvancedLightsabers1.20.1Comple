@@ -13,7 +13,7 @@ import net.minecraft.util.StringUtils;
 
 public class Log
 {
-    private static Map<String, Logger> loggers = Maps.newHashMap();
+    private static final Map<String, Logger> loggers = Maps.newHashMap();
 
     private static Logger fetchLogger(String key)
     {

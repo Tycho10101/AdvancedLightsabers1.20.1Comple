@@ -17,13 +17,12 @@ public class StructurePoint extends ChunkCoordinates
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof StructurePoint))
+        if (!(obj instanceof StructurePoint chunkcoordinates))
         {
             return false;
         }
         else
         {
-            StructurePoint chunkcoordinates = (StructurePoint) obj;
             return posX == chunkcoordinates.posX && posZ == chunkcoordinates.posZ;
         }
     }

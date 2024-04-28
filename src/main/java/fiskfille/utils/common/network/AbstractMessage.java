@@ -48,7 +48,7 @@ public abstract class AbstractMessage<REQ extends AbstractMessage> implements IM
     {
         Entity entity = world.getEntityByID(id);
 
-        if (entity != null && type.isInstance(entity))
+        if (type.isInstance(entity))
         {
             return (T) entity;
         }

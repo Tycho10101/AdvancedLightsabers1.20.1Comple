@@ -41,7 +41,7 @@ import net.minecraft.util.StatCollector;
 
 public class LightsaberForgeRecipeHandler extends TemplateRecipeHandler
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     public class CachedLightsaberForgeRecipe extends CachedRecipe
     {

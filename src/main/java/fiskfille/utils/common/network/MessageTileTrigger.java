@@ -66,7 +66,7 @@ public class MessageTileTrigger extends AbstractMessage<MessageTileTrigger>
         }
     }
 
-    public static interface ITileDataCallback
+    public interface ITileDataCallback
     {
         /**
          * Called when a tile gets triggered

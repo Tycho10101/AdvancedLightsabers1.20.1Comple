@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class InventoryLightsaberForge implements Container
 {
-    private List<ItemStack> inventory = Arrays.asList(new ItemStack[8]);
-    private ContainerLightsaberForge eventHandler;
+    private final List<ItemStack> inventory = Arrays.asList(new ItemStack[8]);
+    private final ContainerLightsaberForge eventHandler;
 
     public LightsaberData result;
 
@@ -31,9 +31,8 @@ public class InventoryLightsaberForge implements Container
         {
             ItemStack stack = getItem(slot);
             
-            if (stack != null && stack.getItem() instanceof ILightsaberComponent)
+            if (stack != null && stack.getItem() instanceof ILightsaberComponent component)
             {
-                ILightsaberComponent component = (ILightsaberComponent) stack.getItem();
                 long fingerprint = component.getFingerprint(stack, slot);
                 
                 if (!component.isCompatibleSlot(stack, slot) || fingerprint != 0 && hash == (hash |= fingerprint))

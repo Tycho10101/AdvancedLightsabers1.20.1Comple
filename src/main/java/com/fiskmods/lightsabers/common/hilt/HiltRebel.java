@@ -2,6 +2,7 @@ package com.fiskmods.lightsabers.common.hilt;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import com.fiskmods.lightsabers.common.lightsaber.FocusingCrystal;
@@ -31,7 +32,7 @@ public class HiltRebel extends Hilt
     @Override
     public Collection<FocusingCrystal> getFocusingCrystals()
     {
-        return Arrays.asList(FocusingCrystal.COMPRESSED);
+        return List.of(FocusingCrystal.COMPRESSED);
     }
 
     @Override

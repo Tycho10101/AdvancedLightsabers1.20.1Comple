@@ -46,9 +46,8 @@ public class RenderItemDoubleLightsaber implements IItemRenderer
             GL11.glRotatef(180, 0, 0, 1);
             GL11.glTranslatef(-0.1F, -0.2F, 1.1F);
 
-            if (args.length > 1 && args[1] instanceof EntityPlayer)
+            if (args.length > 1 && args[1] instanceof EntityPlayer player)
             {
-                EntityPlayer player = (EntityPlayer) args[1];
                 float f = player.prevLimbSwingAmount - (player.prevLimbSwingAmount - player.limbSwingAmount) * ClientEventHandler.renderTick;
                 float f1 = MathHelper.cos((player.limbSwing - player.limbSwingAmount * (1 - ClientEventHandler.renderTick)) * 0.6662F) * 1.4F * f;
                 float f2 = player.getSwingProgress(ClientEventHandler.renderTick);

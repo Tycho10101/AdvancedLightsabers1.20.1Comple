@@ -27,7 +27,7 @@ public class BlockSithCoffin extends BlockContainer implements ITileEntityProvid
 {
     public static final int[][] DIRECTIONS = new int[][] {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
     
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     public BlockSithCoffin()
     {

@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGenCrystalCaveEntrance extends WorldGenerator
 {
-    private int numberOfBlocks;
+    private final int numberOfBlocks;
 
     public WorldGenCrystalCaveEntrance(int blocks)
     {

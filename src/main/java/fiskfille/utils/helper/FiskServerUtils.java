@@ -166,7 +166,7 @@ public class FiskServerUtils
     {
         for (Object obj : iter)
         {
-            if (obj != null && filter.isInstance(obj))
+            if (filter.isInstance(obj))
             {
                 return (T) obj;
             }
@@ -179,9 +179,8 @@ public class FiskServerUtils
     {
         TileEntity tile = world.getTileEntity(x, y, z);
 
-        if (tile instanceof IInventory)
+        if (tile instanceof IInventory inventory)
         {
-            IInventory inventory = (IInventory) tile;
 
             for (int i = 0; i < inventory.getSizeInventory(); ++i)
             {

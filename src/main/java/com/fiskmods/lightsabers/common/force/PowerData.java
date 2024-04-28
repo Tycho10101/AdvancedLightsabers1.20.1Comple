@@ -57,10 +57,9 @@ public class PowerData implements Comparable<PowerData>, ISerializableObject<Pow
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof PowerData)
+        if (obj instanceof PowerData data)
         {
-            PowerData data = (PowerData) obj;
-            
+
             return power == data.power && unlocked == data.unlocked && xpInvested == data.xpInvested;
         }
         
@@ -103,9 +102,8 @@ public class PowerData implements Comparable<PowerData>, ISerializableObject<Pow
         @Override
         public PowerData readFromNBT(NBTBase tag)
         {
-            if (tag instanceof NBTTagCompound)
+            if (tag instanceof NBTTagCompound nbt)
             {
-                NBTTagCompound nbt = (NBTTagCompound) tag;
                 PowerData data = new PowerData(Power.getPowerFromName(nbt.getString("Id")));
                 data.unlocked = nbt.getBoolean("Unlocked");
                 data.xpInvested = nbt.getInteger("XpInvested");

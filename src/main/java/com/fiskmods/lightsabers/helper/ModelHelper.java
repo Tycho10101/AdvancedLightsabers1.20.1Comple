@@ -53,9 +53,8 @@ public class ModelHelper
 
     public static void setRotationAngles(ModelBiped model, float f, float f1, float f2, float f3, float f4, float f5, Entity entity1)
     {
-        if (entity1 instanceof EntityLivingBase)
+        if (entity1 instanceof EntityLivingBase entity)
         {
-            EntityLivingBase entity = (EntityLivingBase) entity1;
             ItemStack heldItem = entity.getHeldItem();
 
             if (heldItem != null && heldItem.getItem() instanceof ItemLightsaberBase && !entity.isSneaking())

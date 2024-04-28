@@ -47,9 +47,8 @@ public class FiskDelegate<T> implements RegistryDelegate<T>
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof Delegate)
+        if (obj instanceof Delegate other)
         {
-            Delegate<?> other = (Delegate<?>) obj;
 
             return Objects.equal(other.name(), name);
         }

@@ -28,7 +28,7 @@ public class BlockDisassemblyStation extends BlockContainer
 {
     public static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     public BlockDisassemblyStation()
     {
@@ -125,10 +125,9 @@ public class BlockDisassemblyStation extends BlockContainer
     {
         TileEntity tile = world.getTileEntity(x, y, z);
 
-        if (tile instanceof IInventory)
+        if (tile instanceof IInventory inventory)
         {
-            IInventory inventory = (IInventory) tile;
-            
+
             for (int i = 0; i < inventory.getSizeInventory(); ++i)
             {
                 ItemStack stack = inventory.getStackInSlot(i);

@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.EnumHelper;
 
 public class FiskEnumHelper extends EnumHelper
 {
-    private static Class[][] commonTypes =
+    private static final Class[][] commonTypes =
     {
         {DamageType.class, DamageTypeCallback.class}
     };

@@ -33,7 +33,6 @@ public enum InteractionHandler
         if (interact(player, InteractionType.get(action), x, y, z))
         {
             event.setCanceled(true);
-            return;
         }
     }
     
@@ -63,7 +62,7 @@ public enum InteractionHandler
         MinecraftForge.EVENT_BUS.register(INSTANCE);
     }
     
-    public static enum InteractionType
+    public enum InteractionType
     {
         KEY_PRESS,
         KEY_HOLD,

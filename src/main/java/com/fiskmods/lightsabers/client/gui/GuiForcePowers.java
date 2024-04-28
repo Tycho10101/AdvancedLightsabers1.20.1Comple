@@ -61,9 +61,9 @@ public class GuiForcePowers extends GuiScreen
     protected double field_146565_w;
     protected double field_146573_x;
     private int field_146554_D;
-    private PowerManager powerManager;
+    private final PowerManager powerManager;
 
-    private LinkedList<Power> powers = new LinkedList<Power>();
+    private final LinkedList<Power> powers = new LinkedList<Power>();
 
     public final TileEntityHolocron tile;
 
@@ -312,7 +312,7 @@ public class GuiForcePowers extends GuiScreen
             {
                 Block block = ModBlocks.lightForcestone;
                 random.setSeed(mc.getSession().getPlayerID().hashCode() + i2 + j3 + (j2 + i3) * 16);
-                k3 = random.nextInt(Math.max(1 + (i2 + j3 + 10) / 6, 0)) + (i2 + j3 + 10) / 1 - 11;
+                k3 = random.nextInt(Math.max(1 + (i2 + j3 + 10) / 6, 0)) + (i2 + j3 + 10) - 11;
 
                 if (k3 < 20)
                 {

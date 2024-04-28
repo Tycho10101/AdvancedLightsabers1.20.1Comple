@@ -16,7 +16,7 @@ import net.minecraft.entity.Entity;
 
 public class ASMHooksClient
 {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
     public static List<String> humSounds = Lists.newArrayList();
 
     public static void updateAllSounds(SoundManager soundManager, List<ITickableSound> list)
@@ -28,9 +28,8 @@ public class ASMHooksClient
         {
             ITickableSound tickableSound = iterator.next();
 
-            if (tickableSound instanceof MovingSoundHum)
+            if (tickableSound instanceof MovingSoundHum sound)
             {
-                MovingSoundHum sound = (MovingSoundHum) tickableSound;
                 humSounds.add(sound.theEntity.getUniqueID().toString());
             }
         }

@@ -153,12 +153,7 @@ public class ItemLightsaber extends ItemLightsaberBase implements IBattlegearWea
     @Override
     public boolean allowOffhand(ItemStack main, ItemStack off)
     {
-        if (main != null && main.getItem() == ModItems.doubleLightsaber)
-        {
-            return false;
-        }
-
-        return true;
+        return main == null || main.getItem() != ModItems.doubleLightsaber;
     }
 
     @Override

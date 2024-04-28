@@ -7,7 +7,7 @@ import javax.swing.JList;
 
 public class DynamicJList<E> extends JList<E>
 {
-    private Vector<E> v = new Vector<>();
+    private final Vector<E> v = new Vector<>();
     private boolean hasChanged;
     
     public void add(E e)

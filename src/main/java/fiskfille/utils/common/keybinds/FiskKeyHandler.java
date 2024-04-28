@@ -19,7 +19,7 @@ public enum FiskKeyHandler
     INSTANCE;
     
     public static final List<FiskKeyBinding> KEYS = new ArrayList();
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     private int pressed;
     private int[] timePressed;

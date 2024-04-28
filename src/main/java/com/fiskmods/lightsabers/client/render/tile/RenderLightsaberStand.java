@@ -18,8 +18,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderLightsaberStand extends TileEntitySpecialRenderer
 {
-    private ResourceLocation texture = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_stand.png");
-    private ModelLightsaberStand model = new ModelLightsaberStand();
+    private final ResourceLocation texture = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_stand.png");
+    private final ModelLightsaberStand model = new ModelLightsaberStand();
 
     public void render(TileEntityLightsaberStand tile, double x, double y, double z, float partialTicks)
     {

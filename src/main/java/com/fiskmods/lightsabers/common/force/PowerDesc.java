@@ -88,7 +88,7 @@ public class PowerDesc
         return s;
     }
 
-    public static enum Unit
+    public enum Unit
     {
         HEALTH,
         DAMAGE,
@@ -113,7 +113,7 @@ public class PowerDesc
         }
     }
 
-    public static enum Target
+    public enum Target
     {
         CASTER,
         TARGET,

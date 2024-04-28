@@ -37,9 +37,8 @@ public class ClassTransformerModelBiped extends ClassTransformerBase
                 {
                     AbstractInsnNode node = method.instructions.get(i);
 
-                    if (node instanceof MethodInsnNode)
+                    if (node instanceof MethodInsnNode methodNode)
                     {
-                        MethodInsnNode methodNode = (MethodInsnNode) node;
 
                         if (methodNode.name.equals(getMappedName("a", "setRotationAngles")) && methodNode.desc.equals(getMappedName("(FFFFFFLsa;)V", "(FFFFFFLnet/minecraft/entity/Entity;)V")))
                         {

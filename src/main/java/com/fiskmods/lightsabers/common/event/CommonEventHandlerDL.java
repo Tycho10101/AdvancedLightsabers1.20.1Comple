@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 
 public class CommonEventHandlerDL
 {
-    private Minecraft mc;
+    private final Minecraft mc;
     private long nextUpdate;
     private ArrayList<EntityLightAdapter> trackedEntities;
     private Thread thread;
@@ -143,7 +143,7 @@ public class CommonEventHandlerDL
 
     private class EntityLightAdapter implements IDynamicLightSource
     {
-        private Entity entity;
+        private final Entity entity;
         private int lightLevel;
         private boolean enabled;
 

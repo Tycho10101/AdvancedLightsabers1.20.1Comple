@@ -32,7 +32,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class GuiOverlay extends Gui
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     public static final ResourceLocation ICONS = new ResourceLocation(Lightsabers.MODID, "textures/gui/icons.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(Lightsabers.MODID, "textures/gui/widgets.png");

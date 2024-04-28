@@ -80,7 +80,7 @@ public class BlockCrystalGen extends BlockBasic
 
             if (tile != null)
             {
-                Random rand = new Random(world.getSeed() + x * x * 0x4c1906 + x * 0x5ac0db + z * z * 0x4307a7L + z * 0x5f24f ^ 0x3ad8025f ^ y);
+                Random rand = new Random(world.getSeed() + x * x * 0x4c1906 + x * 0x5ac0db + (long) z * z * 0x4307a7L + z * 0x5f24f ^ 0x3ad8025f ^ y);
                 tile.setColor(ItemCrystal.getRandomGen(rand));
             }
         }

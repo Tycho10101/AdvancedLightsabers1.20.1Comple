@@ -25,7 +25,7 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
     
     public ContainerLightsaberForge(int id, Inventory inventoryPlayer)
     {
-    	this(id, inventoryPlayer, (TileEntityLightsaberForge)null);
+    	this(id, inventoryPlayer, null);
     }
     
     public ContainerLightsaberForge(int id, Inventory inventoryPlayer, TileEntityLightsaberForge tile)
@@ -104,7 +104,7 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
     public ItemStack quickMoveStack(Player player, int slotId)
     {
         ItemStack itemstack = null;
-        Slot slot = (Slot) this.slots.get(slotId);
+        Slot slot = this.slots.get(slotId);
         int OUTPUT = 8;
 
         if (slot != null && slot.hasItem())
@@ -128,7 +128,7 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
 
                 for (int i = 0; i < OUTPUT; ++i)
                 {
-                    Slot slot1 = ((Slot) this.slots.get(i));
+                    Slot slot1 = this.slots.get(i);
                     Item item = itemstack1.getItem();
 
                     if (item instanceof ILightsaberComponent && ((ILightsaberComponent) item).isCompatibleSlot(itemstack, i))
@@ -164,7 +164,7 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
 
             if (itemstack1.getCount() == 0)
             {
-                slot.set((ItemStack) null);
+                slot.set(null);
             }
             else
             {

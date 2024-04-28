@@ -41,8 +41,8 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
             switch (typeL) {
                 case SINGLE -> {
-                    matrixStack.pushPose();
 
+                    matrixStack.pushPose();
                     matrixStack.translate(0, -(getHeight(tag.getString("grip")) + getHeight(tag.getString("pommel"))
                             - getTotalHeight(tag) / 2) / 16, 0);
                     renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn);
@@ -69,13 +69,19 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
     private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
-        matrixStack.pushPose();
         float height = getTotalHeight(tag);
+        switch (itemDisplayContext)
+        {
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,0.1, .6);
+            case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,0,0);
+            case GUI -> {matrixStack.last().pose().rotateLocalZ(45);}
+            case FIXED,GROUND -> {matrixStack.last().pose().rotateLocalZ(45);}
+        }
+
         height = renderPart(tag.getString("emitter"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("switch"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("grip"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("pommel"), height,(byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
-        matrixStack.popPose();
     }
 
     private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)

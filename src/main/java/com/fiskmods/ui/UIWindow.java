@@ -18,7 +18,7 @@ public class UIWindow extends JFrame
     public final Map<Component, Predicate<Component>> enabled = new HashMap<>();
     public final JPanel panel = new JPanel();
     
-    private Thread updateThread;
+    private final Thread updateThread;
 
     public UIWindow(String title, int width, int height)
     {

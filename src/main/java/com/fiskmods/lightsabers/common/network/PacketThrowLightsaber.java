@@ -55,9 +55,8 @@ public class PacketThrowLightsaber implements IMessage
                 EntityPlayer player = Lightsabers.proxy.getPlayer();
                 Entity entity = player.worldObj.getEntityByID(message.id);
 
-                if (entity instanceof EntityLivingBase)
+                if (entity instanceof EntityLivingBase entity1)
                 {
-                    EntityLivingBase entity1 = (EntityLivingBase) entity;
                     ItemLightsaberBase.throwLightsaber(entity1, lightsaber, 1);
                 }
             }
@@ -69,9 +68,8 @@ public class PacketThrowLightsaber implements IMessage
                 {
                     Entity entity = player.worldObj.getEntityByID(message.id);
 
-                    if (entity instanceof EntityLivingBase)
+                    if (entity instanceof EntityLivingBase entity1)
                     {
-                        EntityLivingBase entity1 = (EntityLivingBase) entity;
 
                         if (player.worldObj.isRemote)
                         {
