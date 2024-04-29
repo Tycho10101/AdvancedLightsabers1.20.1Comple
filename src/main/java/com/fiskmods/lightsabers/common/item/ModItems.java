@@ -2,10 +2,7 @@ package com.fiskmods.lightsabers.common.item;
 
 
 import com.fiskmods.lightsabers.Lightsabers;
-import com.fiskmods.lightsabers.common.item.parts.LightsaberBody;
-import com.fiskmods.lightsabers.common.item.parts.LightsaberEmiter;
-import com.fiskmods.lightsabers.common.item.parts.LightsaberPommel;
-import com.fiskmods.lightsabers.common.item.parts.LightsaberSwitch;
+import com.fiskmods.lightsabers.common.item.parts.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,8 +24,8 @@ public class ModItems
         testSwitch = registerSwitch("test_switch", 0.182134f),
         testGrip = registerBody("test_grip", 0.47213f),
         testPommel = registerPommel("test_pommel", 0.116575f);
-
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
+    public static final RegistryObject<Item> blade = ITEMS.register("blade", BladeItem::new);
     private static RegistryObject<Item> registerPommel(String name, float height)
     {
         return ITEMS.register(name, () -> new LightsaberPommel(height));

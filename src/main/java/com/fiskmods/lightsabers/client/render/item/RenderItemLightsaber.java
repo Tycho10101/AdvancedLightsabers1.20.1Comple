@@ -1,23 +1,32 @@
 package com.fiskmods.lightsabers.client.render.item;
 
+import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.common.item.LightsaberPart;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL46;
+import org.lwjgl.opengl.GL46C;
 
 public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
@@ -70,18 +79,45 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
     private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         float height = getTotalHeight(tag);
+        int color = tag.getInt("color");
+        int alpha = color & 0xff, g = (color & 0xff00) >> 8,  b = (color & 0xff0000) >> 16, r = (color & 0xff000000) >> 24;
         switch (itemDisplayContext)
         {
             case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,0.1, .6);
-            case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,0,0);
-            case GUI -> {matrixStack.last().pose().rotateLocalZ(45);}
-            case FIXED,GROUND -> {matrixStack.last().pose().rotateLocalZ(45);}
+            case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
+            case FIXED,GUI -> {
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(180));
+                matrixStack.translate(0.1,0.5,-0.5);
+            }
+            case GROUND -> {
+                matrixStack.translate(.0,0.5,0.5);
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
+            }
+
         }
 
+        VertexConsumer vc  = buffer.getBuffer(RenderType.lightning());
+        matrixStack.pushPose();
+
+        matrixStack.translate(0, height, 0);
+        BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID,"item/blade"));
+        vc = vc.vertex(1,1,1);
+        vc = vc.vertex(1,1,4);
+        vc = vc.vertex(2,1,4);
+
+        vc.vertex(2,3,4);
+        for (BakedQuad quad : model.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.cutout())) {
+            vc.putBulkData(matrixStack.last(), quad, 0, 0, 0, 0, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+        }
+
+        vc =  vc.color(r,g,b,alpha);
+        matrixStack.popPose();
         height = renderPart(tag.getString("emitter"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("switch"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("grip"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("pommel"), height,(byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+
     }
 
     private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)

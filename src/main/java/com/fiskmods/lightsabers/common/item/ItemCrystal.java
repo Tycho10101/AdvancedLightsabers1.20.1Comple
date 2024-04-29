@@ -1,43 +1,44 @@
 package com.fiskmods.lightsabers.common.item;
 
-import static com.fiskmods.lightsabers.common.lightsaber.CrystalColor.*;
-import static net.minecraft.item.EnumRarity.*;
+import com.fiskmods.lightsabers.common.block.ModBlocks;
+import com.fiskmods.lightsabers.common.generator.ModChestGen;
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import fiskfille.utils.helper.FiskMath;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.fiskmods.lightsabers.common.block.ModBlocks;
-import com.fiskmods.lightsabers.common.generator.ModChestGen;
-import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static com.fiskmods.lightsabers.common.lightsaber.CrystalColor.*;
+import static net.minecraft.item.EnumRarity.*;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import fiskfille.utils.helper.FiskMath;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.Constants.NBT;
-
-public class ItemCrystal extends ItemBlock implements ILightsaberComponent
+public class ItemCrystal extends Block implements ILightsaberComponent
 {
-    public ItemCrystal(Block block)
+
+    public ItemCrystal(Properties block)
     {
         super(block);
         setHasSubtypes(true);
+    }
+
+    public ItemCrystal(Properties p_49795_) {
+        super(p_49795_);
     }
 
     @Override

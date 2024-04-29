@@ -47,6 +47,7 @@ public class Lightsabers
                 itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
                 itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
                 itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
+                itemStack.getTag().putInt("color", 0xff000015);
 
                 output.accept(itemStack);
             })
