@@ -1,9 +1,6 @@
 package com.fiskmods.lightsabers.common.lightsaber;
 
-import java.util.Locale;
 import java.util.Random;
-
-import net.minecraft.util.StatCollector;
 
 public enum CrystalColor
 {
@@ -46,21 +43,6 @@ public enum CrystalColor
     {
         this.id = id;
         this.color = color;
-    }
-
-    public String getUnlocalizedName()
-    {
-        return "lightsaber.color." + name().toLowerCase(Locale.ROOT);
-    }
-
-    public String getLocalizedName()
-    {
-        return StatCollector.translateToLocal(getUnlocalizedName()).trim();
-    }
-    
-    public float[] getRGB()
-    {
-        return COLOR_VALUES[ordinal()];
     }
 
     private static float[] getRGB(int hex)

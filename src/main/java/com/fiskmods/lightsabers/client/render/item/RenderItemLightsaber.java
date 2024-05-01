@@ -2,10 +2,10 @@ package com.fiskmods.lightsabers.client.render.item;
 
 import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.common.item.LightsaberPart;
+import com.fiskmods.lightsabers.common.item.ModItems;
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
-import com.fiskmods.lightsabers.common.lightsaber.PartType;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -23,14 +23,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL46;
-import org.lwjgl.opengl.GL46C;
+
+import java.math.BigInteger;
 
 public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
     private ItemRenderer renderItem;
+    private Tesselator tesselator = Tesselator.getInstance();
     public static final RenderItemLightsaber bewlr = new RenderItemLightsaber(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
     public RenderItemLightsaber(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
         super(p_172550_, p_172551_);
@@ -79,16 +80,21 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
     private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         float height = getTotalHeight(tag);
-        int color = tag.getInt("color");
-        int alpha = color & 0xff, g = (color & 0xff00) >> 8,  b = (color & 0xff0000) >> 16, r = (color & 0xff000000) >> 24;
+
+        matrixStack.pushPose();
         switch (itemDisplayContext)
         {
             case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,0.1, .6);
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
-            case FIXED,GUI -> {
+            case GUI -> {
                 matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
+                matrixStack.translate(-0.0,0.2,-0.5);
+            }
+            case FIXED -> {
+
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
                 matrixStack.mulPose(Axis.YP.rotationDegrees(180));
-                matrixStack.translate(0.1,0.5,-0.5);
+                matrixStack.translate(-.7,-0.5,-0.5);
             }
             case GROUND -> {
                 matrixStack.translate(.0,0.5,0.5);
@@ -96,30 +102,46 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
             }
 
         }
+        switch (itemDisplayContext)
+        {
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND,FIRST_PERSON_LEFT_HAND,FIRST_PERSON_RIGHT_HAND -> {
 
-        VertexConsumer vc  = buffer.getBuffer(RenderType.lightning());
-        matrixStack.pushPose();
 
-        matrixStack.translate(0, height, 0);
-        BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID,"item/blade"));
-        vc = vc.vertex(1,1,1);
-        vc = vc.vertex(1,1,4);
-        vc = vc.vertex(2,1,4);
-
-        vc.vertex(2,3,4);
-        for (BakedQuad quad : model.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.cutout())) {
-            vc.putBulkData(matrixStack.last(), quad, 0, 0, 0, 0, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+                int color = tag.getInt("color");
+                matrixStack.pushPose();
+                matrixStack.scale( 1f, 1f, 1f );
+                renderBlade(CrystalColor.ARCTIC_BLUE.color, .5f, tag, buffer, matrixStack,  height);
+                matrixStack.popPose();
+                matrixStack.pushPose();
+                matrixStack.scale( .95f, .95f, .95f );
+                renderBlade(0xffffff, 1f, tag, buffer, matrixStack, height);
+                matrixStack.popPose();
+            }
+            default -> {}
         }
 
-        vc =  vc.color(r,g,b,alpha);
-        matrixStack.popPose();
         height = renderPart(tag.getString("emitter"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("switch"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("grip"),height, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
         height = renderPart(tag.getString("pommel"), height,(byte) -1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
 
+        matrixStack.popPose();
     }
 
+    private void renderBlade(int color, float alpha, CompoundTag tag, MultiBufferSource buffer, PoseStack matrixStack, float height)
+    {
+        float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
+        VertexConsumer vc  = buffer.getBuffer(RenderType.entityGlint());
+        matrixStack.pushPose();
+        BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
+
+        matrixStack.translate(0, height, 0);
+        for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.cutout())) {
+            vc.putBulkData(matrixStack.last(), quad, r, g, b, alpha, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+        }
+        vc.endVertex();
+        matrixStack.popPose();
+    }
     private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         matrixStack.pushPose();

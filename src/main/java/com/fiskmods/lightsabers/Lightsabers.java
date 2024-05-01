@@ -3,6 +3,8 @@ package com.fiskmods.lightsabers;
 import com.fiskmods.lightsabers.client.render.item.RenderItemLightsaber;
 import com.fiskmods.lightsabers.common.item.LightsaberItem;
 import com.fiskmods.lightsabers.common.item.ModItems;
+import com.fiskmods.lightsabers.common.item.parts.BladeItem;
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.Registries;
@@ -34,7 +36,7 @@ public class Lightsabers
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     private static Lightsabers instance;
     private static final Supplier<List<ItemStack>> items = Suppliers.memoize(() ->
-            ModItems.ITEMS.getEntries().stream().filter(item -> !(item.get() instanceof LightsaberItem)).map(RegistryObject::get).map(ItemStack::new).toList());
+            ModItems.ITEMS.getEntries().stream().filter(item -> !(item.get() instanceof LightsaberItem)).filter(item -> !(item.get() instanceof BladeItem)).map(RegistryObject::get).map(ItemStack::new).toList());
 
     public static final RegistryObject<CreativeModeTab> lightsaber_tab = TABS.register(MODID, () -> CreativeModeTab.builder()
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
@@ -47,7 +49,7 @@ public class Lightsabers
                 itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
                 itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
                 itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
-                itemStack.getTag().putInt("color", 0xff000015);
+                itemStack.getTag().putInt("color", CrystalColor.MAGENTA.color);
 
                 output.accept(itemStack);
             })

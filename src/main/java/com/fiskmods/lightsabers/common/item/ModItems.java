@@ -26,6 +26,7 @@ public class ModItems
         testPommel = registerPommel("test_pommel", 0.116575f);
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     public static final RegistryObject<Item> blade = ITEMS.register("blade", BladeItem::new);
+    public static final RegistryObject<Item> testBlade = ITEMS.register("test_blade", BladeItem::new);
     private static RegistryObject<Item> registerPommel(String name, float height)
     {
         return ITEMS.register(name, () -> new LightsaberPommel(height));

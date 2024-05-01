@@ -2,8 +2,11 @@ package com.fiskmods.lightsabers.helper;
 
 import com.fiskmods.lightsabers.client.model.ModelLightsaberBlade;
 import com.fiskmods.lightsabers.client.render.hilt.HiltRenderer;
+import com.fiskmods.lightsabers.common.event.ClientEventHandler;
+import com.fiskmods.lightsabers.common.item.ItemLightsaberBase;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
+import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -228,7 +231,7 @@ public class ALRenderHelper
                 if (item != null)
                 {
                     IIcon icon = item.getIconFromDamage(0);
-                    Tessellator tessellator = Tessellator.instance;
+                    Tesselator tessellator = Tesselator.getInstance();
                     float f = mc.thePlayer.ticksExisted + ClientEventHandler.renderTick;
                     
                     if (icon == null)
