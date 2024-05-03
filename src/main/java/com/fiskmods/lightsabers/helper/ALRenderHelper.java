@@ -248,7 +248,7 @@ public class ALRenderHelper
                     GL11.glRotated((1 - 2 * MathHelper.sin(f / 2 + 3)), 1, 0, 0);
                     GL11.glRotatef(-90, 0, 1, 0);
                     GL11.glTranslatef(0.705F, 0.4F, 0.0625F / 2);
-                    GL11.glRotatef(135, 0, 0, 1);
+                    GL11.glRotatef(f135, 0, 0, 1);
                     GL11.glColor4f(1, 1, 1, 1);
                     ItemRenderer.renderItemIn2D(tessellator, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
                     GL11.glDisable(GL12.GL_RESCALE_NORMAL);

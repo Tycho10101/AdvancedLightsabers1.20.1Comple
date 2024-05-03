@@ -1,6 +1,7 @@
 package com.fiskmods.lightsabers.client.render.item;
 
 import com.fiskmods.lightsabers.Lightsabers;
+import com.fiskmods.lightsabers.client.model.ModelLightsaberBlade;
 import com.fiskmods.lightsabers.common.item.LightsaberPart;
 import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
@@ -30,6 +31,7 @@ import java.math.BigInteger;
 
 public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
+    private static final ModelLightsaberBlade LIGHTSABER_BLADE = new ModelLightsaberBlade(38);
     private ItemRenderer renderItem;
     private Tesselator tesselator = Tesselator.getInstance();
     public static final RenderItemLightsaber bewlr = new RenderItemLightsaber(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
@@ -55,7 +57,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     matrixStack.translate(0, -(getHeight(tag.getString("grip")) + getHeight(tag.getString("pommel"))
                             - getTotalHeight(tag) / 2) / 16, 0);
-                    renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn);
+                    renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
                     matrixStack.popPose();
                 }
 
@@ -77,7 +79,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
         return part.getHeight();
     }
 
-    private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
+    private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn,ItemStack itemStack)
     {
         float height = getTotalHeight(tag);
 
@@ -110,11 +112,30 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                 int color = tag.getInt("color");
                 matrixStack.pushPose();
                 matrixStack.scale( 1f, 1f, 1f );
-                renderBlade(CrystalColor.ARCTIC_BLUE.color, .5f, tag, buffer, matrixStack,  height);
+                //renderBlade(CrystalColor.ARCTIC_BLUE.color, .5f, tag, buffer, matrixStack,  height);
                 matrixStack.popPose();
                 matrixStack.pushPose();
-                matrixStack.scale( .95f, .95f, .95f );
-                renderBlade(0xffffff, 1f, tag, buffer, matrixStack, height);
+
+
+
+                VertexConsumer vc  = buffer.getBuffer(RenderType.lightning());
+                color = CrystalColor.ARCTIC_BLUE.color;
+                float[] rgb = new float[]{(color & 0xff) / 255f, ((color & 0xff00) >> 8) / 255f, ((color & 0xff0000) >> 16) / 255f};
+
+                float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
+                BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
+                for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,null)) {
+                    int[] i = quad.getVertices();
+                    System.out.println(i);
+                    //vc.putBulkData(matrixStack.last(), quad, r, g, b, .5F, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+                }
+                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(RenderType.cutout()), matrixStack);
+
+                matrixStack.popPose();
+                matrixStack.pushPose();
+                color = CrystalColor.ARCTIC_BLUE.color;
+                               matrixStack.scale( .95f, .95f, .95f );
+                //renderBlade(0xffffff, 1f, tag, buffer, matrixStack, height);
                 matrixStack.popPose();
             }
             default -> {}
@@ -131,12 +152,12 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
     private void renderBlade(int color, float alpha, CompoundTag tag, MultiBufferSource buffer, PoseStack matrixStack, float height)
     {
         float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
-        VertexConsumer vc  = buffer.getBuffer(RenderType.entityGlint());
+        VertexConsumer vc  = buffer.getBuffer(RenderType.solid());
         matrixStack.pushPose();
         BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
 
         matrixStack.translate(0, height, 0);
-        for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.cutout())) {
+        for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.solid())) {
             vc.putBulkData(matrixStack.last(), quad, r, g, b, alpha, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
         }
         vc.endVertex();
