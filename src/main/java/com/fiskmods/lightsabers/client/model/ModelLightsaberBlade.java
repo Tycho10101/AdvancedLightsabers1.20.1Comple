@@ -7,9 +7,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.model.data.ModelData;
 import org.lwjgl.opengl.GL11;
 
 
@@ -163,7 +169,7 @@ public class ModelLightsaberBlade //extends ModelBase
         GL11.glColor4f(1, 1, 1, 1);
     }
 
-    public void renderOuter(CompoundTag data, ItemStack itemstack, float[] rgb,VertexConsumer vc , PoseStack matrixStack)
+    public void renderOuter(CompoundTag data, ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm)
     {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
@@ -208,9 +214,12 @@ public class ModelLightsaberBlade //extends ModelBase
         }*/
 
         int layerCount = 5 * smooth;
-        float opacityMultiplier = 0.5f; //TODO = inWorld ? ModConfig.renderGlobalMultiplier * ModConfig.renderOpacityMultiplier : 1;
+        float opacityMultiplier = 1f; //TODO = inWorld ? ModConfig.renderGlobalMultiplier * ModConfig.renderOpacityMultiplier : 1;
+        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.translucentMovingBlock())) {
 
-        for (int i = 0; i < layerCount; ++i)
+            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], smooth, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+        }
+       /* for (int i = 0; i < layerCount; ++i)
         {
             vc = vc.color(rgb[0], rgb[1], rgb[2], f3 / smooth * opacityMultiplier);
             float scale = 1 + i * (width / smooth);
@@ -226,15 +235,16 @@ public class ModelLightsaberBlade //extends ModelBase
             }*/
 
             //blade.render(0.0625F);
-            matrixStack.popPose();
-        }
+            //matrixStack.popPose();
+        //}
         
 //        if (data.hasFocusingCrystal(FocusingCrystal.CHARGED))
 //        {
 //            renderLightning(data, itemstack, rgb, inWorld, true);
-//        }
+//        }*/
 
-        vc.color(1f, 1, 1, 1).endVertex();
+        //vc.color(1f, 1, 1, 1);
+                vc.endVertex();
 
     }
 

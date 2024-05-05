@@ -116,20 +116,13 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                 matrixStack.popPose();
                 matrixStack.pushPose();
 
-
-
-                VertexConsumer vc  = buffer.getBuffer(RenderType.lightning());
-                color = CrystalColor.ARCTIC_BLUE.color;
+                color = CrystalColor.RED.color;
                 float[] rgb = new float[]{(color & 0xff) / 255f, ((color & 0xff00) >> 8) / 255f, ((color & 0xff0000) >> 16) / 255f};
 
                 float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
                 BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
-                for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,null)) {
-                    int[] i = quad.getVertices();
-                    System.out.println(i);
-                    //vc.putBulkData(matrixStack.last(), quad, r, g, b, .5F, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
-                }
-                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(RenderType.cutout()), matrixStack);
+
+                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(RenderType.cutout()), matrixStack,m );
 
                 matrixStack.popPose();
                 matrixStack.pushPose();
