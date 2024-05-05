@@ -116,13 +116,15 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                 matrixStack.popPose();
                 matrixStack.pushPose();
 
-                color = CrystalColor.RED.color;
+                color = CrystalColor.ARCTIC_BLUE.color;
                 float[] rgb = new float[]{(color & 0xff) / 255f, ((color & 0xff00) >> 8) / 255f, ((color & 0xff0000) >> 16) / 255f};
 
-                float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
-                BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
+                //float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
+                BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
 
-                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(RenderType.cutout()), matrixStack,m );
+                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(
+                        RenderType.translucent()
+                ), matrixStack,m, combinedLightIn);
 
                 matrixStack.popPose();
                 matrixStack.pushPose();

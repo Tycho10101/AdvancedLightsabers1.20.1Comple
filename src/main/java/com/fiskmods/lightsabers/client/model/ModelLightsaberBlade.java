@@ -3,6 +3,7 @@ package com.fiskmods.lightsabers.client.model;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import com.fiskmods.lightsabers.Lightsabers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
@@ -39,7 +41,7 @@ public class ModelLightsaberBlade //extends ModelBase
         bladeLength = length;
     }
 
-    public void renderInner(LightsaberData data, ItemStack stack, float[] rgb, boolean inWorld, boolean isCrossguard, PoseStack matrixStack, VertexConsumer vc)
+    /*public void renderInner(LightsaberData data, ItemStack stack, float[] rgb, boolean inWorld, boolean isCrossguard, PoseStack matrixStack, VertexConsumer vc)
     {
         boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
 
@@ -167,9 +169,9 @@ public class ModelLightsaberBlade //extends ModelBase
         }
 
         GL11.glColor4f(1, 1, 1, 1);
-    }
+    }*/
 
-    public void renderOuter(CompoundTag data, ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm)
+    public void renderOuter(CompoundTag data, ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm, int combineLight)
     {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
@@ -215,9 +217,10 @@ public class ModelLightsaberBlade //extends ModelBase
 
         int layerCount = 5 * smooth;
         float opacityMultiplier = 1f; //TODO = inWorld ? ModConfig.renderGlobalMultiplier * ModConfig.renderOpacityMultiplier : 1;
-        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.translucentMovingBlock())) {
+        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.entityCutoutNoCull(new ResourceLocation(Lightsabers
+                .MODID, "item/lightsaber/blade")))) {
 
-            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], smooth, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
+            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], smooth, combineLight, OverlayTexture.NO_OVERLAY, false);
         }
        /* for (int i = 0; i < layerCount; ++i)
         {
@@ -248,7 +251,7 @@ public class ModelLightsaberBlade //extends ModelBase
 
     }
 
-    public void renderCrossguardOuter(LightsaberData data, ItemStack itemstack, float[] rgb, boolean inWorld)
+    /*public void renderCrossguardOuter(LightsaberData data, ItemStack itemstack, float[] rgb, boolean inWorld)
     {
         boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
@@ -317,7 +320,7 @@ public class ModelLightsaberBlade //extends ModelBase
 //        }
 
         GL11.glColor4f(1, 1, 1, 1);
-    }
+    } */
     
 //    private void renderLightning(LightsaberData data, ItemStack itemstack, float[] rgb, boolean inWorld, boolean isCrossguard)
 //    {
