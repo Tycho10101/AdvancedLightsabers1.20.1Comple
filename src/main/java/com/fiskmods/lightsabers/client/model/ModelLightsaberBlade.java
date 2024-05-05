@@ -217,10 +217,11 @@ public class ModelLightsaberBlade //extends ModelBase
 
         int layerCount = 5 * smooth;
         float opacityMultiplier = 1f; //TODO = inWorld ? ModConfig.renderGlobalMultiplier * ModConfig.renderOpacityMultiplier : 1;
-        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.entityCutoutNoCull(new ResourceLocation(Lightsabers
-                .MODID, "item/lightsaber/blade")))) {
+        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                RenderType.eyes(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+        )) {
 
-            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], smooth, combineLight, OverlayTexture.NO_OVERLAY, false);
+            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], .25f, combineLight, OverlayTexture.NO_OVERLAY, true);
         }
        /* for (int i = 0; i < layerCount; ++i)
         {

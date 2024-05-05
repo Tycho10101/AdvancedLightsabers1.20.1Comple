@@ -49,7 +49,7 @@ public class Lightsabers
                 itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
                 itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
                 itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
-                itemStack.getTag().putInt("color", CrystalColor.MAGENTA.color);
+                itemStack.getTag().putInt("color", CrystalColor.RED.color);
 
                 output.accept(itemStack);
             })

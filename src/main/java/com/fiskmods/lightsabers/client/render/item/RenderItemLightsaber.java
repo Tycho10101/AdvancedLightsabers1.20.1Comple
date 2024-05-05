@@ -111,26 +111,25 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
                 int color = tag.getInt("color");
                 matrixStack.pushPose();
-                matrixStack.scale( 1f, 1f, 1f );
-                //renderBlade(CrystalColor.ARCTIC_BLUE.color, .5f, tag, buffer, matrixStack,  height);
-                matrixStack.popPose();
-                matrixStack.pushPose();
 
-                color = CrystalColor.ARCTIC_BLUE.color;
-                float[] rgb = new float[]{(color & 0xff) / 255f, ((color & 0xff00) >> 8) / 255f, ((color & 0xff0000) >> 16) / 255f};
-
-                //float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
+                //color = CrystalColor.RED.color;
+                float[] rgb = new float[]{((color & 0xff0000) >> 16) / 255f ,((color & 0xff00) >> 8) / 255f, (color & 0xff) / 255f };
+                matrixStack.scale( 1.1f, .95f, 1.1f  );
+                matrixStack.translate(0,height *1.05,0);
                 BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
-
                 LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(
-                        RenderType.translucent()
+                        RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
+                ), matrixStack,m, combinedLightIn);
+                matrixStack.popPose();
+
+                matrixStack.pushPose();
+                matrixStack.scale( .5f, .9f, .5f);
+                matrixStack.translate(0,height *1.1,0);
+                LIGHTSABER_BLADE.renderOuter(tag, itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
+                        RenderType.solid()
+                        //RenderType.entitySolid(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
                 ), matrixStack,m, combinedLightIn);
 
-                matrixStack.popPose();
-                matrixStack.pushPose();
-                color = CrystalColor.ARCTIC_BLUE.color;
-                               matrixStack.scale( .95f, .95f, .95f );
-                //renderBlade(0xffffff, 1f, tag, buffer, matrixStack, height);
                 matrixStack.popPose();
             }
             default -> {}
