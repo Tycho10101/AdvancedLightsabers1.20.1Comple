@@ -15,16 +15,19 @@ public class ModItems
 
 
     public static final RegistryObject<Item>
-            furyPommel = registerPommel("fury_pommel",8.3F),
-            furyBody = registerBody("fury_body", 16),
-            furySwitch = registerSwitch("fury_switch",5.6F),
-            furyEmitter = registerEmitter("fury_emitter", 19F);
+        taronEmitter = registerEmitter("taron_emitter", .402f),
+        taronGrip = registerBody("taron_grip", 0.542363f),
+        taronSwitch = registerSwitch("taron_switch", 0.204343f),
+        taronPommel = registerPommel("taron_pommel", 0.29844f);
     public static final RegistryObject<Item>
         testEmitter = registerEmitter("test_emitter", 0.180303f),
         testSwitch = registerSwitch("test_switch", 0.182134f),
         testGrip = registerBody("test_grip", 0.47213f),
         testPommel = registerPommel("test_pommel", 0.116575f);
+
+
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
+    public static final RegistryObject<Item> doubleLightsaber = ITEMS.register("lightsaber_double", LightsaberDoubleItem::new);
     public static final RegistryObject<Item> blade = ITEMS.register("blade", BladeItem::new);
     public static final RegistryObject<Item> testBlade = ITEMS.register("test_blade", BladeItem::new);
     private static RegistryObject<Item> registerPommel(String name, float height)

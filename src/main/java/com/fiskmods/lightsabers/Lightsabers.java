@@ -42,16 +42,33 @@ public class Lightsabers
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
-                ItemStack itemStack = new ItemStack(ModItems.lightsaber.get());
-                itemStack.setTag(new CompoundTag());
-                itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
-                itemStack.getTag().putString("grip", ModItems.testGrip.getId().toString());
-                itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
-                itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
-                itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
-                itemStack.getTag().putInt("color", CrystalColor.RED.color);
+                ItemStack testSaber = new ItemStack(ModItems.lightsaber.get());
+                testSaber.setTag(new CompoundTag());
+                testSaber.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
+                testSaber.getTag().putString("grip", ModItems.testGrip.getId().toString());
+                testSaber.getTag().putString("pommel", ModItems.testPommel.getId().toString());
+                testSaber.getTag().putString("switch", ModItems.testSwitch.getId().toString());
+                testSaber.getTag().putString("type", LightsaberType.SINGLE.toString());
+                testSaber.getTag().putInt("color", CrystalColor.DEEP_BLUE.color);
+                output.accept(testSaber);
 
-                output.accept(itemStack);
+                ItemStack taron = new ItemStack(ModItems.lightsaber.get());
+                taron.setTag(new CompoundTag());
+                taron.getTag().putString("emitter", ModItems.taronEmitter.getId().toString());
+                taron.getTag().putString("grip", ModItems.taronGrip.getId().toString());
+                taron.getTag().putString("pommel", ModItems.taronPommel.getId().toString());
+                taron.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
+                taron.getTag().putString("type", LightsaberType.SINGLE.toString());
+                taron.getTag().putInt("color", CrystalColor.RED.color);
+                output.accept(taron);
+
+
+                ItemStack doubleSaber = new ItemStack(ModItems.doubleLightsaber.get());
+                doubleSaber.setTag(new CompoundTag());
+                doubleSaber.getTag().putString("type", LightsaberType.DOUBLE.toString());
+                doubleSaber.getTag().put("upper", taron.getTag());
+                doubleSaber.getTag().put("lower", testSaber.getTag());
+                output.accept(doubleSaber);
             })
             .build());
 

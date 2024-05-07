@@ -171,7 +171,7 @@ public class ModelLightsaberBlade //extends ModelBase
         GL11.glColor4f(1, 1, 1, 1);
     }*/
 
-    public void renderOuter(CompoundTag data, ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm, int combineLight)
+    public void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm, int combineLight)
     {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;

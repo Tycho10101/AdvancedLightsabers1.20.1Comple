@@ -56,12 +56,13 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
                     matrixStack.pushPose();
                     matrixStack.translate(0, -(getHeight(tag.getString("grip")) + getHeight(tag.getString("pommel"))
-                            - getTotalHeight(tag) / 2) / 16, 0);
+                            - getTotalHeight(tag) / 2), 0);
                     renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
                     matrixStack.popPose();
                 }
 
                 case DOUBLE -> {
+                    renderDouble(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
                 }
             }
 
@@ -78,6 +79,128 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
         LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
         return part.getHeight();
     }
+
+    private void renderDouble(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn,ItemStack itemStack)
+    {
+
+
+
+        CompoundTag lowerTag = tag.getCompound("lower");
+        float lowerHeight = getTotalHeight(lowerTag) - getHeight(lowerTag.getString("pommel"));
+
+        CompoundTag upperTag = tag.getCompound("upper");
+        float upperHeight = getTotalHeight(upperTag) - getHeight(upperTag.getString("pommel"));
+
+        //matrixStack.translate(0, -((upperHeight + lowerHeight) / 2), 0);
+
+
+        matrixStack.pushPose();
+        matrixStack.mulPose(Axis.XN.rotationDegrees(180));
+        switch (itemDisplayContext)
+        {
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,-0.5, -.6);
+            case FIRST_PERSON_RIGHT_HAND -> {
+                matrixStack.translate(.75,-.1,0);
+            }
+            case GUI -> {
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
+                matrixStack.scale(0.7f, 0.7f, 0.7f);
+                matrixStack.translate(-0.0,-1,-0.5);
+            }
+            case FIXED -> {
+
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
+                //matrixStack.mulPose(Axis.YP.rotationDegrees(180));
+                matrixStack.translate(-.7,-0.5,-0.5);
+            }
+            case GROUND -> {
+                matrixStack.translate(.0,0.5,0.5);
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
+            }
+
+        }
+        switch (itemDisplayContext)
+        {
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND,FIRST_PERSON_LEFT_HAND,FIRST_PERSON_RIGHT_HAND -> {
+
+
+                int color = lowerTag.getInt("color");
+                float[] rgb = new float[]{((color & 0xff0000) >> 16) / 255f ,((color & 0xff00) >> 8) / 255f, (color & 0xff) / 255f };
+
+                //render outer blade
+                matrixStack.pushPose();
+                matrixStack.scale( 1.4f, 1f, 1.4f  );
+                matrixStack.translate(0,lowerHeight *1.05,0);
+                BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
+                LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
+                        RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
+                ), matrixStack,m, combinedLightIn);
+                matrixStack.popPose();
+
+
+                //render inner blade
+                matrixStack.pushPose();
+                matrixStack.scale( .5f, .95f, .5f);
+                matrixStack.translate(0,lowerHeight *1.05,0);
+                LIGHTSABER_BLADE.renderOuter( itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
+                        RenderType.solid()
+                        //RenderType.entitySolid(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+                ), matrixStack,m, combinedLightIn);
+
+                matrixStack.popPose();
+            }
+            default -> {}
+        }
+
+        lowerHeight = renderPart(lowerTag.getString("emitter"),lowerHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        lowerHeight = renderPart(lowerTag.getString("switch"),lowerHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        lowerHeight = renderPart(lowerTag.getString("grip"),lowerHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+
+
+        matrixStack.mulPose(Axis.XN.rotationDegrees(180));
+
+        switch (itemDisplayContext)
+        {
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND,FIRST_PERSON_LEFT_HAND,FIRST_PERSON_RIGHT_HAND -> {
+
+
+                int color = upperTag.getInt("color");
+                float[] rgb = new float[]{((color & 0xff0000) >> 16) / 255f ,((color & 0xff00) >> 8) / 255f, (color & 0xff) / 255f };
+
+                //render outer blade
+                matrixStack.pushPose();
+                matrixStack.scale( 1.4f, 1f, 1.4f  );
+                matrixStack.translate(0,upperHeight *1.05,0);
+                BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
+                LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
+                        RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
+                ), matrixStack,m, combinedLightIn);
+                matrixStack.popPose();
+
+
+                //render inner blade
+                matrixStack.pushPose();
+                matrixStack.scale( .5f, .95f, .5f);
+                matrixStack.translate(0,upperHeight *1.05,0);
+                LIGHTSABER_BLADE.renderOuter( itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
+                        RenderType.solid()
+                        //RenderType.entitySolid(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+                ), matrixStack,m, combinedLightIn);
+
+                matrixStack.popPose();
+            }
+            default -> {}
+        }
+
+        upperHeight = renderPart(upperTag.getString("emitter"),upperHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        upperHeight = renderPart(upperTag.getString("switch"),upperHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+        upperHeight = renderPart(upperTag.getString("grip"),upperHeight, (byte) 1,itemDisplayContext,matrixStack,buffer,combinedLightIn);
+
+        matrixStack.popPose();
+
+    }
+
+
 
     private void renderSingle(CompoundTag tag,ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn,ItemStack itemStack)
     {
@@ -110,22 +233,24 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
 
                 int color = tag.getInt("color");
-                matrixStack.pushPose();
 
-                //color = CrystalColor.RED.color;
+                //render outer blade
+                matrixStack.pushPose();
                 float[] rgb = new float[]{((color & 0xff0000) >> 16) / 255f ,((color & 0xff00) >> 8) / 255f, (color & 0xff) / 255f };
-                matrixStack.scale( 1.1f, .95f, 1.1f  );
+                matrixStack.scale( 1.4f, 1f, 1.4f  );
                 matrixStack.translate(0,height *1.05,0);
                 BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
-                LIGHTSABER_BLADE.renderOuter(tag, itemStack, rgb, buffer.getBuffer(
+                LIGHTSABER_BLADE.renderOuter( itemStack, rgb, buffer.getBuffer(
                         RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
                 ), matrixStack,m, combinedLightIn);
                 matrixStack.popPose();
 
+
+                //render inner blade
                 matrixStack.pushPose();
-                matrixStack.scale( .5f, .9f, .5f);
-                matrixStack.translate(0,height *1.1,0);
-                LIGHTSABER_BLADE.renderOuter(tag, itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
+                matrixStack.scale( .5f, .95f, .5f);
+                matrixStack.translate(0,height *1.05,0);
+                LIGHTSABER_BLADE.renderOuter( itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
                         RenderType.solid()
                         //RenderType.entitySolid(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
                 ), matrixStack,m, combinedLightIn);
@@ -143,20 +268,6 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
         matrixStack.popPose();
     }
 
-    private void renderBlade(int color, float alpha, CompoundTag tag, MultiBufferSource buffer, PoseStack matrixStack, float height)
-    {
-        float b = (color & 0xff)/255f, g = ((color & 0xff00) >> 8 )/255f,  r = ((color & 0xff0000) >> 16) / 255f;
-        VertexConsumer vc  = buffer.getBuffer(RenderType.solid());
-        matrixStack.pushPose();
-        BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1 );
-
-        matrixStack.translate(0, height, 0);
-        for (BakedQuad quad : m.getQuads(null, null, RandomSource.create(), ModelData.EMPTY, RenderType.solid())) {
-            vc.putBulkData(matrixStack.last(), quad, r, g, b, alpha, 0x00F000F0, OverlayTexture.NO_OVERLAY, true);
-        }
-        vc.endVertex();
-        matrixStack.popPose();
-    }
     private float renderPart(String name,float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn)
     {
         matrixStack.pushPose();
