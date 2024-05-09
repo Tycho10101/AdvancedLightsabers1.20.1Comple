@@ -1,40 +1,33 @@
 package com.fiskmods.lightsabers.common.block;
 
-import java.util.List;
-import java.util.Random;
 
-import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEventListener;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-
-public class BlockLightsaberForge extends Block implements ITileEntityProvider
+public class BlockLightsaberForge extends Block implements EntityBlock
 {
     public static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     
     public Block block;
 
-    public BlockLightsaberForge(Block block)
-    {
-        super(Material.iron);
-        setHardness(1.5F);
-        setResistance(100.0F);
-        setHarvestLevel("pickaxe", 0);
-        setStepSound(soundTypeMetal);
-        this.block = block;
+    public BlockLightsaberForge(Properties p_49795_) {
+        super(BlockBehaviour.Properties.of().strength(1.0F, 10.0F));
     }
 
     @Override
@@ -51,156 +44,23 @@ public class BlockLightsaberForge extends Block implements ITileEntityProvider
         }
     }
 
+    @Nullable
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
+    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+        return EntityBlock.super.getTicker(p_153212_, p_153213_, p_153214_);
     }
 
     @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (!worldIn.isClientSide) {
 
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
-    {
-        setBlockBoundsBasedOnState(world, x, y, z);
-        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        setBlockBoundsBasedOnState(world, x, y, z);
-        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-    {
-        setBounds(world.getBlockMetadata(x, y, z));
-    }
-
-    public void setBounds(int metadata)
-    {
-        int direction = getDirection(metadata);
-        int i = isBlockSideOfPanel(metadata) ? 0 : 1;
-        float f = 0.0625F * 13;
-
-        if (direction == 0)
-        {
-            setBlockBounds(-i, 0, 0, 2 - i, f, 1);
         }
-        else if (direction == 1)
-        {
-            setBlockBounds(0, 0, -i, 1, f, 2 - i);
-        }
-        else if (direction == 2)
-        {
-            setBlockBounds(-1 + i, 0, 0, 1 + i, f, 1);
-        }
-        else if (direction == 3)
-        {
-            setBlockBounds(0, 0, -1 + i, 1, f, 1 + i);
-        }
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-    {
-        int metadata = world.getBlockMetadata(x, y, z);
-        int direction = getDirection(metadata);
-
-        if (isBlockSideOfPanel(metadata))
-        {
-            if (world.getBlock(x - DIRECTIONS[direction][0], y, z - DIRECTIONS[direction][1]) != this)
-            {
-                world.setBlockToAir(x, y, z);
-            }
-        }
-        else if (world.getBlock(x + DIRECTIONS[direction][0], y, z + DIRECTIONS[direction][1]) != this)
-        {
-            world.setBlockToAir(x, y, z);
-        }
-    }
-
-    @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta)
-    {
-        return true;
-    }
-
-    @Override
-    public Item getItemDropped(int metadata, Random rand, int i)
-    {
-        return /* isBlockSideOfPanel(metadata) ? Item.getItemById(0) : */super.getItemDropped(metadata, rand, i);
-    }
-
-    public static boolean isBlockSideOfPanel(int metadata)
-    {
-        return metadata >= 4;
-    }
-
-    public static int getDirection(int metadata)
-    {
-        return metadata % 4;
-    }
-
-    @Override
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int metadata, float f, int i)
-    {
-//		if (isBlockSideOfPanel(metadata))
-        {
-            super.dropBlockAsItemWithChance(world, x, y, z, metadata, f, 0);
-        }
-    }
-
-    @Override
-    public int getMobilityFlag()
-    {
-        return 2;
-    }
-
-    @Override
-    public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
-    {
-        if (player.capabilities.isCreativeMode && isBlockSideOfPanel(metadata))
-        {
-            int dir = getDirection(metadata);
-
-            x += DIRECTIONS[dir][0];
-            z += DIRECTIONS[dir][1];
-
-            if (world.getBlock(x, y, z) == this)
-            {
-                world.setBlockToAir(x, y, z);
-            }
-        }
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata)
-    {
-        return new TileEntityLightsaberForge();
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        return block.getIcon(side, meta);
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister par1IIconRegister)
-    {
+        return InteractionResult.SUCCESS;
     }
 }
