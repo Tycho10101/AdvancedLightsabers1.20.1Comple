@@ -10,6 +10,7 @@ import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -42,42 +43,64 @@ public class Lightsabers
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
-                ItemStack itemStack = new ItemStack(ModItems.lightsaber.get());
-                itemStack.setTag(new CompoundTag());
-                itemStack.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
-                itemStack.getTag().putString("grip", ModItems.testGrip.getId().toString());
-                itemStack.getTag().putString("pommel", ModItems.testPommel.getId().toString());
-                itemStack.getTag().putString("switch", ModItems.testSwitch.getId().toString());
-                itemStack.getTag().putString("type", LightsaberType.SINGLE.toString());
-                itemStack.getTag().putInt("color", CrystalColor.MAGENTA.color);
 
-                output.accept(itemStack);
+
+                ItemStack testSaber = new ItemStack(ModItems.lightsaber.get());
+                testSaber.setTag(new CompoundTag());
+                testSaber.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
+                testSaber.getTag().putString("grip", ModItems.testGrip.getId().toString());
+                testSaber.getTag().putString("pommel", ModItems.testPommel.getId().toString());
+                testSaber.getTag().putString("switch", ModItems.testSwitch.getId().toString());
+                testSaber.getTag().putString("type", LightsaberType.SINGLE.toString());
+                testSaber.getTag().putInt("color", CrystalColor.DEEP_BLUE.color);
+                testSaber.getTag().putBoolean("active", false);
+                output.accept(testSaber);
+
+                ItemStack taron = new ItemStack(ModItems.lightsaber.get());
+                taron.setTag(new CompoundTag());
+                taron.getTag().putString("emitter", ModItems.taronEmitter.getId().toString());
+                taron.getTag().putString("grip", ModItems.taronGrip.getId().toString());
+                taron.getTag().putString("pommel", ModItems.taronPommel.getId().toString());
+                taron.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
+                taron.getTag().putString("type", LightsaberType.SINGLE.toString());
+                taron.getTag().putInt("color", CrystalColor.RED.color);
+                taron.getTag().putBoolean("active", false);
+
+                output.accept(taron);
+
+                ItemStack t = new ItemStack(ModItems.lightsaber.get());
+                t.setTag(new CompoundTag());
+                t.getTag().putString("emitter", ModItems.taronEmitter.getId().toString());
+                t.getTag().putString("grip", ModItems.testGrip.getId().toString());
+                t.getTag().putString("pommel", ModItems.testPommel.getId().toString());
+                t.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
+                t.getTag().putString("type", LightsaberType.SINGLE.toString());
+                t.getTag().putInt("color", CrystalColor.YELLOW.color);
+                t.getTag().putBoolean("active", false);
+                output.accept(t);
+
+                output.accept(registerDoubleSaber(taron, testSaber));
+                output.accept(registerDoubleSaber(taron, taron));
             })
             .build());
 
 
 
+
+    private static ItemStack registerDoubleSaber(ItemStack upper, ItemStack lower)
+    {
+        ItemStack itemStack = new ItemStack(ModItems.doubleLightsaber.get());
+        itemStack.setTag(new CompoundTag());
+        itemStack.getTag().putString("type", LightsaberType.DOUBLE.toString());
+        itemStack.getTag().put("upper", upper.getTag());
+        itemStack.getTag().put("lower", lower.getTag());
+        return itemStack;
+    }
+
 	public static Lightsabers getInstance() {
 		return instance;
 	}
-    
-    /**
-     * Proxy -> LifecycleEvents (FMLConstructModEvent, FMLClientSetupEvent, FMLDedicatedServerSetupEvent, FMLCommonSetupEvent)
-    @SidedProxy(clientSide = "com.fiskmods.lightsabers.common.proxy.ClientProxy", serverSide = "com.fiskmods.lightsabers.common.proxy.CommonProxy")
-    public static CommonProxy proxy;
-	**/
-    
-    /**
-    public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MODID)
-    {
-        @Override
-        public Item getTabIconItem()
-        {
-            return ModItems.lightsaber;
-        }
-    };
-	**/
-    
+
     public static boolean isBattlegearLoaded;
     public static boolean isDynamicLightsLoaded;
     
@@ -109,43 +132,5 @@ public class Lightsabers
 
     }
     
-    /**
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        FiskUtils.hook(Hook.PREINIT);
-        
-        isBattlegearLoaded = Loader.isModLoaded(ALConstants.BATTLEGEAR);
-        isDynamicLightsLoaded = Loader.isModLoaded(ALConstants.DYNAMIC_LIGHTS);
 
-        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-        config.load();
-        ModConfig.load(config);
-
-        if (config.hasChanged())
-        {
-            config.save();
-        }
-        
-        proxy.preInit();
-    }
-
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        FiskUtils.hook(Hook.INIT);
-        proxy.init();
-    }
-    
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        FiskUtils.hook(Hook.POSTINIT);
-    }
-
-    @EventHandler
-    public void serverStart(FMLServerStartingEvent event)
-    {
-        event.registerServerCommand(new CommandForce());
-    }**/
 }

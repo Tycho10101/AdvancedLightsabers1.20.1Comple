@@ -225,18 +225,9 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
                     return false;
                 }
             }
-            
             return true;
         }
-        
-        /**
-        @Override
-        @OnlyIn(Dist.CLIENT)
-        public IIcon getBackgroundIconIndex()
-        {
-            return getSlotIndex() == 6 || getSlotIndex() == 7 ? ItemFocusingCrystal.outlineIcon : null;
-        }
-        **/
+
     }
     
     private class Output extends Slot
@@ -264,7 +255,6 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
         	net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(player, itemstack, this.container);
         	
         	itemstack.onCraftedBy(worldObj, player, 1);
-            //onCrafting(itemstack);
 
             for (int i = 0; i < craftMatrix.getContainerSize(); ++i)
             {
@@ -275,8 +265,8 @@ public class ContainerLightsaberForge extends ContainerBasic<TileEntityLightsabe
                     craftMatrix.removeItem(i, 1);
                 }
             }
-            
-            //ItemLightsaberBase.setActive(itemstack, false);
+            itemstack.getTag().putBoolean("active", false);
+
         }
     }
 }
