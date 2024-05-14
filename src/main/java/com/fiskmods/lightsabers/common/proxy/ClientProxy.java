@@ -33,13 +33,8 @@ import com.fiskmods.lightsabers.common.event.ClientEventHandlerBG;
 import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.keybinds.ALKeyBinds;
 import com.fiskmods.lightsabers.common.lightsaber.PartType;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityCrystal;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityDisassemblyStation;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityHolocron;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberStand;
-import com.fiskmods.lightsabers.common.tileentity.TileEntitySithCoffin;
-import com.fiskmods.lightsabers.common.tileentity.TileEntitySithStoneCoffin;
+import com.fiskmods.lightsabers.common.tileentity.*;
+import com.fiskmods.lightsabers.common.tileentity.LightsaberForgeBlockEntity;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -96,7 +91,7 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityForceLightning.class, new RenderForceLightning());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrystal.class, new RenderCrystal());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightsaberForge.class, new RenderLightsaberForge());
+        ClientRegistry.bindTileEntitySpecialRenderer(LightsaberForgeBlockEntity.class, new RenderLightsaberForge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightsaberStand.class, new RenderLightsaberStand());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDisassemblyStation.class, new RenderDisassemblyStation());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySithCoffin.class, new RenderSithCoffin());

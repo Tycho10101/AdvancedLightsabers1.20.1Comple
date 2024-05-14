@@ -2,14 +2,11 @@ package com.fiskmods.lightsabers.client.gui;
 
 import com.fiskmods.lightsabers.common.block.BlockLightsaberForge;
 import com.fiskmods.lightsabers.common.block.ModBlocks;
-import com.fiskmods.lightsabers.common.container.ContainerCrystalPouch;
-import com.fiskmods.lightsabers.common.container.ContainerDisassemblyStation;
-import com.fiskmods.lightsabers.common.container.ContainerLightsaberForge;
-import com.fiskmods.lightsabers.common.container.ContainerSithCoffin;
-import com.fiskmods.lightsabers.common.container.InventoryCrystalPouch;
+import com.fiskmods.lightsabers.common.container.*;
+import com.fiskmods.lightsabers.common.container.LightsaberForgeContainer;
+import com.fiskmods.lightsabers.common.tileentity.LightsaberForgeBlockEntity;
 import com.fiskmods.lightsabers.common.tileentity.TileEntityDisassemblyStation;
 import com.fiskmods.lightsabers.common.tileentity.TileEntityHolocron;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
 import com.fiskmods.lightsabers.common.tileentity.TileEntitySithCoffin;
 
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -27,7 +24,7 @@ public class GuiHandlerAL implements IGuiHandler
         switch (id)
         {
         case 0:
-            return world.getBlock(x, y, z) instanceof BlockLightsaberForge ? new ContainerLightsaberForge(player.inventory, (TileEntityLightsaberForge) tile) : null;
+            return world.getBlock(x, y, z) instanceof BlockLightsaberForge ? new LightsaberForgeContainer(player.inventory, (LightsaberForgeBlockEntity) tile) : null;
         case 1:
             return world.getBlock(x, y, z) == ModBlocks.sithCoffin ? new ContainerSithCoffin(player.inventory, (TileEntitySithCoffin) tile) : null;
         case 3:
@@ -47,7 +44,7 @@ public class GuiHandlerAL implements IGuiHandler
         switch (id)
         {
         case 0:
-            return world.getBlock(x, y, z) instanceof BlockLightsaberForge ? new GuiLightsaberForge(player.inventory, (TileEntityLightsaberForge) tile) : null;
+            return world.getBlock(x, y, z) instanceof BlockLightsaberForge ? new LightsaberForgeScreen(player.inventory, (LightsaberForgeBlockEntity) tile) : null;
         case 1:
             return world.getBlock(x, y, z) == ModBlocks.sithCoffin ? new GuiSithCoffin(player.inventory, (TileEntitySithCoffin) tile) : null;
         case 2:

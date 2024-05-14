@@ -1,8 +1,7 @@
 package com.fiskmods.lightsabers.client.render.item;
 
+import com.fiskmods.lightsabers.common.tileentity.LightsaberForgeBlockEntity;
 import org.lwjgl.opengl.GL11;
-
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -12,7 +11,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class RenderItemLightsaberForge implements IItemRenderer
 {
-    private final TileEntity tile = new TileEntityLightsaberForge();
+    private final TileEntity tile = new LightsaberForgeBlockEntity();
     
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)

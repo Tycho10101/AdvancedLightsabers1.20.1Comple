@@ -1,12 +1,12 @@
 package com.fiskmods.lightsabers.client.render.tile;
 
+import com.fiskmods.lightsabers.common.tileentity.LightsaberForgeBlockEntity;
 import org.lwjgl.opengl.GL11;
 
 import com.fiskmods.lightsabers.Lightsabers;
 import com.fiskmods.lightsabers.client.model.tile.ModelLightsaberForge;
 import com.fiskmods.lightsabers.common.block.BlockLightsaberForge;
 import com.fiskmods.lightsabers.common.block.ModBlocks;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +18,7 @@ public class RenderLightsaberForge extends TileEntitySpecialRenderer
     private final ResourceLocation textureDark = new ResourceLocation(Lightsabers.MODID, "textures/models/lightsaber_forge_dark.png");
     private final ModelLightsaberForge model = new ModelLightsaberForge();
 
-    public void render(TileEntityLightsaberForge tile, double x, double y, double z, float partialTicks)
+    public void render(LightsaberForgeBlockEntity tile, double x, double y, double z, float partialTicks)
     {
         int metadata = 0;
 
@@ -44,6 +44,6 @@ public class RenderLightsaberForge extends TileEntitySpecialRenderer
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float partialTicks)
     {
-        render((TileEntityLightsaberForge) tileentity, x, y, z, partialTicks);
+        render((LightsaberForgeBlockEntity) tileentity, x, y, z, partialTicks);
     }
 }

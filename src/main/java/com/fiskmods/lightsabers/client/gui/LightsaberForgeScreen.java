@@ -1,54 +1,39 @@
 package com.fiskmods.lightsabers.client.gui;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.fiskmods.lightsabers.Lightsabers;
-import com.fiskmods.lightsabers.common.container.ContainerLightsaberForge;
-import com.fiskmods.lightsabers.common.container.InventoryLightsaberForge;
-import com.fiskmods.lightsabers.common.hilt.Hilt;
-import com.fiskmods.lightsabers.common.item.ItemCrystal;
-import com.fiskmods.lightsabers.common.item.ItemLightsaberPart;
-import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
-import com.fiskmods.lightsabers.common.lightsaber.PartType;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
-import com.fiskmods.lightsabers.helper.ALRenderHelper;
-import com.google.common.collect.Iterables;
-
+import com.fiskmods.lightsabers.common.container.LightsaberForgeContainer;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.ContainerScreen;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.CraftingMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+
 @OnlyIn(Dist.CLIENT)
-public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsaberForge>
+public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberForgeContainer>
 {
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation(Lightsabers.MODID, "textures/gui/container/lightsaber_forge.png");
     
-    public GuiLightsaberForge(ContainerLightsaberForge menu, Inventory inventoryPlayer, Component component /*, TileEntityLightsaberForge tile */)
+    public LightsaberForgeScreen(LightsaberForgeContainer menu, Inventory inventoryPlayer, Component component /*, TileEntityLightsaberForge tile */)
     {
         super(menu, inventoryPlayer, component);
-        this.height = 196;
+        this.imageWidth = 175;
+        this.imageHeight = 195;
+        this.height = 195;
+        this.init();
+
     }
     
     @Override
-    protected void renderLabels(GuiGraphics p_281635_, int mouseX, int mouseY)
-    {
-        String s = I18n.format("gui.lightsaber_forge");
+    protected void renderLabels(GuiGraphics p_281635_, int mouseX, int mouseY) {
+        /*String s = I18n.format("gui.lightsaber_forge");
         fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 94, 4210752);
         
-        ContainerLightsaberForge container = (ContainerLightsaberForge) inventorySlots;
+        LightsaberForgeContainer container = (LightsaberForgeContainer) inventorySlots;
         InventoryLightsaberForge inventory = container.craftMatrix;
         LightsaberData data = inventory.result;
 
@@ -70,17 +55,24 @@ public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsa
             }
             
             GL11.glTranslatef(0, 0, -300);
-        }
+        }*/
     }
 
     @Override
-    protected void renderBg(GuiGraphics p_283065_, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics gui, float partialTicks, int mouseX, int mouseY)
     {
-        GL11.glColor4f(1, 1, 1, 1);
         this.minecraft.getTextureManager().bindForSetup(GUI_TEXTURES);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        ContainerLightsaberForge container = (ContainerLightsaberForge) inventorySlots;
+        gui.blit(GUI_TEXTURES, this.leftPos, this.topPos, 0, 0, imageWidth, 195);
+
+
+        //gui.drawString(font, "The Cat is a lie", xPos, yPos, 0x040404, false);
+        //drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        /*L11.glColor4f(1, 1, 1, 1);
+
+
+        LightsaberForgeContainer container = (LightsaberForgeContainer) inventorySlots;
         InventoryLightsaberForge inventory = container.craftMatrix;
         LightsaberData data = inventory.result;
 
@@ -88,7 +80,7 @@ public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsa
         {
             float spin = mc.thePlayer.ticksExisted + partialTicks;
 
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            /*GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glPushMatrix();
@@ -145,14 +137,14 @@ public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsa
                 {
                     if (inventory.getStackInSlot(slot) == null)
                     {
-                        int[] pos = ContainerLightsaberForge.SLOTS[slot];
+                        int[] pos = LightsaberForgeContainer.SLOTS[slot];
                         itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ItemLightsaberPart.create(PartType.values()[slot], hilt), guiLeft + pos[0], guiTop + pos[1]);
                     }
                 }
                 
                 if (inventory.getStackInSlot(5) == null)
                 {
-                    int[] pos = ContainerLightsaberForge.SLOTS[5];
+                    int[] pos = LightsaberForgeContainer.SLOTS[5];
                     
                     GL11.glColor4f(1, 1, 1, 0.25F);
                     itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ItemCrystal.create(hilt.getColor()), guiLeft + pos[0], guiTop + pos[1]);
@@ -162,6 +154,6 @@ public class GuiLightsaberForge extends AbstractContainerScreen<ContainerLightsa
             itemRender.renderWithColor = prevColor;
             GL11.glColor4f(1, 1, 1, 1);
             ALRenderHelper.finishRenderItemIntoGUI();
-        }
+        }*/
     }
 }

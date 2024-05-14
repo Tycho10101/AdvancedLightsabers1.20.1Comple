@@ -1,26 +1,40 @@
 package com.fiskmods.lightsabers.common.block;
 
-import com.fiskmods.lightsabers.common.item.ItemCrystal;
-import com.fiskmods.lightsabers.common.item.ItemDisassemblyTable;
-import com.fiskmods.lightsabers.common.item.ItemForcestone;
-import com.fiskmods.lightsabers.common.item.ItemHolocron;
-import com.fiskmods.lightsabers.common.item.ItemLightsaberForge;
-import com.fiskmods.lightsabers.common.item.ItemSithCoffin;
-import com.fiskmods.lightsabers.common.item.ItemSithStoneCoffin;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityCrystal;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityDisassemblyStation;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityHolocron;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberForge;
-import com.fiskmods.lightsabers.common.tileentity.TileEntityLightsaberStand;
-import com.fiskmods.lightsabers.common.tileentity.TileEntitySithCoffin;
-import com.fiskmods.lightsabers.common.tileentity.TileEntitySithStoneCoffin;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.item.ItemSlab;
+import com.fiskmods.lightsabers.Lightsabers;
+import com.fiskmods.lightsabers.common.item.ItemCrystal;
+import com.fiskmods.lightsabers.common.item.ModItems;
+import com.fiskmods.lightsabers.common.item.Rarity;
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ModBlocks
 {
+
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Lightsabers.MODID);
+    public  static  final RegistryObject<Block> redCrystal = createNewBlock("red_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.RED));
+    public  static  final RegistryObject<Block> lightsaberForge = createNewBlock("lightsaber_forge", BlockLightsaberForge::new);
+
+
+    private static <T extends Block> RegistryObject<T> createNewBlock(String name, Supplier<? extends T> block) {
+        RegistryObject<T> newBlock = BLOCKS.register(name, block);
+        createNewBlockItem(name, newBlock);
+        return newBlock;
+    }
+
+    private static <T extends Block> void createNewBlockItem(String name, Supplier<? extends T> block) {
+        Supplier<BlockItem> item = () -> new BlockItem(Objects.requireNonNull(block.get()), new Item.Properties());
+        ModItems.ITEMS.register(name, item);
+    }
+    /*
     public static Block lightsaberCrystal;
 //    public static Block lightsaberCrystalGen;
     public static Block lightsaberForgeLight;
@@ -85,5 +99,5 @@ public class ModBlocks
 
 //        BlockRegistry.registerBlock(lightsaberCrystalGen, "Lightsaber Crystal Gen");
 //		BlockRegistry.registerBlock(test, "Test");
-    }
+    }*/
 }

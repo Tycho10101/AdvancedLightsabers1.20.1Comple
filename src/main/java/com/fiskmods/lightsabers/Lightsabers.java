@@ -1,6 +1,8 @@
 package com.fiskmods.lightsabers;
 
-import com.fiskmods.lightsabers.client.render.item.RenderItemLightsaber;
+import com.fiskmods.lightsabers.common.block.ModBlocks;
+import com.fiskmods.lightsabers.common.container.ModContainers;
+import com.fiskmods.lightsabers.common.entity.ModEntities;
 import com.fiskmods.lightsabers.common.item.LightsaberItem;
 import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.item.parts.BladeItem;
@@ -10,7 +12,6 @@ import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,7 +22,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -43,8 +43,8 @@ public class Lightsabers
             .icon(() -> new ItemStack(ModItems.testEmitter.get()))
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
-
-
+                items.get().forEach(output::accept);
+                ModBlocks.BLOCKS.getEntries();
                 ItemStack testSaber = new ItemStack(ModItems.lightsaber.get());
                 testSaber.setTag(new CompoundTag());
                 testSaber.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
@@ -113,6 +113,9 @@ public class Lightsabers
     	bus.addListener(this::doServerStuff);
     	bus.addListener(this::doCommonStuff);
         ModItems.ITEMS.register(bus);
+        ModBlocks.BLOCKS.register(bus);
+        ModEntities.TILE_ENTITIES.register(bus);
+        ModContainers.CONTAINERS.register(bus);
         TABS.register(bus);
     }
     
@@ -121,7 +124,7 @@ public class Lightsabers
     }
     
     private void doClientStuff(final FMLClientSetupEvent event) {
-
+        ModContainers.registerGUIFactories();
     }
 	
 	private void doServerStuff(final FMLDedicatedServerSetupEvent event) {

@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.fiskmods.lightsabers.Lightsabers;
-import com.fiskmods.lightsabers.client.gui.GuiLightsaberForge;
+import com.fiskmods.lightsabers.client.gui.LightsaberForgeScreen;
 import com.fiskmods.lightsabers.client.sound.ALSounds;
 import com.fiskmods.lightsabers.common.block.ModBlocks;
 import com.fiskmods.lightsabers.common.event.ClientEventHandler;
@@ -105,7 +105,7 @@ public class LightsaberForgeRecipeHandler extends TemplateRecipeHandler
     @Override
     public Class<? extends GuiContainer> getGuiClass()
     {
-        return GuiLightsaberForge.class;
+        return LightsaberForgeScreen.class;
     }
 
     @Override

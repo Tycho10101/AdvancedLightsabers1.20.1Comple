@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Lightsabers.MODID);
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Lightsabers.MODID);
+
 
 
     public static final RegistryObject<Item>
@@ -27,12 +27,10 @@ public class ModItems {
             testGrip = registerBody("test_grip", 0.47213f),
             testPommel = registerPommel("test_pommel", 0.116575f);
 
-    public  static  final  RegistryObject<Block> redCrystal = BLOCKS.register("red_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.RED));
 
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     public static final RegistryObject<Item> doubleLightsaber = ITEMS.register("lightsaber_double", LightsaberDoubleItem::new);
     public static final RegistryObject<Item> blade = ITEMS.register("blade", BladeItem::new);
-    public static final RegistryObject<Item> testBlade = ITEMS.register("test_blade", BladeItem::new);
 
 
 

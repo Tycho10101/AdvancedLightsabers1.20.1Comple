@@ -14,11 +14,11 @@ import net.minecraft.world.item.ItemStack;
 public class InventoryLightsaberForge implements Container
 {
     private final List<ItemStack> inventory = Arrays.asList(new ItemStack[8]);
-    private final ContainerLightsaberForge eventHandler;
+    private final LightsaberForgeContainer eventHandler;
 
     public LightsaberData result;
 
-    public InventoryLightsaberForge(ContainerLightsaberForge container)
+    public InventoryLightsaberForge(LightsaberForgeContainer container)
     {
         eventHandler = container;
     }
