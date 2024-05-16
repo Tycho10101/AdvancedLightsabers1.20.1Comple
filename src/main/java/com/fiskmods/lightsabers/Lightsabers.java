@@ -6,20 +6,19 @@ import com.fiskmods.lightsabers.common.entity.ModEntities;
 import com.fiskmods.lightsabers.common.item.LightsaberItem;
 import com.fiskmods.lightsabers.common.item.ModItems;
 import com.fiskmods.lightsabers.common.item.parts.BladeItem;
-import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import com.fiskmods.lightsabers.common.lightsaber.LightsaberType;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -44,7 +43,7 @@ public class Lightsabers
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
                 items.get().forEach(output::accept);
-                ModBlocks.BLOCKS.getEntries();
+
                 ItemStack testSaber = new ItemStack(ModItems.lightsaber.get());
                 testSaber.setTag(new CompoundTag());
                 testSaber.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
@@ -52,7 +51,7 @@ public class Lightsabers
                 testSaber.getTag().putString("pommel", ModItems.testPommel.getId().toString());
                 testSaber.getTag().putString("switch", ModItems.testSwitch.getId().toString());
                 testSaber.getTag().putString("type", LightsaberType.SINGLE.toString());
-                testSaber.getTag().putInt("color", CrystalColor.DEEP_BLUE.color);
+                testSaber.getTag().putString("color", ModBlocks.greenCrystal.getId().toString());
                 testSaber.getTag().putBoolean("active", false);
                 output.accept(testSaber);
 
@@ -63,29 +62,14 @@ public class Lightsabers
                 taron.getTag().putString("pommel", ModItems.taronPommel.getId().toString());
                 taron.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
                 taron.getTag().putString("type", LightsaberType.SINGLE.toString());
-                taron.getTag().putInt("color", CrystalColor.RED.color);
+                taron.getTag().putString("color", ModBlocks.greenCrystal.getId().toString());
                 taron.getTag().putBoolean("active", false);
-
                 output.accept(taron);
-
-                ItemStack t = new ItemStack(ModItems.lightsaber.get());
-                t.setTag(new CompoundTag());
-                t.getTag().putString("emitter", ModItems.taronEmitter.getId().toString());
-                t.getTag().putString("grip", ModItems.testGrip.getId().toString());
-                t.getTag().putString("pommel", ModItems.testPommel.getId().toString());
-                t.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
-                t.getTag().putString("type", LightsaberType.SINGLE.toString());
-                t.getTag().putInt("color", CrystalColor.YELLOW.color);
-                t.getTag().putBoolean("active", false);
-                output.accept(t);
 
                 output.accept(registerDoubleSaber(taron, testSaber));
                 output.accept(registerDoubleSaber(taron, taron));
             })
             .build());
-
-
-
 
     private static ItemStack registerDoubleSaber(ItemStack upper, ItemStack lower)
     {
@@ -101,8 +85,6 @@ public class Lightsabers
 		return instance;
 	}
 
-    public static boolean isBattlegearLoaded;
-    public static boolean isDynamicLightsLoaded;
     
     public Lightsabers() {
     	instance = this;

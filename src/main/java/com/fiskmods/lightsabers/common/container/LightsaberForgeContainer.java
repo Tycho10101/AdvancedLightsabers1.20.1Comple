@@ -27,6 +27,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
@@ -77,12 +78,7 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
                 pommelSlot = addSlot(new Input(iih, 7,20, 71, LightsaberPommel.class)));
 
         TE.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iih ->
-               crystalSlot= addSlot(new SlotItemHandler(iih, 3,66, 71) {
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        return stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ItemCrystal;
-                    }
-                }));
+               crystalSlot= addSlot(new Crystal(iih, 3,66, 71)));
 
         for (int slot = 0; slot < SLOTS.length; ++slot)
         {
@@ -105,12 +101,27 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
             }
         }
         for (int i = 0; i < 9; ++i) { addSlot(new Slot(inventoryPlayer, i, 8 + i * 18, 172));}
-        inputSlots.add(bodySlot);
-        inputSlots.add(switchSlot);
-        inputSlots.add(emitterSlot);
-        inputSlots.add(pommelSlot);
+            inputSlots.add(bodySlot);
+            inputSlots.add(switchSlot);
+            inputSlots.add(emitterSlot);
+            inputSlots.add(pommelSlot);
+            inputSlots.add(crystalSlot);
 
         slotsChanged(craftMatrix);
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+
+        player.drop(crystalSlot.remove(1),false);
+        player.drop(emitterSlot.remove(1),false);
+        player.drop(switchSlot.remove(1),false);
+        player.drop(pommelSlot.remove(1),false);
+        player.drop(bodySlot.remove(1),false);
+        outputSlot.remove(1);
+            this.broadcastChanges();
+
     }
 
     @Override
@@ -124,31 +135,6 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
             return (LightsaberForgeBlockEntity) te;
         }
         throw new IllegalStateException("Tile Entity mismatch with container");
-    }
-    
-    private static ItemStack create()
-    {
-        ItemStack itemstack = new ItemStack(Items.STICK);
-        CompoundTag tag = itemstack.getOrCreateTag();
-        tag.putLong(ALConstants.TAG_LIGHTSABER, 0);
-        return itemstack;
-    }
-
-	@Override
-    public void slotsChanged(Container inventory)
-    {
-        craftMatrix.result = craftMatrix.updateResult();
-        ItemStack result = craftMatrix.result == null ? null : setActive(create(), true);
-        //ItemLightsaberBase.setActive(craftMatrix.result.create(), true);
-
-        //craftResult.setItem(0, result);
-    }
-
-    private static ItemStack setActive(ItemStack itemstack, boolean state)
-    {
-        itemstack.getOrCreateTag().putBoolean("active", state);
-
-        return itemstack;
     }
 
     @Override
@@ -245,7 +231,7 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
         return slot.container != craftResult && super.canTakeItemForPickAll(itemstack, slot);
     }
 
-    private class Input extends SlotItemHandler
+    private class Input extends Crystal
     {
         Class c;
         public Input(IItemHandler iih, int id, int x, int y, Class c)
@@ -253,28 +239,39 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
             super(iih, id, x, y);
             this.c = c;
         }
+        @Override
+        public boolean mayPlace(ItemStack itemstack)
+        {
+            return c.isInstance(itemstack.getItem());
+        }
 
+    }
+
+    private class Crystal extends SlotItemHandler
+    {
+
+        public Crystal(IItemHandler iih, int id, int x, int y) {
+            super(iih, id, x, y);
+        }
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ItemCrystal;
+        }
         @Override
         public int getMaxStackSize()
         {
             return 1;
         }
 
-        @Override
-        public boolean mayPlace(ItemStack itemstack)
-        {
-                 return c.isInstance(itemstack.getItem());
-        }
 
         @Override
         public void onTake(Player player, ItemStack itemstack)
         {
-            net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(player, itemstack, this.container);
+            //net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(player, itemstack, this.container);
 
             itemstack.onCraftedBy(player.level(), player, 1);
-            if(!player.level().isClientSide) {
-                outputSlot.remove(1);
-            }
+
+            outputSlot.remove(1);
         }
 
         @Override
@@ -283,7 +280,10 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
             boolean isCrafted = true;
             for (Slot inputSlot : inputSlots) {
                 if (inputSlot.getItem().getItem() == Items.AIR)
+                {
                     isCrafted = false;
+                    break;
+                }
             }
             if(isCrafted)
             {
@@ -295,13 +295,15 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
                 stack.getTag().putString("pommel", ForgeRegistries.ITEMS.getKey(pommelSlot.getItem().getItem()).toString());
                 stack.getTag().putString("switch", ForgeRegistries.ITEMS.getKey(switchSlot.getItem().getItem()).toString());
                 stack.getTag().putString("type", LightsaberType.SINGLE.toString());
-                stack.getTag().putInt("color", CrystalColor.YELLOW.color);
+                stack.getTag().putString("color", ForgeRegistries.BLOCKS.getKey(Block.byItem(crystalSlot.getItem().getItem())).toString());
                 stack.getTag().putBoolean("active", false);
                 outputSlot.set(stack);
             }
+            else{
+                outputSlot.remove(1);
+            }
         }
     }
-
     private class Output extends Slot
     {
         public Output(int id, int x, int y)
@@ -318,7 +320,9 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
                 emitterSlot.set(ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("emitter"))).getDefaultInstance());
                 pommelSlot.set(ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("pommel"))).getDefaultInstance());
                 switchSlot.set(ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("switch"))).getDefaultInstance());
+                crystalSlot.set(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(stack.getTag().getString("color"))).asItem().getDefaultInstance());
             }
+
         }
 
         @Override
@@ -331,14 +335,15 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
         public void onTake(Player player, ItemStack itemstack)
         {
         	net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(player, itemstack, this.container);
-        	
         	itemstack.onCraftedBy(player.level(), player, 1);
-            if(!player.level().isClientSide) {
-                inputSlots.forEach(slot ->
-                        slot.remove(1));
-            }
+            crystalSlot.remove(1);
+            emitterSlot.remove(1);
+            switchSlot.remove(1);
+            pommelSlot.remove(1);
+            bodySlot.remove(1);
+            outputSlot.remove(1);
             itemstack.getTag().putBoolean("active", false);
-
+            craftMatrix.clearContent();
         }
     }
 }

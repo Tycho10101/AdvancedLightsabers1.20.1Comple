@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class LightsaberForgeBlockEntity extends BaseContainerBlockEntity implements MenuProvider
+public class LightsaberForgeBlockEntity extends BaseContainerBlockEntity
 {
     private LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createInventory);
 
