@@ -111,7 +111,8 @@ public class LightsaberData extends AbstractLightsaberData implements ISerializa
             return new float[] {rgb[j][0] * (1 - f) + rgb[k][0] * f, rgb[j][1] * (1 - f) + rgb[k][1] * f, rgb[j][2] * (1 - f) + rgb[k][2] * f};
         }
 
-        return getColor().getRGB();
+        getColor();
+        return CrystalColor.getRGB();
     }
 
     /**

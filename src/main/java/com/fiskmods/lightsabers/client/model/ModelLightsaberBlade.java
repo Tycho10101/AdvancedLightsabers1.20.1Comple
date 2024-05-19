@@ -1,39 +1,26 @@
 package com.fiskmods.lightsabers.client.model;
 
-import java.util.Random;
-import java.util.function.Supplier;
-
 import com.fiskmods.lightsabers.Lightsabers;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.model.data.ModelData;
-import org.lwjgl.opengl.GL11;
-
-
-import com.fiskmods.lightsabers.common.lightsaber.FocusingCrystal;
-import com.fiskmods.lightsabers.common.lightsaber.LightsaberData;
-import com.fiskmods.lightsabers.helper.ALRenderHelper;
-
-import net.minecraft.client.Minecraft;
 
 public class ModelLightsaberBlade //extends ModelBase
 {
     //public ModelRenderer blade;
     public int bladeLength;
 
-    public ModelLightsaberBlade(int length)
-    {
+    public ModelLightsaberBlade(int length) {
         //textureWidth = 64;
         //textureHeight = 32;
         //blade = new ModelRenderer(this, 0, 0);
@@ -171,15 +158,14 @@ public class ModelLightsaberBlade //extends ModelBase
         GL11.glColor4f(1, 1, 1, 1);
     }*/
 
-    public void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc , PoseStack matrixStack, BakedModel bm, int combineLight)
-    {
+    public void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
-        float width = 0.6F;
-        float f = 1;
-        float f1 = 1;
-        float f2 = 1;
-        float f3 = 0.1F;
+        float width = 0.2F;
+        float xscale = 1;
+        float heightScale = 1f;
+        float zScale = 1;
+        float bloomAlpha = 0.115F;
 
 
         //TODO fix focus crystals
@@ -187,21 +173,21 @@ public class ModelLightsaberBlade //extends ModelBase
         {
             width = 0.4F;
             smooth = 7;
-            f3 = 0.07F;
+            bloomAlpha = 0.07F;
         }
         
         if (data.hasFocusingCrystal(FocusingCrystal.INVERTING) && data.hasFocusingCrystal(FocusingCrystal.PRISMATIC))
         {
             rgb = new float[3];
-            f3 *= 1.5F;
+            bloomAlpha *= 1.5F;
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
         if (fineCut)
         {
-            f *= 0.55F;
-            f1 *= 0.925F;
-            f2 *= 1.1F;
+            xscale *= 0.55F;
+            heightScale *= 0.925F;
+            zScale *= 1.1F;
         }
 
         if (inWorld)
@@ -214,41 +200,51 @@ public class ModelLightsaberBlade //extends ModelBase
         {
             smooth *= 0.25F;
         }*/
-
+        boolean fineCut = false;
         int layerCount = 5 * smooth;
-        float opacityMultiplier = 1f; //TODO = inWorld ? ModConfig.renderGlobalMultiplier * ModConfig.renderOpacityMultiplier : 1;
-        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
-                RenderType.eyes(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
-        )) {
+        RenderSystem.enableBlend();
+        RenderSystem.disableCull();
+        RenderSystem.depthMask(false);
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
+        RenderSystem.disableScissor();
+        RenderSystem.disableDepthTest();
 
-            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], .25f, combineLight, OverlayTexture.NO_OVERLAY, true);
-        }
-       /* for (int i = 0; i < layerCount; ++i)
-        {
-            vc = vc.color(rgb[0], rgb[1], rgb[2], f3 / smooth * opacityMultiplier);
+
+        for (int i = 0; i < layerCount; ++i) {
+
             float scale = 1 + i * (width / smooth);
-            float f4 = (float) i / layerCount * 50;
+            float f4 = (float) i / (layerCount * 50);
 
             matrixStack.pushPose();
-            //GL11.glScaled(scale * f, (1 - f4 * (fineCut ? 0.003F : 0.005F) + 0.2F) * f1, scale * f2);
-            matrixStack.translate(0, -f4 / 400 + 0.06F, 0);
+            float test = (1 - f4 * (fineCut ? 0.003F : 0.005F)) *heightScale; //+ 0.2F) * heightScale;
+            matrixStack.scale(scale * xscale, test, scale * zScale);
+            float t = -f4 / 400 + 0.06F;
+            //matrixStack.translate(0, t, 0);
 
             /*if (fineCut)
             {
                 matrixStack.translate(0, 0, 0.005F + f4 * 0.00001F);
             }*/
+            //RenderSystem.setShaderColor(rgb[0], rgb[1], rgb[2], bloomAlpha / smooth);
+            for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                    RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"),true)
+            )) {
 
+                vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], bloomAlpha / smooth, combineLight, OverlayTexture.NO_OVERLAY, false);
+            }
             //blade.render(0.0625F);
-            //matrixStack.popPose();
-        //}
-        
+            matrixStack.popPose();
+        }
+        RenderSystem.enableCull();
+        RenderSystem.disableBlend();
+        RenderSystem.depthMask(true);
 //        if (data.hasFocusingCrystal(FocusingCrystal.CHARGED))
 //        {
 //            renderLightning(data, itemstack, rgb, inWorld, true);
 //        }*/
 
         //vc.color(1f, 1, 1, 1);
-                vc.endVertex();
+        vc.endVertex();
 
     }
 
@@ -322,7 +318,7 @@ public class ModelLightsaberBlade //extends ModelBase
 
         GL11.glColor4f(1, 1, 1, 1);
     } */
-    
+
 //    private void renderLightning(LightsaberData data, ItemStack itemstack, float[] rgb, boolean inWorld, boolean isCrossguard)
 //    {
 //        float divider = 60;

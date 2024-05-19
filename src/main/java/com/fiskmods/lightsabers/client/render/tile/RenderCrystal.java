@@ -2,6 +2,7 @@ package com.fiskmods.lightsabers.client.render.tile;
 
 import java.util.Random;
 
+import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import org.lwjgl.opengl.GL11;
 
 import com.fiskmods.lightsabers.client.model.tile.ModelCrystal;
@@ -31,7 +32,7 @@ public class RenderCrystal extends TileEntitySpecialRenderer
             alpha *= ALRenderHelper.getAlpha();
         }
         
-        float[] rgb = tile.getColor().getRGB();
+        float[] rgb = CrystalColor.getRGB();
         GL11.glColor4f(rgb[0], rgb[1], rgb[2], alpha);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);

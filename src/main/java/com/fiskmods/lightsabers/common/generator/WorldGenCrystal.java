@@ -32,7 +32,7 @@ public class WorldGenCrystal extends WorldGenerator
             {
                 int xPosition = x >> 4 + i;
                 int zPosition = z >> 4 + j;
-                Random random = new Random(world.getSeed() + (long) ((long) xPosition * xPosition * 0x4c1906) + (long) (xPosition * 0x5ac0dbL) + (long) ((long) zPosition * zPosition) * 0x4307a7L + (long) (zPosition * 0x5f24fL) ^ 0x3ad8025f);
+                Random random = new Random(world.getSeed() + (long) ((long) xPosition * xPosition * 0x4c1906) + (long) (xPosition * 0x5ac0dbL) + (long) zPosition * zPosition * 0x4307a7L + (long) (zPosition * 0x5f24fL) ^ 0x3ad8025f);
                 
                 if (random.nextInt(300) == 0)
                 {

@@ -116,11 +116,11 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
                     //render outer blade
                     matrixStack.pushPose();
-                    matrixStack.scale(1.4f, 1f, 1.4f);
+                    //matrixStack.scale(1.4f, 1f, 1.4f);
                     matrixStack.translate(0, lowerHeight * 1.05, 0);
                     BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
                     LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
-                            RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
+                            RenderType.translucent()//(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
                     ), matrixStack, m, combinedLightIn);
                     matrixStack.popPose();
 
@@ -155,7 +155,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     //render outer blade
                     matrixStack.pushPose();
                     matrixStack.scale(1.4f, 1f, 1.4f);
-                    matrixStack.translate(0, upperHeight * 1.05, 0);
+                    matrixStack.translate(0, upperHeight , 0);
                     BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
                     LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
                             RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
@@ -167,7 +167,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.scale(.5f, .95f, .5f);
                     matrixStack.translate(0, upperHeight * 1.05, 0);
                     LIGHTSABER_BLADE.renderOuter(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(
-                            RenderType.solid()
+                            RenderType.crumbling(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
                     ), matrixStack, m, combinedLightIn);
 
                     matrixStack.popPose();
@@ -224,17 +224,17 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     float[] rgb = new float[]{((color & 0xff0000) >> 16) / 255f, ((color & 0xff00) >> 8) / 255f, (color & 0xff) / 255f};
                     matrixStack.scale(1.4f, 1f, 1.4f);
-                    matrixStack.translate(0, height * 1.05, 0);
+                    matrixStack.translate(0, height * 1, 0);
                     BakedModel m = renderItem.getModel(ModItems.blade.get().getDefaultInstance(), null, null, 1);
                     LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
-                            RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), false)
+                            RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
                     ), matrixStack, m, combinedLightIn);
                     matrixStack.popPose();
 
                     //render inner blade
                     matrixStack.pushPose();
                     matrixStack.scale(.5f, .95f, .5f);
-                    matrixStack.translate(0, height * 1.05, 0);
+                    matrixStack.translate(0, height * 1.0, 0);
                     LIGHTSABER_BLADE.renderOuter(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()), matrixStack, m, combinedLightIn);
 
                     matrixStack.popPose();

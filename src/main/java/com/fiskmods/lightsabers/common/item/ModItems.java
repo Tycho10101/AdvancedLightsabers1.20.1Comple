@@ -17,10 +17,10 @@ public class ModItems {
 
 
     public static final RegistryObject<Item>
-            taronEmitter = registerEmitter("taron_emitter", .402f),
-            taronGrip = registerBody("taron_grip", 0.542363f),
-            taronSwitch = registerSwitch("taron_switch", 0.204343f),
-            taronPommel = registerPommel("taron_pommel", 0.29844f);
+            taronEmitter = registerEmitter("taron_emitter", .31f),
+            taronGrip = registerBody("taron_grip", 0.396972f),
+            taronSwitch = registerSwitch("taron_switch", 0.149565f),
+            taronPommel = registerPommel("taron_pommel", 0.218437f);
     public static final RegistryObject<Item>
             testEmitter = registerEmitter("test_emitter", 0.180303f),
             testSwitch = registerSwitch("test_switch", 0.182134f),

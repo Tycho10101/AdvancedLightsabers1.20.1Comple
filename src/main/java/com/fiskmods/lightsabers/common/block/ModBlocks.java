@@ -20,11 +20,17 @@ public class ModBlocks
 {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Lightsabers.MODID);
+    public  static  final RegistryObject<Block> lightsaberForge = createNewBlock("lightsaber_forge", BlockLightsaberForge::new);
+
+    //KyberCrystals
     public  static  final RegistryObject<Block> redCrystal = createNewBlock("red_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.RED));
     public  static  final RegistryObject<Block> blueCrystal = createNewBlock("blue_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.DEEP_BLUE));
     public  static  final RegistryObject<Block> greenCrystal = createNewBlock("green_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.GREEN));
     public  static  final RegistryObject<Block> purpleCrystal = createNewBlock("purple_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.PURPLE));
-    public  static  final RegistryObject<Block> lightsaberForge = createNewBlock("lightsaber_forge", BlockLightsaberForge::new);
+    public  static  final RegistryObject<Block> yellowCrystal = createNewBlock("yellow_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.YELLOW));
+    public  static  final RegistryObject<Block> cyanCrystal = createNewBlock("cyan_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.CYAN));
+    public  static  final RegistryObject<Block> whiteCrystal = createNewBlock("white_crystal",() -> new ItemCrystal(Rarity.RARE, CrystalColor.WHITE));
+
 
 
     private static <T extends Block> RegistryObject<T> createNewBlock(String name, Supplier<? extends T> block) {

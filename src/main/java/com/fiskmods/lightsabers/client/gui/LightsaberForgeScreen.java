@@ -26,7 +26,13 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
         this.init();
 
     }
-    
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int p_283661_, int p_281248_, float p_281886_) {
+        super.render(guiGraphics, p_283661_, p_281248_, p_281886_);
+        this.renderTooltip(guiGraphics, p_283661_, p_281248_);
+    }
+
     @Override
     protected void renderLabels(GuiGraphics p_281635_, int mouseX, int mouseY) {
         /*String s = I18n.format("gui.lightsaber_forge");
@@ -68,7 +74,7 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
 
 
         //gui.drawString(font, "The Cat is a lie", xPos, yPos, 0x040404, false);
-        //drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        //drawTexturedModalR0.149565 mect(guiLeft, guiTop, 0, 0, xSize, ySize);
         /*L11.glColor4f(1, 1, 1, 1);
 
 

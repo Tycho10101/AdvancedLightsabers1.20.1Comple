@@ -142,6 +142,7 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
         return stillValid(canInteractWith, playerIn, ModBlocks.lightsaberForge.get());
     }
 
+
     /*
     @Override
     public ItemStack quickMoveStack(Player player, int slotId)

@@ -26,7 +26,7 @@ import java.awt.*;
 
 public class LightsaberForgeBlockEntity extends BaseContainerBlockEntity
 {
-    private LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createInventory);
+    private final LazyOptional<IItemHandler> inventory = LazyOptional.of(this::createInventory);
 
     public LightsaberForgeBlockEntity(BlockPos bPos, BlockState bState) {
             super(ModEntities.LIGHTSABER_FORGE.get(), bPos, bState);

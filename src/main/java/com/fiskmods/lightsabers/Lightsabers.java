@@ -62,7 +62,7 @@ public class Lightsabers
                 taron.getTag().putString("pommel", ModItems.taronPommel.getId().toString());
                 taron.getTag().putString("switch", ModItems.taronSwitch.getId().toString());
                 taron.getTag().putString("type", LightsaberType.SINGLE.toString());
-                taron.getTag().putString("color", ModBlocks.greenCrystal.getId().toString());
+                taron.getTag().putString("color", ModBlocks.redCrystal.getId().toString());
                 taron.getTag().putBoolean("active", false);
                 output.accept(taron);
 

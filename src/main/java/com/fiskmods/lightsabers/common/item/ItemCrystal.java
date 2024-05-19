@@ -9,8 +9,8 @@ import java.util.Properties;
 
 public class ItemCrystal extends Block
 {
-    private CrystalColor crystalColor;
-    private Rarity rarity;
+    private final CrystalColor crystalColor;
+    private final Rarity rarity;
 
     public ItemCrystal(Rarity rarity, CrystalColor crystalColor) {
         super(Block.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 10.0F));
