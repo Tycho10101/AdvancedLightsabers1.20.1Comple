@@ -3,6 +3,8 @@ package com.fiskmods.lightsabers.common.item;
 import com.fiskmods.lightsabers.common.lightsaber.CrystalColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.Properties;
@@ -18,11 +20,16 @@ public class ItemCrystal extends Block
         this.rarity = rarity;
     }
 
+
     public CrystalColor getCrystalColor() {
         return crystalColor;
     }
 
     public Rarity getRarity() {
         return rarity;
+    }
+    @Deprecated
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 }

@@ -28,12 +28,12 @@ public class ModelLightsaberBlade //extends ModelBase
         bladeLength = length;
     }
 
-    /*public void renderInner(LightsaberData data, ItemStack stack, float[] rgb, boolean inWorld, boolean isCrossguard, PoseStack matrixStack, VertexConsumer vc)
+    public void renderInner(ItemStack stack, float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
     {
-        boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
+        //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
 
 
-        if (isCrossguard && fineCut)
+        /*if (isCrossguard && fineCut)
         {
             matrixStack.scale(1, 1.2F, 1);
         }
@@ -153,23 +153,27 @@ public class ModelLightsaberBlade //extends ModelBase
             //blade.render(0.0625F);
             GL11.glTranslatef(0, -0.0625F * (0.5F + bladeLength), 0.0625F / 2);
             ALRenderHelper.drawTip(0.03125F, 0.125F);
-        }
+        }*/
+        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+        )) {
 
-        GL11.glColor4f(1, 1, 1, 1);
-    }*/
+            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
+        }
+        //GL11.glColor4f(1, 1, 1, 1);
+    }
 
     public void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
         float width = 0.2F;
-        float xscale = 1;
+        float xscale = 1f;
         float heightScale = 1f;
-        float zScale = 1;
-        float bloomAlpha = 0.115F;
-
+        float zScale = 1f;
+        float bloomAlpha = 0.15F;
 
         //TODO fix focus crystals
-       /* if (data.hasFocusingCrystal(FocusingCrystal.COMPRESSED))
+        /* if (data.hasFocusingCrystal(FocusingCrystal.COMPRESSED))
         {
             width = 0.4F;
             smooth = 7;
@@ -202,12 +206,11 @@ public class ModelLightsaberBlade //extends ModelBase
         }*/
         boolean fineCut = false;
         int layerCount = 5 * smooth;
+
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
-        RenderSystem.disableScissor();
-        RenderSystem.disableDepthTest();
 
 
         for (int i = 0; i < layerCount; ++i) {
@@ -216,21 +219,20 @@ public class ModelLightsaberBlade //extends ModelBase
             float f4 = (float) i / (layerCount * 50);
 
             matrixStack.pushPose();
-            float test = (1 - f4 * (fineCut ? 0.003F : 0.005F)) *heightScale; //+ 0.2F) * heightScale;
+            float test = (1 - f4 * (fineCut ? 0.003F : 0.005F)) * heightScale;
             matrixStack.scale(scale * xscale, test, scale * zScale);
-            float t = -f4 / 400 + 0.06F;
-            //matrixStack.translate(0, t, 0);
+            float t = -f4 / 400 + 0.04F;
+            matrixStack.translate(0, t, 0);
 
             /*if (fineCut)
             {
                 matrixStack.translate(0, 0, 0.005F + f4 * 0.00001F);
             }*/
-            //RenderSystem.setShaderColor(rgb[0], rgb[1], rgb[2], bloomAlpha / smooth);
             for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
-                    RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"),true)
+                    RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
             )) {
 
-                vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], bloomAlpha / smooth, combineLight, OverlayTexture.NO_OVERLAY, false);
+                vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], bloomAlpha / smooth, combineLight, OverlayTexture.NO_OVERLAY, true);
             }
             //blade.render(0.0625F);
             matrixStack.popPose();

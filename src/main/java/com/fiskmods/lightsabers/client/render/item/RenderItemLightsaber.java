@@ -216,7 +216,6 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                 case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND,
                      FIRST_PERSON_RIGHT_HAND -> {
 
-
                     ItemCrystal i  = (ItemCrystal) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(tag.getString("color")));
                     int color =  i.getCrystalColor().color;
 
@@ -235,7 +234,8 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     matrixStack.scale(.5f, .95f, .5f);
                     matrixStack.translate(0, height * 1.0, 0);
-                    LIGHTSABER_BLADE.renderOuter(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()), matrixStack, m, combinedLightIn);
+                    LIGHTSABER_BLADE.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
+                            false, matrixStack, m, combinedLightIn);
 
                     matrixStack.popPose();
                 }
