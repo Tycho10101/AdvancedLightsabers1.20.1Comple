@@ -6,14 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import com.fiskmods.lightsabers.Lightsabers;
+import com.stelmods.lightsabers.Lightsabers;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 

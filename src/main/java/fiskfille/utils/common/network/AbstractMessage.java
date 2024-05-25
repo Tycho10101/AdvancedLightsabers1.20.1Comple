@@ -1,6 +1,6 @@
 package fiskfille.utils.common.network;
 
-import com.fiskmods.lightsabers.Lightsabers;
+import com.stelmods.lightsabers.Lightsabers;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

@@ -1,6 +1,6 @@
 package fiskfille.utils.common.network;
 
-import com.fiskmods.lightsabers.common.network.ALNetworkManager;
+import com.stelmods.lightsabers.common.network.ALNetworkManager;
 
 import fiskfille.utils.DimensionalCoords;
 import fiskfille.utils.helper.NBTHelper;

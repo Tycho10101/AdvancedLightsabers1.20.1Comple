@@ -2,7 +2,7 @@ package fiskfille.utils.helper;
 
 import java.util.List;
 
-import com.fiskmods.lightsabers.Lightsabers;
+import com.stelmods.lightsabers.Lightsabers;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

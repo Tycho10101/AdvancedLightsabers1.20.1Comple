@@ -3,8 +3,8 @@ package fiskfille.utils.helper;
 import java.util.List;
 import java.util.Map;
 
-import com.fiskmods.lightsabers.ALReflection;
-import com.fiskmods.lightsabers.common.data.ALData.ClassType;
+import com.stelmods.lightsabers.ALReflection;
+import com.stelmods.lightsabers.common.data.ALData.ClassType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

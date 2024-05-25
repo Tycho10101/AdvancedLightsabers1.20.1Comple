@@ -2,7 +2,7 @@ package fiskfille.utils;
 
 import java.util.Map;
 
-import com.fiskmods.lightsabers.Lightsabers;
+import com.stelmods.lightsabers.Lightsabers;
 import com.google.common.collect.Maps;
 
 import fiskfille.utils.common.interaction.InteractionHandler;

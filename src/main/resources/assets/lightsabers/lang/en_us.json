@@ -1,0 +1,19 @@
+{
+
+  "item.lightsabers.lightsaber": "Lightsaber",
+  "item.lightsabers.lightsaber_double": "Double Lightsaber",
+
+  "item.lightsabers.taron_emitter": "Lightsaber Emitter",
+  "item.lightsabers.taron_switch": "Lightsaber Switch",
+  "item.lightsabers.taron_grip": "Lightsaber Grip",
+  "item.lightsabers.taron_pommel": "Lightsaber Pommel",
+  "item.lightsabers.taron_switch.desc": "Taron",
+
+  "item.lightsabers.revam_emitter": "Lightsaber Emitter",
+  "item.lightsabers.revan_switch": "Lightsaber Switch",
+  "item.lightsabers.revan_grip": "Lightsaber Grip",
+  "item.lightsabers.revan_pommel": "Lightsaber Pommel",
+
+  "gui.lightsabers.lightsaber_creative": "Lightsabers"
+
+}

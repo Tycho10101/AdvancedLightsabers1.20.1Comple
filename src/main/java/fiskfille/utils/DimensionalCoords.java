@@ -1,6 +1,6 @@
 package fiskfille.utils;
 
-import com.fiskmods.lightsabers.common.data.ALData.DataFactory;
+import com.stelmods.lightsabers.common.data.ALData.DataFactory;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
