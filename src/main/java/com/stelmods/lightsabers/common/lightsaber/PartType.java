@@ -3,7 +3,7 @@ package com.stelmods.lightsabers.common.lightsaber;
 public enum PartType
 {
     EMITTER("emitter"),
-    SWITCH_SECTION("switch_section"),
+    SWITCH_SECTION("switch"),
     BODY("body"),
     POMMEL("pommel");
     

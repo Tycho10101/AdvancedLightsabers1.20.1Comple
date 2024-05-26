@@ -43,27 +43,19 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
             LightsaberType typeL = LightsaberType.valueOf(type);
 
             switch (typeL) {
-                case SINGLE -> {
+                case SINGLE -> renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
 
-                    matrixStack.pushPose();
-                    renderSingle(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
-                    matrixStack.popPose();
-                }
+                case DOUBLE -> renderDouble(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
 
-                case DOUBLE ->{
-                    matrixStack.pushPose();
-                    renderDouble(tag, itemDisplayContext, matrixStack, buffer, combinedLightIn, itemStack);
-                    matrixStack.popPose();
-                }
             }
         }
     }
 
-    private float getTotalHeight(CompoundTag tag){
+    public static float getTotalHeight(CompoundTag tag){
         return  getHeight(tag.getString("switch")) + getHeight(tag.getString("emitter")) +
                 getHeight(tag.getString("grip"))+ getHeight(tag.getString("pommel"));
     }
-    private float getHeight(String name)
+    private static float getHeight(String name)
     {
 
         LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
@@ -85,9 +77,9 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
             case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,-0.5, -.55);
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
             case GUI -> {
-                matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
-                matrixStack.scale(0.7f, 0.7f, 0.7f);
-                matrixStack.translate(-0.0,-1,-0.5);
+                //matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
+                //matrixStack.scale(0.7f, 0.7f, 0.7f);
+                //matrixStack.translate(-0.0,-1,-0.5);
             }
             case FIXED -> {
                 matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
@@ -177,14 +169,13 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
         switch (itemDisplayContext)
         {
-            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND ->
-            {
-                matrixStack.translate(0.5,0.53-(getHeight(tag.getString("grip"))+  getHeight(tag.getString("switch")) /2 + getHeight(tag.getString("pommel"))), 0.55);
-            }
+            case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(0.5,0.53-(getHeight(tag.getString("grip"))+  getHeight(tag.getString("switch")) /2 + getHeight(tag.getString("pommel"))), 0.55);
+
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
             case GUI -> {
-                matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
-                matrixStack.translate(-0.0,0.2,-0.5);
+                //matrixStack.translate(0.5,0.0,0  );
+                //matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
+                //
             }
             case FIXED -> {
 

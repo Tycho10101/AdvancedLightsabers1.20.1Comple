@@ -1,6 +1,5 @@
 package com.stelmods.lightsabers.common.container;
 
-import com.stelmods.lightsabers.ALConstants;
 import com.stelmods.lightsabers.common.block.ModBlocks;
 import com.stelmods.lightsabers.common.item.ItemCrystal;
 import com.stelmods.lightsabers.common.item.LightsaberDoubleItem;
@@ -44,12 +43,7 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
 
     public static final int[][] SLOTS = { {43, 71}, {89, 71}, {107, 71}};
     public static List<Slot> inputSlots = new ArrayList<>();
-    private Slot outputSlot;
-    private Slot bodySlot;
-    private Slot switchSlot;
-    private Slot emitterSlot;
-    private Slot pommelSlot;
-    private Slot crystalSlot;
+    private Slot outputSlot, bodySlot, switchSlot, emitterSlot, pommelSlot, crystalSlot;
 
     public LightsaberForgeContainer(int id, Inventory inventoryPlayer)
     {
@@ -106,6 +100,10 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
             inputSlots.add(crystalSlot);
 
         slotsChanged(craftMatrix);
+    }
+
+    public Slot getOutputSlot() {
+        return outputSlot;
     }
 
     @Override

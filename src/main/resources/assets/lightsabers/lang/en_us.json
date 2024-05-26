@@ -8,11 +8,18 @@
   "item.lightsabers.taron_grip": "Lightsaber Grip",
   "item.lightsabers.taron_pommel": "Lightsaber Pommel",
   "item.lightsabers.taron_switch.desc": "Taron",
+  "item.lightsabers.taron_pommel.desc": "Taron",
+  "item.lightsabers.taron_grip.desc": "Taron",
+  "item.lightsabers.taron_emitter.desc": "Taron",
 
   "item.lightsabers.revam_emitter": "Lightsaber Emitter",
+  "item.lightsabers.revam_emitter.desc": "Revan",
   "item.lightsabers.revan_switch": "Lightsaber Switch",
+  "item.lightsabers.revam_switch.desc": "Revan",
   "item.lightsabers.revan_grip": "Lightsaber Grip",
+  "item.lightsabers.revam_grip.desc": "Revan",
   "item.lightsabers.revan_pommel": "Lightsaber Pommel",
+  "item.lightsabers.revan_pommel.desc": "Revan",
 
   "gui.lightsabers.lightsaber_creative": "Lightsabers"
 
