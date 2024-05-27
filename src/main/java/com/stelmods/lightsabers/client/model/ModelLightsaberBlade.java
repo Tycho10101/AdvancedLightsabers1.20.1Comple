@@ -16,18 +16,10 @@ import net.minecraftforge.client.model.data.ModelData;
 
 public class ModelLightsaberBlade //extends ModelBase
 {
-    //public ModelRenderer blade;
-    public int bladeLength;
-
-    public ModelLightsaberBlade(int length) {
-        //textureWidth = 64;
-        //textureHeight = 32;
-        //blade = new ModelRenderer(this, 0, 0);
-        //blade.addBox(-0.5F, -length, -0.5F, 1, length, 1);
-        bladeLength = length;
+    private ModelLightsaberBlade() {
     }
 
-    public void renderInner(ItemStack stack, float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
+    public static void renderInner(ItemStack stack, float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
     {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
 
@@ -162,7 +154,7 @@ public class ModelLightsaberBlade //extends ModelBase
         //GL11.glColor4f(1, 1, 1, 1);
     }
 
-    public void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
+    public static void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
         float width = 0.2F;

@@ -24,7 +24,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // implements IItemRenderer
 {
-    private static final ModelLightsaberBlade LIGHTSABER_BLADE = new ModelLightsaberBlade(38);
     private ItemRenderer renderItem;
     public static final RenderItemLightsaber bewlr = new RenderItemLightsaber(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
     public RenderItemLightsaber(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
@@ -55,7 +54,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
         return  getHeight(tag.getString("switch")) + getHeight(tag.getString("emitter")) +
                 getHeight(tag.getString("grip"))+ getHeight(tag.getString("pommel"));
     }
-    private static float getHeight(String name)
+    public static float getHeight(String name)
     {
 
         LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
@@ -105,7 +104,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.translate(0, lowerHeight * 1, 0);
                     BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/blade"));
 
-                    LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
+                    ModelLightsaberBlade.renderOuter(itemStack, rgb, buffer.getBuffer(
                             RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
                     ), matrixStack, model, combinedLightIn);
                     matrixStack.popPose();
@@ -113,7 +112,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     matrixStack.scale(.5f, .95f, .5f);
                     matrixStack.translate(0, lowerHeight * 1, 0);
-                    LIGHTSABER_BLADE.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
+                    ModelLightsaberBlade.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
                             false, matrixStack, model, combinedLightIn);
                     matrixStack.popPose();
                 }
@@ -138,7 +137,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.translate(0, upperHeight * 1, 0);
                     BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/blade"));
 
-                    LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
+                    ModelLightsaberBlade.renderOuter(itemStack, rgb, buffer.getBuffer(
                             RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
                     ), matrixStack, model, combinedLightIn);
                     matrixStack.popPose();
@@ -146,7 +145,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     matrixStack.scale(.5f, .95f, .5f);
                     matrixStack.translate(0, upperHeight * 1, 0);
-                    LIGHTSABER_BLADE.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
+                    ModelLightsaberBlade.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
                             false, matrixStack, model, combinedLightIn);
 
                     matrixStack.popPose();
@@ -173,9 +172,8 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
             case GUI -> {
-                //matrixStack.translate(0.5,0.0,0  );
-                //matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
-                //
+                matrixStack.translate(0.5,0.0,0  );
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
             }
             case FIXED -> {
 
@@ -201,7 +199,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.translate(0, height * 1, 0);
                     BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/blade"));
 
-                    LIGHTSABER_BLADE.renderOuter(itemStack, rgb, buffer.getBuffer(
+                    ModelLightsaberBlade.renderOuter(itemStack, rgb, buffer.getBuffer(
                             RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
                     ), matrixStack, model, combinedLightIn);
                     matrixStack.popPose();
@@ -210,7 +208,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
                     matrixStack.pushPose();
                     matrixStack.scale(.5f, .95f, .5f);
                     matrixStack.translate(0, height * 1.0, 0);
-                    LIGHTSABER_BLADE.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
+                    ModelLightsaberBlade.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
                             false, matrixStack, model, combinedLightIn);
 
                     matrixStack.popPose();
