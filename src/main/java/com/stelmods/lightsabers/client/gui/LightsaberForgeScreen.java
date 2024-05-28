@@ -41,7 +41,6 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
         this.imageHeight = 195;
         this.height = 195;
         this.init();
-
     }
 
     @Override
@@ -52,7 +51,6 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
 
     @Override
     protected void renderLabels(GuiGraphics p_281635_, int mouseX, int mouseY) {
-
     }
 
     @Override
@@ -71,8 +69,8 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
             matrixstack.mulPose(Axis.ZP.rotationDegrees(90));
             matrixstack.mulPose(Axis.YP.rotationDegrees(rotate = (rotate % 360) + 2f));
             matrixstack.scale(75,75,75);
-            RenderSystem.enableCull();
-            RenderSystem.enableScissor(this.leftPos, this.topPos+height, this.width, this.height);
+
+            //RenderSystem.enableScissor(this.leftPos + 43, this.topPos + 17, 113, 47);
             renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
             RenderSystem.disableScissor();
             matrixstack.popPose();

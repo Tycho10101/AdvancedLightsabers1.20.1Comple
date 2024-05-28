@@ -2,8 +2,6 @@ package com.stelmods.lightsabers.common.lightsaber;
 
 import java.util.Locale;
 
-import net.minecraft.util.StatCollector;
-
 public enum FocusingCrystal
 {
     COMPRESSED,
@@ -23,8 +21,4 @@ public enum FocusingCrystal
         return "lightsaber.focusingCrystal." + name().toLowerCase(Locale.ROOT);
     }
 
-    public String getLocalizedName()
-    {
-        return StatCollector.translateToLocal(getUnlocalizedName()).trim();
-    }
 }

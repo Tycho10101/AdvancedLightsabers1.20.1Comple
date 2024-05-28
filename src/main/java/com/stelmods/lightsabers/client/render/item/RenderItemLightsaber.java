@@ -76,9 +76,9 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
             case THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> matrixStack.translate(.5,-0.5, -.55);
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
             case GUI -> {
-                //matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
-                //matrixStack.scale(0.7f, 0.7f, 0.7f);
-                //matrixStack.translate(-0.0,-1,-0.5);
+                matrixStack.translate(0.5,-0.5,0  );
+                matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
+                matrixStack.scale(0.7f, 0.7f, 0.7f);
             }
             case FIXED -> {
                 matrixStack.mulPose(Axis.ZN.rotationDegrees(-45));
@@ -172,7 +172,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
             case FIRST_PERSON_RIGHT_HAND -> matrixStack.translate(.75,-.1,0);
             case GUI -> {
-                matrixStack.translate(0.5,0.0,0  );
+                matrixStack.translate(0.3,0.1f,0  );
                 matrixStack.mulPose(Axis.ZN.rotationDegrees(45));
             }
             case FIXED -> {

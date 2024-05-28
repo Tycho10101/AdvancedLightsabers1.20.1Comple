@@ -1,6 +1,4 @@
 package com.stelmods.lightsabers.common.container;
-
-import com.stelmods.lightsabers.common.lightsaber.LightsaberData;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,8 +9,6 @@ import java.util.List;
 public class InventoryLightsaberForgeTier2  implements Container {
     private final List<ItemStack> inventory = Arrays.asList(new ItemStack[18]);
     private final LightsaberForgeTier2Container eventHandler;
-
-    public LightsaberData result;
 
     public InventoryLightsaberForgeTier2(LightsaberForgeTier2Container container)
     {
