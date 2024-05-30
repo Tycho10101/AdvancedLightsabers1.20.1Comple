@@ -33,7 +33,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     public static final RegistryObject<Item> doubleLightsaber = ITEMS.register("lightsaber_double", LightsaberDoubleItem::new);
-    //public static final RegistryObject<Item> blade = ITEMS.register("blade", BladeItem::new);
+
+
 
 
 

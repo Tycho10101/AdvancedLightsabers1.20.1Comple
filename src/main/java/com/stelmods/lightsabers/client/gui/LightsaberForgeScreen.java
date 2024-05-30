@@ -69,10 +69,11 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
             matrixstack.mulPose(Axis.ZP.rotationDegrees(90));
             matrixstack.mulPose(Axis.YP.rotationDegrees(rotate = (rotate % 360) + 2f));
             matrixstack.scale(75,75,75);
+            gui.enableScissor(this.leftPos + 42, this.topPos + 20, this.leftPos + 156, this.topPos + 64);
+            renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 15728880, itemStack);
 
-            //RenderSystem.enableScissor(this.leftPos + 43, this.topPos + 17, 113, 47);
-            renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
-            RenderSystem.disableScissor();
+
+            gui.disableScissor();
             matrixstack.popPose();
         }
     }

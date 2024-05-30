@@ -1,18 +1,26 @@
 package com.stelmods.lightsabers.client.model;
 
+import com.mojang.math.Axis;
 import com.stelmods.lightsabers.Lightsabers;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.stelmods.lightsabers.common.lightsaber.FocusingCrystal;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
+import org.joml.Quaternionf;
+
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class ModelLightsaberBlade //extends ModelBase
 {
@@ -47,45 +55,7 @@ public class ModelLightsaberBlade //extends ModelBase
             matrixStack.scale(0.6F, 1, 0.6F);
         }
 
-        if (data.hasFocusingCrystal(FocusingCrystal.CRACKED))
-        {
-            float divider = 60;
-            int ticks = Minecraft.getInstance().thePlayer.ticksExisted;
-            Random rand = new Random(ticks % 100 * 1000);
-            Random prev = new Random((ticks - 1) % 100 * 1000);
 
-            Supplier<Float> nextFloat = () -> ALRenderHelper.median(rand.nextFloat(), prev.nextFloat());
-
-            for (int i = 0; i < 4; ++i)
-            {
-                matrixStack.pushPose();
-
-                if (i != 0)
-                {
-
-                    GL11.glTranslatef((nextFloat.get() - 0.5F) / divider, 0, (nextFloat.get() - 0.5F) / divider);
-
-                    for (int j = 0; j < bladeLength; ++j)
-                    {
-                        GL11.glPushMatrix();
-                        GL11.glRotatef(nextFloat.get() * 360, 0, 1, 0);
-                        GL11.glRotatef(90, 1, 0, 0);
-                        GL11.glTranslatef(0, 0.05F - (1 - nextFloat.get() * 0.2F) / 16, (1 + nextFloat.get() * bladeLength) / 16);
-                        ALRenderHelper.drawTip(0.04F, 0);
-                        GL11.glPopMatrix();
-                    }
-                }
-
-                if (!fineCut)
-                {
-                    blade.render(0.0625F);
-                    GL11.glTranslatef(0, -(0.5F + bladeLength) / 16, 1F / 32);
-                    ALRenderHelper.drawTip(0.03125F, 0.125F);
-                }
-
-                matrixStack.popPose();
-            }
-        }
 
         if (fineCut)
         {
@@ -145,12 +115,59 @@ public class ModelLightsaberBlade //extends ModelBase
             GL11.glTranslatef(0, -0.0625F * (0.5F + bladeLength), 0.0625F / 2);
             ALRenderHelper.drawTip(0.03125F, 0.125F);
         }*/
-        for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
-                RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
-        )) {
+        if (true)// TODO Check for cracked
+        {
+            float divider = 1000000;
+            float bladelength = 10;
+            int ticks = Minecraft.getInstance().player.tickCount;
+            Random rand = new Random(ticks % 100 * 1000);
+            Random prev = new Random((ticks - 1) % 100 * 1000);
+            float prevf = prev.nextFloat();
+            float current = rand.nextFloat();
+            Supplier<Float> nextFloat = () -> (float) (prevf + (current - prevf) * Minecraft.getInstance().player.tickCount);
 
-            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
+            for (int i = 0; i < 4; ++i)
+            {
+                matrixStack.pushPose();
+
+                if (i != 0)
+                {
+                    matrixStack.translate((nextFloat.get() - 0.5F) / divider, 0, (nextFloat.get() - 0.5F) / /**/divider);
+
+                    for (int j = 0; j < bladelength; ++j)
+                    {
+                        matrixStack.pushPose();
+                        matrixStack.mulPose(Axis.YP.rotationDegrees(nextFloat.get() * 360)); ;
+                        matrixStack.mulPose(Axis.XP.rotationDegrees(90)); ;
+                        matrixStack.translate(0, 0.05F - (1 - nextFloat.get() * 0.2F) / 16, (1 + nextFloat.get() * bladelength) / 16);
+                        matrixStack.popPose();
+                    }
+                }
+
+                if (true) //TODO not finecutSS
+                {
+                    for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                            RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+                    )) {
+
+                        vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
+                    }
+                    matrixStack.translate(0, -(0.5F + 32) / 16, 1F / 32);
+                    //ALRenderHelper.drawTip(0.03125F, 0.125F);
+                }
+
+                matrixStack.popPose();
+            }
         }
+        /*else {
+            for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                    RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
+            )) {
+
+                vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
+            }
+        }*/
+
         //GL11.glColor4f(1, 1, 1, 1);
     }
 
