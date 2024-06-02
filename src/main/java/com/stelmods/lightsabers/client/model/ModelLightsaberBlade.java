@@ -1,33 +1,37 @@
 package com.stelmods.lightsabers.client.model;
 
-import com.mojang.math.Axis;
-import com.stelmods.lightsabers.Lightsabers;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.stelmods.lightsabers.common.lightsaber.FocusingCrystal;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
+import com.stelmods.lightsabers.Lightsabers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
-import org.joml.Quaternionf;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
+@Mod.EventBusSubscriber
 public class ModelLightsaberBlade //extends ModelBase
 {
+    private static float renderTick;
     private ModelLightsaberBlade() {
     }
 
-    public static void renderInner(ItemStack stack, float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
+    public static void renderInner(float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
     {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
 
@@ -117,14 +121,14 @@ public class ModelLightsaberBlade //extends ModelBase
         }*/
         if (true)// TODO Check for cracked
         {
-            float divider = 1000000;
+            float divider = 60;
             float bladelength = 10;
             int ticks = Minecraft.getInstance().player.tickCount;
             Random rand = new Random(ticks % 100 * 1000);
             Random prev = new Random((ticks - 1) % 100 * 1000);
             float prevf = prev.nextFloat();
             float current = rand.nextFloat();
-            Supplier<Float> nextFloat = () -> (float) (prevf + (current - prevf) * Minecraft.getInstance().player.tickCount);
+            Supplier<Float> nextFloat = () -> (float) (prevf + (current - prevf) * renderTick);
 
             for (int i = 0; i < 4; ++i)
             {
@@ -137,14 +141,14 @@ public class ModelLightsaberBlade //extends ModelBase
                     for (int j = 0; j < bladelength; ++j)
                     {
                         matrixStack.pushPose();
-                        matrixStack.mulPose(Axis.YP.rotationDegrees(nextFloat.get() * 360)); ;
-                        matrixStack.mulPose(Axis.XP.rotationDegrees(90)); ;
+                        matrixStack.mulPose(Axis.YP.rotationDegrees(nextFloat.get() * 360));
+                        matrixStack.mulPose(Axis.XP.rotationDegrees(90));
                         matrixStack.translate(0, 0.05F - (1 - nextFloat.get() * 0.2F) / 16, (1 + nextFloat.get() * bladelength) / 16);
+                        drawTip(0.04F, 0, rgb[0], rgb[1], rgb[2], matrixStack);
                         matrixStack.popPose();
                     }
                 }
-
-                if (true) //TODO not finecutSS
+                if (true) //TODO not finecut
                 {
                     for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
                             RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
@@ -153,22 +157,19 @@ public class ModelLightsaberBlade //extends ModelBase
                         vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
                     }
                     matrixStack.translate(0, -(0.5F + 32) / 16, 1F / 32);
-                    //ALRenderHelper.drawTip(0.03125F, 0.125F);
                 }
 
                 matrixStack.popPose();
             }
         }
-        /*else {
+        else {
             for (BakedQuad quad : bm.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
                     RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"))
             )) {
 
                 vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY, true);
             }
-        }*/
-
-        //GL11.glColor4f(1, 1, 1, 1);
+        }
     }
 
     public static void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
@@ -350,7 +351,7 @@ public class ModelLightsaberBlade //extends ModelBase
 //                for (int j = 0; j < bladeLength; ++j)
 //                {
 //                    GL11.glPushMatrix();
-//                    GL11.glRotatef(nextFloat.get() * 360, 0, 1, 0);
+//                    GL11.glRotatef(nextFloat.get() * 360, 1, 0, 0);
 //                    GL11.glRotatef(90, 1, 0, 0);
 //                    GL11.glTranslatef(0, 0.05F + (1 + nextFloat.get() * 0.2F) / 16, (1 + nextFloat.get() * bladeLength) / 16);
 //                    ALRenderHelper.drawTip(0.04F, 0);
@@ -368,4 +369,38 @@ public class ModelLightsaberBlade //extends ModelBase
 //            GL11.glPopMatrix();
 //        }
 //    }
+
+
+    public static void drawTip(float size, float tip, float r, float g, float b, PoseStack poseStack)
+    {
+        float f = 0.0625F;
+        float f1 = f / 2;
+        BufferBuilder bb =  Tesselator.getInstance().getBuilder();
+        bb.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.NEW_ENTITY);
+        bb.vertex(size, size, 0, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-size, size, 0, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-size + f1, -size - tip, -f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(size - f1, -size - tip, -f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(size, size, -f, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-size, size, -f, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-size + f1, -size - tip, -f + f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(size - f1, -size - tip, -f + f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-f1, size, size - f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(-f1, size, -size - f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(0, -size - tip, -size, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(0, -size - tip, size - f, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(f1, size, size - f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(f1, size, -size - f1, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(0, -size - tip, -size, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+        bb.vertex(0, -size - tip, size - f, r, g, b , 1f, 0, 0, OverlayTexture.NO_OVERLAY, 127000, 0, 1, 0);
+
+        bb.end();
+
+    }
+
+    @SubscribeEvent
+    public static void renderTick(TickEvent.RenderTickEvent tickEvent)
+    {
+        renderTick = tickEvent.renderTickTime;
+    }
 }

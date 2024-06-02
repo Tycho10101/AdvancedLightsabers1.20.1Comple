@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.stelmods.lightsabers.Lightsabers;
 import com.stelmods.lightsabers.client.model.ModelLightsaberBlade;
+import com.stelmods.lightsabers.client.render.item.RenderItemLightsaber;
 import com.stelmods.lightsabers.common.container.LightsaberForgeContainer;
 import com.stelmods.lightsabers.common.item.ItemCrystal;
 import com.stelmods.lightsabers.common.item.LightsaberItem;
@@ -74,6 +75,11 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
 
 
             gui.disableScissor();
+            RenderSystem.enableCull();
+            RenderSystem.enableScissor(this.leftPos, this.topPos+height, this.width, this.height);
+            RenderItemLightsaber.bewlr.renderSingle(ItemDisplayContext.NONE, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
+            //renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
+            RenderSystem.disableScissor();
             matrixstack.popPose();
         }
     }
@@ -102,7 +108,7 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
         matrixStack.pushPose();
         matrixStack.scale(.5f, .80f, .5f);
         matrixStack.translate(0, height * 1.25, 0);
-        ModelLightsaberBlade.renderInner(itemStack, new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
+        ModelLightsaberBlade.renderInner(new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
                 false, matrixStack, model, combinedLightIn);
 
         matrixStack.popPose();
