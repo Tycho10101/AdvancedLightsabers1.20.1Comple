@@ -19,11 +19,6 @@ public class ModItems {
             taronGrip = registerBody("taron_grip", 0.271181f),
             taronSwitch = registerSwitch("taron_switch", 0.102172f),
             taronPommel = registerPommel("taron_pommel", 0.14922f);
-    public static final RegistryObject<Item>
-            testEmitter = registerEmitter("test_emitter", 0.180303f),
-            testSwitch = registerSwitch("test_switch", 0.182134f),
-            testGrip = registerBody("test_grip", 0.47213f),
-            testPommel = registerPommel("test_pommel", 0.116575f);
 
     public static final RegistryObject<Item>
             revanEmitter = registerEmitter("revan_emitter", .1f),
@@ -33,11 +28,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> lightsaber = ITEMS.register("lightsaber", LightsaberItem::new);
     public static final RegistryObject<Item> doubleLightsaber = ITEMS.register("lightsaber_double", LightsaberDoubleItem::new);
-
-
-
-
-
 
     private static RegistryObject<Item> registerPommel(String name, float height) {
         return ITEMS.register(name, () -> new LightsaberPommel(height));

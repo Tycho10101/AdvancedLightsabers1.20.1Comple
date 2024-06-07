@@ -46,22 +46,11 @@ public class Lightsabers
             ModItems.ITEMS.getEntries().stream().filter(item -> !(item.get() instanceof LightsaberItem)).filter(item -> !(item.get() instanceof BladeItem)).map(RegistryObject::get).map(ItemStack::new).toList());
 
     public static final RegistryObject<CreativeModeTab> lightsaber_tab = TABS.register(MODID, () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(ModItems.testEmitter.get()))
+            .icon(() -> new ItemStack(ModItems.taronEmitter.get()))
             .title(Component.translatable("gui.lightsabers.lightsaber_creative"))
             .displayItems((params, output) -> {
                 items.get().forEach(output::accept);
                 items.get().forEach(output::accept);
-
-                ItemStack testSaber = new ItemStack(ModItems.lightsaber.get());
-                testSaber.setTag(new CompoundTag());
-                testSaber.getTag().putString("emitter", ModItems.testEmitter.getId().toString());
-                testSaber.getTag().putString("grip", ModItems.testGrip.getId().toString());
-                testSaber.getTag().putString("pommel", ModItems.testPommel.getId().toString());
-                testSaber.getTag().putString("switch", ModItems.testSwitch.getId().toString());
-                testSaber.getTag().putString("type", LightsaberType.SINGLE.toString());
-                testSaber.getTag().putString("color", ModBlocks.greenCrystal.getId().toString());
-                testSaber.getTag().putBoolean("active", false);
-                output.accept(testSaber);
 
                 ItemStack taron = new ItemStack(ModItems.lightsaber.get());
                 taron.setTag(new CompoundTag());
@@ -85,7 +74,7 @@ public class Lightsabers
                 revan.getTag().putBoolean("active", false);
                 output.accept(revan);
 
-                output.accept(registerDoubleSaber(taron, testSaber));
+                output.accept(registerDoubleSaber(taron, revan));
                 output.accept(registerDoubleSaber(taron, taron));
             })
             .build());
@@ -140,6 +129,7 @@ public class Lightsabers
     @OnlyIn(Dist.CLIENT)
     private void modelRegistry(ModelEvent.RegisterAdditional event) {
         event.register(new ResourceLocation(Lightsabers.MODID, "item/blade"));
+        event.register(new ResourceLocation(Lightsabers.MODID, "item/cube"));
     }
 
 }

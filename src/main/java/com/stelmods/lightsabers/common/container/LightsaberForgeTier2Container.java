@@ -503,4 +503,8 @@ public class LightsaberForgeTier2Container extends AbstractContainerMenu  {
 
         }
     }
+
+    public Slot getDualSlot() {
+        return dualSlot;
+    }
 }

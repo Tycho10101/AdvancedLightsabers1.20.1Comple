@@ -71,64 +71,11 @@ public class LightsaberForgeScreen extends AbstractContainerScreen<LightsaberFor
             matrixstack.mulPose(Axis.YP.rotationDegrees(rotate = (rotate % 360) + 2f));
             matrixstack.scale(75,75,75);
             gui.enableScissor(this.leftPos + 42, this.topPos + 20, this.leftPos + 156, this.topPos + 64);
-            renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 15728880, itemStack);
-
-
+            RenderItemLightsaber.bewlr.renderSingle(ItemDisplayContext.NONE, matrixstack, gui.bufferSource(), 15728880, itemStack);
             gui.disableScissor();
             RenderSystem.enableCull();
-            RenderSystem.enableScissor(this.leftPos, this.topPos+height, this.width, this.height);
-            RenderItemLightsaber.bewlr.renderSingle(ItemDisplayContext.NONE, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
-            //renderSingle(ItemDisplayContext.GUI, matrixstack, gui.bufferSource(), 0xffffff, itemStack);
-            RenderSystem.disableScissor();
+
             matrixstack.popPose();
         }
-    }
-
-    private void renderSingle(ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, ItemStack itemStack) {
-
-        CompoundTag tag = itemStack.getTag();
-        float height = getTotalHeight(tag);
-
-        matrixStack.pushPose();
-
-
-        matrixStack.pushPose();
-        ItemCrystal i = (ItemCrystal) ForgeRegistries.BLOCKS.getValue(new ResourceLocation(tag.getString("color")));
-        float[] rgb = i.getCrystalColor().getRGB();
-        matrixStack.scale(1.4f, .8f, 1.4f);
-        matrixStack.translate(0, height * 1.3, 0);
-        BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/blade"));
-
-        ModelLightsaberBlade.renderOuter(itemStack, rgb, buffer.getBuffer(
-                RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
-        ), matrixStack, model, combinedLightIn);
-        matrixStack.popPose();
-
-        //render inner blade
-        matrixStack.pushPose();
-        matrixStack.scale(.5f, .80f, .5f);
-        matrixStack.translate(0, height * 1.25, 0);
-        ModelLightsaberBlade.renderInner(new float[]{1.0f, 1.0f, 1.0f}, buffer.getBuffer(RenderType.solid()),
-                false, matrixStack, model, combinedLightIn);
-
-        matrixStack.popPose();
-
-        height = renderPart(tag.getString("emitter"), height, (byte) 1, itemDisplayContext, matrixStack, buffer, combinedLightIn);
-        height = renderPart(tag.getString("switch"), height, (byte) 1, itemDisplayContext, matrixStack, buffer, combinedLightIn);
-        height = renderPart(tag.getString("grip"), height, (byte) 1, itemDisplayContext, matrixStack, buffer, combinedLightIn);
-        renderPart(tag.getString("pommel"), height, (byte) -1, itemDisplayContext, matrixStack, buffer, combinedLightIn);
-
-        matrixStack.popPose();
-    }
-
-    private float renderPart(String name, float height, byte y, ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn) {
-        matrixStack.pushPose();
-        LightsaberPart part = (LightsaberPart) ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
-        height = height - part.getHeight();
-        BakedModel bm = Minecraft.getInstance().getItemRenderer().getModel(part.getDefaultInstance(), null, null, 1);
-        matrixStack.translate(0, y * height, 0);
-        Minecraft.getInstance().getItemRenderer().render(part.getDefaultInstance(), itemDisplayContext, false, matrixStack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY, bm);
-        matrixStack.popPose();
-        return height;
     }
 }

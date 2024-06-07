@@ -18,9 +18,11 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.codehaus.plexus.util.dag.Vertex;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -31,8 +33,10 @@ public class ModelLightsaberBlade //extends ModelBase
     private ModelLightsaberBlade() {
     }
 
-    public static void renderInner(float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, BakedModel bm, int combineLight)
+    public static void renderInner(float[] rgb, VertexConsumer vc, boolean isCrossguard, PoseStack matrixStack, int combineLight)
     {
+        BakedModel bm = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/blade"));
+
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
 
 
@@ -127,7 +131,11 @@ public class ModelLightsaberBlade //extends ModelBase
             Random rand = new Random(ticks % 100 * 1000);
             Random prev = new Random((ticks - 1) % 100 * 1000);
             Supplier<Float> nextFloat = () -> median(prev.nextFloat(),rand.nextFloat());
+            matrixStack.pushPose();
 
+            BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Lightsabers.MODID, "item/cube"));
+
+            matrixStack.popPose();
             for (int i = 0; i < 4; ++i)
             {
                 matrixStack.pushPose();
@@ -141,10 +149,16 @@ public class ModelLightsaberBlade //extends ModelBase
                         matrixStack.pushPose();
                         matrixStack.mulPose(Axis.YP.rotationDegrees(nextFloat.get() * 360));
                         matrixStack.mulPose(Axis.XP.rotationDegrees(90));
-                        float y =  0.05F - (1 - nextFloat.get() * 0.2F) / 1;
-                        float z =(1 + nextFloat.get() * bladelength) / 1;
+                        float y =  0.05F - (1 - nextFloat.get() * 0.2F) / 15;
+                        float z =(1 + nextFloat.get() * bladelength) / -4.84f;
                         matrixStack.translate(0, y,z );
-                        drawTip(0.04F, 0, rgb[0], rgb[1], rgb[2], vc);
+                        matrixStack.scale(.3f, .3f, .3f);
+                        List<BakedQuad> l = model.getQuads(null, null, RandomSource.create(), ModelData.EMPTY,
+                                RenderType.solid());
+                        for (BakedQuad quad : l ) {
+                            vc.putBulkData(matrixStack.last(), quad, rgb[0], rgb[1], rgb[2], 1f, combineLight, OverlayTexture.NO_OVERLAY,
+                                    true);
+                        }                        //drawTip(0.04F, 0, rgb[0], rgb[1], rgb[2], vc);
                         matrixStack.popPose();
                     }
                 }
@@ -172,7 +186,7 @@ public class ModelLightsaberBlade //extends ModelBase
         }
     }
 
-    public static void renderOuter(ItemStack itemstack, float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
+    public static void renderOuter(float[] rgb, VertexConsumer vc, PoseStack matrixStack, BakedModel bm, int combineLight) {
         //boolean fineCut = data.hasFocusingCrystal(FocusingCrystal.FINE_CUT);
         int smooth = 10;
         float width = 0.2F;
@@ -180,7 +194,6 @@ public class ModelLightsaberBlade //extends ModelBase
         float heightScale = 1f;
         float zScale = .7f;
         float bloomAlpha = 0.15F;
-
         //TODO fix focus crystals
         /* if (data.hasFocusingCrystal(FocusingCrystal.COMPRESSED))
         {
