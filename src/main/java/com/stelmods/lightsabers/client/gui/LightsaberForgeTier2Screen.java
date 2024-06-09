@@ -55,7 +55,7 @@ public class LightsaberForgeTier2Screen extends AbstractContainerScreen<Lightsab
             matrixstack.mulPose(Axis.YP.rotationDegrees(rotate = (rotate % 360) + 2f));
             matrixstack.scale(65L,65,65);
             gui.enableScissor(this.leftPos + 60, this.topPos + 16, this.leftPos + 174, this.topPos + 64);
-            RenderItemLightsaber.bewlr.renderDouble(ItemDisplayContext.NONE, matrixstack, gui.bufferSource(), 15728880, itemStack);
+            RenderItemLightsaber.bewlr.renderDouble(ItemDisplayContext.NONE, matrixstack, gui.bufferSource(), 0x0, itemStack);
             gui.disableScissor();
             RenderSystem.enableCull();
             matrixstack.popPose();

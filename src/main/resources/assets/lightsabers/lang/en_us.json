@@ -21,6 +21,8 @@
   "item.lightsabers.revan_pommel": "Lightsaber Pommel",
   "item.lightsabers.revan2_pommel.desc": "Revan",
 
-  "gui.lightsabers.lightsaber_creative": "Lightsabers"
+  "gui.lightsabers.lightsaber_creative": "Lightsabers",
+  "gui.lightsabers.lightsaber_crystals": "Crystals",
+  "gui.lightsabers.lightsaber_parts": "Parts"
 
 }

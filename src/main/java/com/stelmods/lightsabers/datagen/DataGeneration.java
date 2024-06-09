@@ -19,9 +19,9 @@ public class DataGeneration {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         final ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-        generator.addProvider(event.includeServer(), new Recipes(generator));
-        generator.addProvider(event.includeClient(), new BlockStates(generator, existingFileHelper));
+        //generator.addProvider(event.includeServer(), new Recipes(generator));
         generator.addProvider(event.includeClient(), new ItemModels(generator, existingFileHelper));
-        generator.addProvider(event.includeClient(), new BlockModels(generator, existingFileHelper));
+        //generator.addProvider(event.includeClient(), new BlockStates(generator, existingFileHelper));
+        //generator.addProvider(event.includeClient(), new BlockModels(generator, existingFileHelper));
     }
 }

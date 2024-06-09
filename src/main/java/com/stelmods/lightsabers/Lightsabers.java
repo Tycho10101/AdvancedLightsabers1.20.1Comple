@@ -1,25 +1,32 @@
 package com.stelmods.lightsabers;
 
+import com.stelmods.lightsabers.client.ClientEvents;
 import com.stelmods.lightsabers.common.block.ModBlocks;
 import com.stelmods.lightsabers.common.container.ModContainers;
 import com.stelmods.lightsabers.common.entity.ModEntities;
+import com.stelmods.lightsabers.common.item.ItemCrystal;
 import com.stelmods.lightsabers.common.item.LightsaberItem;
+import com.stelmods.lightsabers.common.item.LightsaberPart;
 import com.stelmods.lightsabers.common.item.ModItems;
 import com.stelmods.lightsabers.common.item.parts.BladeItem;
 import com.stelmods.lightsabers.common.lightsaber.LightsaberType;
 import com.google.common.base.Suppliers;
 import com.stelmods.lightsabers.datagen.DataGeneration;
+import com.stelmods.lightsabers.lib.Strings;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -43,15 +50,21 @@ public class Lightsabers
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     private static Lightsabers instance;
     private static final Supplier<List<ItemStack>> items = Suppliers.memoize(() ->
-            ModItems.ITEMS.getEntries().stream().filter(item -> !(item.get() instanceof LightsaberItem)).filter(item -> !(item.get() instanceof BladeItem)).map(RegistryObject::get).map(ItemStack::new).toList());
+            ModItems.ITEMS.getEntries().stream().filter(item -> !(item.get() instanceof LightsaberItem)).map(RegistryObject::get).map(ItemStack::new).toList());
 
-    public static final RegistryObject<CreativeModeTab> lightsaber_tab = TABS.register(MODID, () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(ModItems.taronEmitter.get()))
+    public static final RegistryObject<CreativeModeTab> lightsaber_tab = TABS.register(Strings.lightsaber_tab, () -> CreativeModeTab.builder()
+            .icon(() -> { ItemStack revan = new ItemStack(ModItems.lightsaber.get());
+                revan.setTag(new CompoundTag());
+                revan.getTag().putString("emitter", ModItems.revanEmitter.getId().toString());
+                revan.getTag().putString("grip", ModItems.revanGrip.getId().toString());
+                revan.getTag().putString("pommel", ModItems.revanPommel.getId().toString());
+                revan.getTag().putString("switch", ModItems.revanSwitch.getId().toString());
+                revan.getTag().putString("type", LightsaberType.SINGLE.toString());
+                revan.getTag().putString("color", ModBlocks.purpleCrystal.getId().toString());
+                revan.getTag().putBoolean("active", false);
+                return revan;})
             .title(Component.translatable("gui.lightsabers.lightsaber_creative"))
             .displayItems((params, output) -> {
-                items.get().forEach(output::accept);
-                items.get().forEach(output::accept);
-
                 ItemStack taron = new ItemStack(ModItems.lightsaber.get());
                 taron.setTag(new CompoundTag());
                 taron.getTag().putString("emitter", ModItems.taronEmitter.getId().toString());
@@ -76,6 +89,32 @@ public class Lightsabers
 
                 output.accept(registerDoubleSaber(taron, revan));
                 output.accept(registerDoubleSaber(taron, taron));
+            }).build());
+
+    public static final RegistryObject<CreativeModeTab> crystal_tab = TABS.register(Strings.crystal_tab, () -> CreativeModeTab.builder()
+            .icon(() -> new ItemStack(ModBlocks.goldCrystal.get()))
+            .title(Component.translatable("gui.lightsabers.lightsaber_crystals"))
+
+            .displayItems((params, output) -> {
+                for(ItemStack itemStack: items.get()) {
+                    if (itemStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ItemCrystal)
+                    {
+                        output.accept(itemStack);
+                    }
+                }
+            }).build());
+
+    public static final RegistryObject<CreativeModeTab> part_tab = TABS.register(Strings.partsTab, () -> CreativeModeTab.builder()
+            .icon(() -> new ItemStack(ModItems.taronEmitter.get()))
+            .title(Component.translatable("gui.lightsabers.lightsaber_creative"))
+            .displayItems((params, output) -> {
+                for(ItemStack itemStack: items.get())
+                {
+                    if(itemStack.getItem() instanceof LightsaberPart){
+                        output.accept(itemStack);
+                    }
+                }
+
             })
             .build());
 
@@ -109,6 +148,12 @@ public class Lightsabers
         ModContainers.CONTAINERS.register(bus);
         TABS.register(bus);
         MinecraftForge.EVENT_BUS.register(new DataGeneration());
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
+            @Override
+            public void run() {
+                bus.addListener(ClientEvents::colourTint);
+            }
+        });
     }
     
     private void constructMod(final FMLConstructModEvent event) {

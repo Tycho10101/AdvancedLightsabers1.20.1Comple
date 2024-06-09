@@ -89,7 +89,7 @@ public class LightsaberForgeContainer extends AbstractContainerMenu
         TE.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iih -> outputSlot = addSlot(new Output( 8, 136, 87)));
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventoryPlayer, j + i * 9 + 9, 9 + j * 18, 113 + i * 18));
+                this.addSlot(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 114 + i * 18));
             }
         }
         for (int i = 0; i < 9; ++i) { addSlot(new Slot(inventoryPlayer, i, 8 + i * 18, 172));}

@@ -1,0 +1,14 @@
+{
+  "parent": "forge:block/default",
+  "render_type": "minecraft:cutout",
+  "loader": "forge:obj",
+  "flip_v": true,
+  "model": "lightsabers:models/block/model/crystal.obj",
+  "transform":{
+    "translation": [0, 0, 0],
+    "scale": [ 1, 1, 1 ],
+    "rotation":[0,0,0]
+  },
+  "textures": {
+  }
+}

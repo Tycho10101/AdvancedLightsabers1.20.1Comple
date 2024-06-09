@@ -12,7 +12,7 @@ public class ItemCrystal extends Block
     private final Rarity rarity;
 
     public ItemCrystal(Rarity rarity, CrystalColor crystalColor) {
-        super(Block.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 10.0F));
+        super(Block.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 10.0F).noOcclusion());
         this.crystalColor = crystalColor;
         this.rarity = rarity;
     }
@@ -25,7 +25,8 @@ public class ItemCrystal extends Block
     public Rarity getRarity() {
         return rarity;
     }
-    @Deprecated
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }

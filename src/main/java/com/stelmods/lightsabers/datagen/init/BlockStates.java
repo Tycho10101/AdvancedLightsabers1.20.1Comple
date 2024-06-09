@@ -4,9 +4,12 @@ import com.stelmods.lightsabers.Lightsabers;
 import com.stelmods.lightsabers.common.block.ModBlocks;
 import com.stelmods.lightsabers.common.item.ItemCrystal;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
@@ -22,11 +25,12 @@ public class BlockStates extends BlockStateProvider {
         for (RegistryObject<Block> itemRegistryObject : ModBlocks.BLOCKS.getEntries()) {
             if(itemRegistryObject.get() instanceof ItemCrystal)
             {
-                simpleBlock(itemRegistryObject);
+                crystalBlockstate(itemRegistryObject);
             }
         }
     }
-    public void simpleBlock(Supplier<? extends Block> blockSupplier) {
+    public void crystalBlockstate(Supplier<? extends Block> blockSupplier) {
+
         simpleBlock(blockSupplier.get());
     }
 }

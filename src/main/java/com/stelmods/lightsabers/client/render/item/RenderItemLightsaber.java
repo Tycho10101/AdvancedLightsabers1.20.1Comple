@@ -166,7 +166,7 @@ public class RenderItemLightsaber extends BlockEntityWithoutLevelRenderer // imp
 
         ModelLightsaberBlade.renderOuter(rgb, buffer.getBuffer(
                 RenderType.entityTranslucentEmissive(new ResourceLocation(Lightsabers.MODID, "textures/item/lightsaber/blade.png"), true)
-        ), matrixStack, model, 15728880);
+        ), matrixStack, model, 0xFFFFFFFF);
         matrixStack.popPose();
 
         //render inner blade
